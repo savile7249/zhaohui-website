@@ -1,0 +1,58 @@
+export const productFamilies = [
+  {
+    slug: "tanks",
+    index: "01",
+    title: "储罐",
+    english: "LINED STORAGE TANKS",
+    summary: "用于腐蚀性介质的储存、周转与工艺缓冲，可按现场空间、支撑及接口条件定制。",
+    image: "/images/product-vessel.png",
+    imageAlt: "明亮厂房内的卧式防腐储罐",
+    objectPosition: "40% center",
+    variants: ["立式储罐", "卧式储罐", "定制储罐"],
+    applications: ["腐蚀性介质储存", "工艺缓冲与周转", "现场接口及支撑定制"],
+    inputs: ["容积", "立式或卧式", "直径", "高度或长度", "基础及支撑", "接口布置", "介质与浓度", "温度、压力及防腐工艺"],
+  },
+  {
+    slug: "reactors",
+    index: "02",
+    title: "反应釜",
+    english: "REACTION VESSELS",
+    summary: "用于反应、混合与传热工艺，可结合搅拌、加热或冷却及密封要求进行配置。",
+    image: "/images/product-reactor.png",
+    imageAlt: "带有多组法兰接口的大型反应釜",
+    objectPosition: "30% center",
+    variants: ["立式反应釜", "定制反应釜"],
+    applications: ["反应与混合单元", "加热或冷却传热", "搅拌及密封配置"],
+    inputs: ["有效容积", "结构形式", "介质", "温度", "压力", "搅拌要求", "加热或冷却方式", "密封及防腐工艺"],
+  },
+  {
+    slug: "towers",
+    index: "03",
+    title: "塔器",
+    english: "PROCESS COLUMNS",
+    summary: "面向吸收、洗涤、脱硫与精馏等工艺段，按处理任务、内部件及现场边界进行设计沟通。",
+    image: "/images/product-column.png",
+    imageAlt: "厂房内的大型防腐塔器",
+    objectPosition: "64% center",
+    variants: ["废气塔", "塔节", "喷淋塔", "吸收塔", "洗涤塔", "脱硫塔", "精馏塔", "填料塔"],
+    applications: ["工艺尾气吸收与洗涤", "脱硫等净化单元", "精馏及填料传质单元"],
+    inputs: ["塔器类型", "直径与高度", "分段要求", "填料或塔内件", "介质", "温度与压力", "处理量或风量", "废气组成、浓度、湿度及处理目标"],
+  },
+  {
+    slug: "piping",
+    index: "04",
+    title: "管道与管件",
+    english: "LINED PIPING",
+    summary: "面向腐蚀性介质输送及装置内衔接，可配套直管与常用非标管件。",
+    image: "/images/projects-plant.png",
+    imageAlt: "化工装置中的管廊与工艺管道",
+    objectPosition: "64% center",
+    variants: ["直管", "弯头", "三通", "异径管"],
+    applications: ["腐蚀性介质输送", "装置内工艺衔接", "非标管件配套"],
+    inputs: ["公称直径 DN", "管段长度", "介质与浓度", "温度与压力", "流量", "连接方式", "壳体材料", "防腐工艺"],
+  },
+] as const;
+
+export function findProduct(slug: string) {
+  return productFamilies.find((product) => product.slug === slug);
+}

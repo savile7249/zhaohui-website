@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Reveal } from "@/components/reveal";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 
 const products = [
   {
@@ -13,7 +15,7 @@ const products = [
     objectPosition: "64% center",
     tone: "dark",
     align: "left",
-    next: "vessel",
+    href: "/products/towers",
   },
   {
     id: "vessel",
@@ -26,7 +28,7 @@ const products = [
     objectPosition: "40% center",
     tone: "light",
     align: "right",
-    next: "reactor",
+    href: "/products/tanks",
   },
   {
     id: "reactor",
@@ -39,7 +41,7 @@ const products = [
     objectPosition: "30% center",
     tone: "dark",
     align: "right",
-    next: "projects",
+    href: "/products/reactors",
   },
 ] as const;
 
@@ -74,48 +76,19 @@ function ProductSection({ product }: { product: (typeof products)[number] }) {
           <p className="product-english">{product.english}</p>
           <span className="accent-line" aria-hidden="true" />
           <p className="product-summary">{product.summary}</p>
-          <a href={`#${product.next}`} className="text-link">
+          <Link href={product.href} className="text-link">
             探索设备
-          </a>
+          </Link>
         </Reveal>
       </div>
     </section>
   );
 }
 
-function Header() {
-  return (
-    <header className="absolute inset-x-0 top-0 z-20 h-[72px] px-5 sm:px-[30px]">
-      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between">
-        <a href="#top" aria-label="兆辉化工设备首页" className="logo-link -translate-x-2 -translate-y-2">
-          <Image src="/images/zhaohui-logo-transparent.png" alt="ZHAOHUI 兆辉" width={112} height={42} priority />
-        </a>
-        <nav aria-label="主导航" className="desktop-nav items-center gap-8 text-[10px] text-white/78">
-          <a href="#equipment">设备</a>
-          <a href="#projects">工程项目</a>
-          <a href="#manufacturing">制造</a>
-          <a href="#about">关于兆辉</a>
-          <a href="#contact">联系</a>
-        </nav>
-        <details className="mobile-menu">
-          <summary>菜单</summary>
-          <nav aria-label="移动端主导航">
-            <a href="#equipment">设备</a>
-            <a href="#projects">工程项目</a>
-            <a href="#manufacturing">制造</a>
-            <a href="#about">关于兆辉</a>
-            <a href="#contact">联系</a>
-          </nav>
-        </details>
-      </div>
-    </header>
-  );
-}
-
 export default function Home() {
   return (
     <main id="top">
-      <Header />
+      <SiteHeader />
 
       <section className="hero-section">
         <Image
@@ -229,20 +202,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer id="contact" className="footer-section">
-        <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-[5.75vw] py-12 text-white/68 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-5">
-            <Image src="/images/zhaohui-logo-transparent.png" alt="ZHAOHUI 兆辉" width={112} height={42} />
-            <p className="mt-5 text-sm leading-7">兆辉化工设备</p>
-          </div>
-          <nav aria-label="页脚导航" className="flex flex-wrap gap-x-7 gap-y-3 text-xs md:col-span-5">
-            <a href="#equipment">核心设备</a>
-            <a href="#projects">工程项目</a>
-            <a href="#manufacturing">制造能力</a>
-          </nav>
-          <p className="text-xs md:col-span-2 md:text-right">© {new Date().getFullYear()} ZHAOHUI</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

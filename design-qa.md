@@ -86,3 +86,54 @@
 - Re-tune `object-position` per final photography rather than changing section structure.
 
 final result: passed
+
+---
+
+# 兆辉化工设备产品页 V2 — Design QA（2026-08-29）
+
+## 验证范围
+
+- 实现地址：`http://127.0.0.1:3000/products`
+- 产品总览：`/products`
+- 静态详情页：`/products/tanks`、`/products/reactors`、`/products/towers`、`/products/piping`
+- 视觉基准：`W:\Workspace\zhaohui\效果图.png`
+- 比较状态：源图是首页视觉基准，产品页是同一设计语言下的新页面，不是相同内容状态的逐像素复刻。
+
+## 视觉证据
+
+- 同屏对照：`W:\Workspace\zhaohui\design-qa-products-comparison.png`，左侧为源图，右侧为产品总览顶部与首个设备分组。
+- 产品总览桌面全页：`W:\Workspace\zhaohui\products-overview-desktop.png`，`1440 × 5192`。
+- 产品分组桌面聚焦：`W:\Workspace\zhaohui\products-overview-equipment-desktop.png`，`1440 × 900`。
+- 储罐详情桌面全页：`W:\Workspace\zhaohui\products-tanks-desktop.png`，`1440 × 3606`。
+- 产品总览移动端全页：`W:\Workspace\zhaohui\products-overview-mobile.png`，`390 × 5973`。
+- 塔器详情移动端全页：`W:\Workspace\zhaohui\products-towers-mobile.png`，`390 × 4944`。
+- 首页回归：`W:\Workspace\zhaohui\homepage-products-regression.png`，`1024 × 1536`。
+
+## 结论
+
+- 无可执行的 P0、P1、P2 差异。
+- 12 栏桌面网格、大留白、直角全幅摄影、近黑与暖灰连续明度、克制红色标记和左右交替产品叙事均延续源图。
+- 未引入圆角卡片、蓝紫渐变、发光、粒子或 SaaS 面板式界面。
+- 总览与详情页在 `1440 × 900`、`1024 × 1536` 和 `390 × 844` 下均无横向溢出。
+- 四个详情路由均具有正确标题与一级标题；未知产品路由返回 404。
+- 桌面导航、移动端原生菜单、首页三个“探索设备”入口和产品总览详情入口均已验证。
+- 浏览器 console 无 error 或 warning。
+
+## 剩余 P3 与内容依赖
+
+- [P3] 正式产品摄影仍未提供。储罐、反应釜和塔器沿用首页占位摄影；管道页明确复用现有工程现场图，没有把生成图冒充正式产品图。收到核准摄影后，只需替换图片资产并复查裁切位置。
+- [P3] 官方字体与矢量 Logo 仍未提供，当前沿用首页已经确认的系统字体和透明栅格 Logo。
+- [P3] 未提供可公开的电话、邮箱或表单接收端。页面未虚构联系方式，暂以“提交给您的兆辉业务联系人”作为沟通路径；收到核准联系方式后再补公开 CTA。
+
+## 内容边界
+
+- 产品名称、型号范围、壳体材料牌号和防腐工艺范围来自已确认的员工参阅手册。
+- 页面不输出固定价格、材料兼容性结论、性能或寿命承诺，也不提供自动选材。
+- 具体喷涂材料、设备参数及最终方案继续按介质、浓度、温度、压力和结构条件审核。
+
+## 验证命令
+
+- `npm.cmd run typecheck`：通过。
+- `npm.cmd run build`：通过；`/products` 静态预渲染，4 个详情页由 `generateStaticParams` 生成。
+
+final result: passed
