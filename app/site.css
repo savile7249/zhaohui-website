@@ -1132,23 +1132,9 @@ html:has(.pt-root) {
   color: var(--on-dark-muted);
 }
 
-.pt-product-variants {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 28px 0 36px;
-}
-
-.pt-product-variants li {
-  padding: 6px 12px;
-  border: 1px solid var(--line-dark);
-  font-size: var(--fs-meta);
-  line-height: 1.5;
-  color: var(--on-dark);
-}
-
 .pt-product-body .pt-link,
 .pt-product-body .pt-button {
+  margin-top: 32px;
   align-self: flex-start;
 }
 

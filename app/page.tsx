@@ -170,11 +170,6 @@ export default function HomePage() {
                 <span className="pt-num">{product.index}</span>
                 <h3>{product.title}</h3>
                 <p className="pt-product-summary">{product.applications.join("、")}。</p>
-                <ul className="pt-product-variants" aria-label={`${product.title}产品`}>
-                  {product.variants.map((variant) => (
-                    <li key={variant}>{variant}</li>
-                  ))}
-                </ul>
                 <Link
                   href={`/products/${product.slug}`}
                   className="pt-button"
