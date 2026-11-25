@@ -1,0 +1,1064 @@
+/* 兆辉 · 塔器独立产品页样片样式
+ * 遵循 DESIGN.md：0 圆角、无阴影、无新增色相、深浅区块交替、最小字号 14px。
+ * 塔器直接立于深色墨底（#0a0f13），无外框限制，以大幅比例 + 焦点高亮 + 工程引出标线建立强视觉关联。
+ */
+
+/* ---------- 产品页首屏（收紧高度，让首屏直接露出 01 结构板块） ---------- */
+
+.pt-tower-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 0;
+  padding-top: clamp(96px, 8.5vw, 116px);
+  padding-bottom: clamp(24px, 2.8vw, 40px);
+  overflow: hidden;
+  border-bottom: 1px solid var(--line-dark);
+  background: var(--deep);
+}
+
+.pt-tower-hero-image {
+  object-fit: cover;
+  object-position: 64% center;
+  opacity: 0.42;
+}
+
+.pt-tower-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(5 9 13 / 0.96) 0%, rgb(5 9 13 / 0.84) 44%, rgb(5 9 13 / 0.38) 100%),
+    linear-gradient(0deg, rgb(10 15 19 / 1) 0%, rgb(5 9 13 / 0.24) 45%, rgb(5 9 13 / 0.72) 100%);
+}
+
+.pt-tower-hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.pt-tower-hero-title {
+  font-size: clamp(2.25rem, 4.4vw, 3.75rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- 01 随滚组装核心区块（无框大幅塔器，深色墨底 #0a0f13） ---------- */
+
+.pt-tower-section {
+  padding-top: clamp(44px, 5vw, 68px);
+  background: var(--ink);
+  color: var(--on-dark);
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.pt-tower-section .pt-section-head {
+  margin-bottom: clamp(32px, 4vw, 52px);
+}
+
+.pt-tower-assembly {
+  --tower-col-gap: clamp(16px, 2.4vw, 32px);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--tower-col-gap);
+  row-gap: 40px;
+  align-items: start;
+}
+
+/* 左侧无框原生 sticky 舞台：直接贴墨底，给塔器最大视口占比 */
+.pt-tower-visual-col {
+  grid-column: 1 / 8;
+  position: sticky;
+  top: 76px;
+}
+
+.pt-tower-stage {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 96px);
+  justify-content: space-between;
+}
+
+.pt-tower-canvas {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 16px 8px;
+  overflow: visible;
+}
+
+/* ---------- Anatomy SVG 深色墨底令牌（高对比机械钢感 + 强焦点层次） ---------- */
+
+.pt-tower-svg {
+  --anatomy-paper: #0a0f13;
+  --anatomy-face: #121a21;
+  --anatomy-top: #23303d;
+  --anatomy-shade-0: #0e151b;
+  --anatomy-shade-1: #131c24;
+  --anatomy-shade-2: #19242e;
+  --anatomy-shade-3: #202d39;
+  --anatomy-hi: rgb(241 242 242 / 0.9);
+  --anatomy-mid: rgb(241 242 242 / 0.54);
+  --anatomy-lo: rgb(241 242 242 / 0.3);
+  --anatomy-faint: rgb(241 242 242 / 0.16);
+  --anatomy-lit: #f1f2f2;
+  --anatomy-dot: rgb(241 242 242 / 0.78);
+  --anatomy-weight: 0.75px;
+
+  display: block;
+  height: min(74svh, 690px);
+  width: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.pt-tower-svg path,
+.pt-tower-svg circle,
+.pt-tower-svg line {
+  vector-effect: non-scaling-stroke;
+}
+
+.pt-tower-svg .iso-fill {
+  fill: var(--anatomy-paper);
+  stroke: none;
+}
+
+.pt-tower-svg .iso-shade,
+.pt-tower-svg .iso-top {
+  stroke: none;
+  transition: fill 220ms ease;
+}
+
+.pt-tower-svg .iso-shade[data-shade="0"] {
+  fill: var(--anatomy-shade-0);
+}
+
+.pt-tower-svg .iso-shade[data-shade="1"] {
+  fill: var(--anatomy-shade-1);
+}
+
+.pt-tower-svg .iso-shade[data-shade="2"] {
+  fill: var(--anatomy-shade-2);
+}
+
+.pt-tower-svg .iso-shade[data-shade="3"] {
+  fill: var(--anatomy-shade-3);
+}
+
+.pt-tower-svg .iso-top {
+  fill: var(--anatomy-top);
+}
+
+.pt-tower-svg .iso-solid[data-seamless] > .iso-shade,
+.pt-tower-svg .iso-solid[data-seamless] > .iso-top {
+  stroke-width: 0.45;
+  stroke-linejoin: round;
+}
+
+.pt-tower-svg .iso-solid[data-seamless] > .iso-shade[data-shade="0"] {
+  stroke: var(--anatomy-shade-0);
+}
+
+.pt-tower-svg .iso-solid[data-seamless] > .iso-shade[data-shade="1"] {
+  stroke: var(--anatomy-shade-1);
+}
+
+.pt-tower-svg .iso-solid[data-seamless] > .iso-shade[data-shade="2"] {
+  stroke: var(--anatomy-shade-2);
+}
+
+.pt-tower-svg .iso-solid[data-seamless] > .iso-shade[data-shade="3"] {
+  stroke: var(--anatomy-shade-3);
+}
+
+.pt-tower-svg .iso-solid[data-seamless] > .iso-top {
+  stroke: var(--anatomy-top);
+}
+
+.pt-tower-svg .iso-line {
+  fill: none;
+  stroke: var(--anatomy-lo);
+  stroke-width: var(--anatomy-weight);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 220ms ease;
+}
+
+.pt-tower-svg .iso-line[data-tone="hi"] {
+  stroke: var(--anatomy-hi);
+}
+
+.pt-tower-svg .iso-line[data-tone="mid"] {
+  stroke: var(--anatomy-mid);
+}
+
+.pt-tower-svg .iso-line[data-tone="lo"] {
+  stroke: var(--anatomy-lo);
+}
+
+.pt-tower-svg .iso-line[data-tone="faint"] {
+  stroke: var(--anatomy-faint);
+}
+
+.pt-tower-svg .iso-line[data-tone="lit"] {
+  stroke: var(--anatomy-lit);
+}
+
+.pt-tower-svg .iso-dots circle {
+  fill: var(--anatomy-dot);
+  stroke: none;
+  opacity: 0.36;
+}
+
+.pt-tower-svg .iso-dots[data-tone="hi"] circle {
+  opacity: 0.82;
+}
+
+.pt-tower-svg .iso-dots[data-tone="mid"] circle {
+  opacity: 0.52;
+}
+
+.pt-tower-svg .tb-body {
+  fill: var(--anatomy-shade-2);
+  stroke: none;
+}
+
+.pt-tower-svg .tb-shine {
+  fill: var(--anatomy-top);
+  stroke: none;
+}
+
+.pt-tower-svg .tb-shade {
+  fill: var(--anatomy-shade-0);
+  stroke: none;
+}
+
+.pt-tower-svg .pt-tower-void {
+  fill: var(--deep);
+  stroke: none;
+}
+
+/* 无中缝整筒 / 一体支腿默认隐藏，由装配脚本在合拢尾段接管淡入，避免 React 重渲染覆写 inline style */
+.pt-tower-svg .pt-tower-whole-shell {
+  opacity: 0;
+}
+
+.pt-tower-svg .pt-cut-face {
+  fill: var(--anatomy-top);
+  fill-opacity: 0.78;
+  stroke: none;
+}
+
+.pt-tower-svg .pt-lower-liner-ring {
+  fill: #394856;
+  stroke: none;
+}
+
+.pt-tower-svg[data-focus] .pt-tower-it:not([data-on]) .pt-lower-liner-ring {
+  fill: #1b242c;
+}
+
+/* 防腐衬里内筒与翻边密封面（储罐与塔器通用）：采用瓷白色四阶明暗 + 深墨线描，一眼区别于深色钢壳 */
+.pt-tower-svg .pt-tower-lining-sleeve,
+.pt-tower-svg .pt-tower-lining-lip {
+  --anatomy-paper: #dfe4e8;
+  --anatomy-top: #f4f6f7;
+  --anatomy-shade-0: #bac3cb;
+  --anatomy-shade-1: #cbd3da;
+  --anatomy-shade-2: #dbe1e6;
+  --anatomy-shade-3: #eaeeef;
+  --anatomy-hi: #ffffff;
+  --anatomy-mid: rgb(10 15 19 / 0.56);
+  --anatomy-lo: rgb(10 15 19 / 0.34);
+  --anatomy-faint: rgb(10 15 19 / 0.2);
+}
+
+/* 塔内件（除雾器 / 喷淋管 / 填料层与多孔压板）：中明度冷灰钢感，在白色衬里凹腔内保持清晰立体层次 */
+.pt-tower-svg .pt-tower-internal {
+  --anatomy-paper: #202b35;
+  --anatomy-top: #425260;
+  --anatomy-shade-0: #25313c;
+  --anatomy-shade-1: #2e3c49;
+  --anatomy-shade-2: #364654;
+  --anatomy-shade-3: #3e5060;
+  --anatomy-hi: #f1f2f2;
+  --anatomy-mid: rgb(241 242 242 / 0.78);
+  --anatomy-lo: rgb(241 242 242 / 0.44);
+  --anatomy-faint: rgb(241 242 242 / 0.24);
+  --anatomy-dot: #f1f2f2;
+}
+
+/* 强焦点层次：非当前装配段退入深石墨背景，仅保留安静轮廓 */
+.pt-tower-svg[data-focus] .pt-tower-it:not([data-on]) {
+  --anatomy-top: #131a21;
+  --anatomy-shade-0: #0b1015;
+  --anatomy-shade-1: #0d1319;
+  --anatomy-shade-2: #10171e;
+  --anatomy-shade-3: #121a22;
+  --anatomy-hi: rgb(241 242 242 / 0.24);
+  --anatomy-mid: rgb(241 242 242 / 0.14);
+  --anatomy-lo: rgb(241 242 242 / 0.08);
+  --anatomy-faint: rgb(241 242 242 / 0.05);
+  --anatomy-dot: rgb(241 242 242 / 0.24);
+}
+
+/* 聚焦其他步骤时，白色衬里适度压暗为柔和浅灰，既不抢焦点又始终清晰可辨 */
+.pt-tower-svg[data-focus] .pt-tower-it.pt-tower-lining-sleeve:not([data-on]),
+.pt-tower-svg[data-focus] .pt-tower-it.pt-tower-lining-lip:not([data-on]) {
+  --anatomy-paper: #727c85;
+  --anatomy-top: #9aa3ac;
+  --anatomy-shade-0: #5c6670;
+  --anatomy-shade-1: #68727c;
+  --anatomy-shade-2: #76808a;
+  --anatomy-shade-3: #869099;
+  --anatomy-hi: rgb(241 242 242 / 0.58);
+  --anatomy-mid: rgb(10 15 19 / 0.42);
+  --anatomy-lo: rgb(10 15 19 / 0.26);
+  --anatomy-faint: rgb(10 15 19 / 0.16);
+}
+
+/* 当前装配段：整体受光提亮 + 品牌红 #d51f2d 外轮廓锁定视觉重心 */
+.pt-tower-svg .pt-tower-it[data-on] {
+  --anatomy-top: #303f4d;
+  --anatomy-shade-0: #172028;
+  --anatomy-shade-1: #1d2832;
+  --anatomy-shade-2: #24313d;
+  --anatomy-shade-3: #2a3946;
+  --anatomy-hi: var(--accent);
+  --anatomy-mid: rgb(241 242 242 / 0.78);
+  --anatomy-lo: rgb(213 31 45 / 0.56);
+  --anatomy-faint: rgb(241 242 242 / 0.24);
+  --anatomy-dot: #f1f2f2;
+}
+
+/* 当前装配段为塔内件时：保持中明度冷灰 + 亮白孔阵 + 品牌红轮廓 */
+.pt-tower-svg .pt-tower-it.pt-tower-internal[data-on] {
+  --anatomy-paper: #26333f;
+  --anatomy-top: #4d5f6f;
+  --anatomy-shade-0: #2b3946;
+  --anatomy-shade-1: #344453;
+  --anatomy-shade-2: #3d5060;
+  --anatomy-shade-3: #465b6d;
+  --anatomy-hi: var(--accent);
+  --anatomy-mid: #f1f2f2;
+  --anatomy-lo: rgb(241 242 242 / 0.5);
+  --anatomy-faint: rgb(241 242 242 / 0.28);
+  --anatomy-dot: #ffffff;
+}
+
+/* 当前装配段为防腐衬里时：纯瓷白受光 + 深墨内线 + 品牌红 #d51f2d 外轮廓 */
+.pt-tower-svg .pt-tower-it.pt-tower-lining-sleeve[data-on],
+.pt-tower-svg .pt-tower-it.pt-tower-lining-lip[data-on] {
+  --anatomy-paper: #e8ecef;
+  --anatomy-top: #ffffff;
+  --anatomy-shade-0: #c0c9d1;
+  --anatomy-shade-1: #d2d9df;
+  --anatomy-shade-2: #e2e7eb;
+  --anatomy-shade-3: #f0f3f5;
+  --anatomy-hi: var(--accent);
+  --anatomy-mid: rgb(10 15 19 / 0.68);
+  --anatomy-lo: rgb(10 15 19 / 0.4);
+  --anatomy-faint: rgb(10 15 19 / 0.22);
+}
+
+.pt-tower-svg .pt-tower-lining-sleeve .pt-cut-face,
+.pt-tower-svg .pt-tower-lining-lip .pt-cut-face {
+  fill: var(--anatomy-top);
+  fill-opacity: 0.94;
+}
+
+.pt-tower-svg .pt-lower-liner-ring {
+  fill: #d8dfe4;
+}
+
+.pt-tower-svg[data-focus] .pt-tower-it:not([data-on]) .pt-lower-liner-ring {
+  fill: #6c7680;
+}
+
+.pt-tower-svg .pt-tower-it[data-on] .iso-solid > .iso-edge {
+  stroke-width: 1.45px;
+}
+
+/* 实时工程引出标线（锚点圆 + 跨列正交红线直连右侧当前步骤的轨道节点） */
+.pt-tower-callout {
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.pt-tower-callout-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.1px;
+  stroke-opacity: 0.65;
+}
+
+.pt-tower-callout-dot {
+  fill: var(--accent);
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+
+.pt-tower-connector {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pt-tower-connector-path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.1px;
+  stroke-opacity: 0.88;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.pt-tower-connector-node {
+  fill: var(--accent);
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+/* 舞台底部的极简状态线与控制按钮（无外框） */
+.pt-tower-stage-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-dark);
+}
+
+.pt-tower-stage-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: var(--fs-meta);
+}
+
+.pt-tower-active-label {
+  font-weight: 600;
+  color: var(--on-dark);
+}
+
+.pt-tower-percent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.pt-tower-caption {
+  margin-top: 8px;
+  font-size: var(--fs-meta);
+  color: var(--on-dark-faint);
+}
+
+.pt-tower-state-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pt-tower-pill {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--line-dark);
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--fs-meta);
+  color: var(--on-dark-muted);
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    color 200ms ease,
+    background-color 200ms ease;
+}
+
+.pt-tower-pill:hover {
+  border-color: rgb(255 255 255 / 0.36);
+  color: var(--on-dark);
+}
+
+.pt-tower-pill[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+/* 右侧带纵向红轨的强焦点叙事列 */
+.pt-tower-steps-wrap {
+  grid-column: 8 / 13;
+  position: relative;
+  padding-left: clamp(20px, 2.4vw, 36px);
+}
+
+.pt-tower-rail {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--line-dark);
+}
+
+.pt-tower-rail-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.pt-tower-steps-col {
+  display: grid;
+}
+
+.pt-tower-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: clamp(240px, 40svh, 360px);
+  padding-block: 36px;
+  border-top: 1px solid var(--line-dark);
+  transition:
+    opacity 260ms ease,
+    border-color 260ms ease;
+}
+
+.pt-tower-step:last-child {
+  border-bottom: 1px solid var(--line-dark);
+}
+
+/* 非当前步明显退隐，让视线聚焦在当前正在落位的结构说明 */
+.pt-tower-step[data-dimmed="true"] {
+  opacity: 0.34;
+}
+
+.pt-tower-step[data-dimmed="true"]:hover {
+  opacity: 0.72;
+}
+
+.pt-tower-step[data-active="true"] {
+  opacity: 1;
+  border-top-color: var(--accent);
+}
+
+/* 当前步在纵向轨道上的红色指示块 */
+.pt-tower-step[data-active="true"]::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: calc(-1 * clamp(20px, 2.4vw, 36px) - 2px);
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+}
+
+.pt-tower-step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.pt-tower-step-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pt-tower-step-head .pt-num {
+  flex: none;
+  color: var(--on-dark-faint);
+  transition: color 200ms ease;
+}
+
+.pt-tower-step[data-active="true"] .pt-tower-step-head .pt-num {
+  color: var(--accent);
+}
+
+.pt-tower-step h3 {
+  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--on-dark-muted);
+  transition: color 200ms ease;
+}
+
+.pt-tower-step[data-active="true"] h3,
+.pt-tower-step-trigger:hover h3 {
+  color: var(--on-dark);
+}
+
+.pt-tower-step-body {
+  margin-top: 16px;
+  font-size: var(--fs-body);
+  line-height: 1.85;
+  color: var(--on-dark-muted);
+}
+
+.pt-tower-step[data-active="true"] .pt-tower-step-body {
+  color: var(--on-dark);
+}
+
+/* ---------- 02 产品实拍（浅色纸底 #edeae6） ---------- */
+
+.pt-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(32px, 4vw, 48px) 24px;
+}
+
+.pt-gallery-grid li {
+  grid-column: span 4;
+}
+
+.pt-gallery-grid li.is-wide {
+  grid-column: span 6;
+}
+
+.pt-gallery-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pt-gallery-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: zoom-in;
+}
+
+.pt-gallery-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--line-light);
+  background: var(--paper-raised);
+  transition: border-color 220ms ease;
+}
+
+.pt-gallery-media img {
+  object-fit: contain;
+  padding: clamp(18px, 2.4vw, 32px);
+  mix-blend-mode: multiply;
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .pt-gallery-trigger:hover .pt-gallery-media {
+    border-color: var(--line-light-strong);
+  }
+
+  .pt-gallery-trigger:hover .pt-gallery-media img {
+    transform: scale(1.025);
+  }
+}
+
+.pt-gallery-meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding-top: 18px;
+}
+
+.pt-gallery-meta-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pt-gallery-index {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pt-gallery-tag {
+  font-size: var(--fs-meta);
+  color: var(--on-light-faint);
+}
+
+.pt-gallery-zoom-btn {
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid var(--line-light-strong);
+  background: none;
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--on-light-muted);
+  cursor: pointer;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease;
+}
+
+.pt-gallery-zoom-btn:hover {
+  color: var(--on-light);
+  border-color: var(--on-light);
+}
+
+.pt-gallery-meta h3 {
+  margin-top: 10px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--on-light);
+}
+
+.pt-gallery-meta p {
+  margin-top: 8px;
+  font-size: var(--fs-small);
+  line-height: 1.8;
+  color: var(--on-light-muted);
+}
+
+/* 实拍大图灯箱（0 圆角、无阴影、实色深底） */
+.pt-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 40px);
+  background: rgb(5 9 13 / 0.94);
+}
+
+.pt-lightbox-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(1120px, 100%);
+  max-height: 100%;
+  border: 1px solid var(--line-dark);
+  background: var(--ink);
+  color: var(--on-dark);
+}
+
+.pt-lightbox-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px clamp(16px, 2.5vw, 28px);
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.pt-lightbox-title {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  min-width: 0;
+}
+
+.pt-lightbox-title h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--on-dark);
+}
+
+.pt-lightbox-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: clamp(280px, 56svh, 580px);
+  background: var(--paper-raised);
+}
+
+.pt-lightbox-stage img {
+  object-fit: contain;
+  padding: clamp(20px, 3vw, 44px);
+  mix-blend-mode: multiply;
+}
+
+.pt-lightbox-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 16px clamp(16px, 2.5vw, 28px);
+  border-top: 1px solid var(--line-dark);
+}
+
+.pt-lightbox-foot p {
+  max-width: 44em;
+  font-size: var(--fs-small);
+  line-height: 1.75;
+  color: var(--on-dark-muted);
+}
+
+.pt-lightbox-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pt-lightbox-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  background: transparent;
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--on-dark);
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.pt-lightbox-btn:hover {
+  border-color: var(--on-dark);
+  background: rgb(255 255 255 / 0.08);
+}
+
+/* ---------- 03 选型与沟通条件（兼容深色墨底与浅色纸底） ---------- */
+
+.pt-tower-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 48px;
+}
+
+.pt-tower-inputs-col {
+  grid-column: 1 / 7;
+}
+
+.pt-tower-notes-col {
+  grid-column: 8 / 13;
+}
+
+.pt-tower-subhead {
+  margin-bottom: 20px;
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.pt-tower-input-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+}
+
+.pt-tower-input-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-block: 16px;
+  border-top: 1px solid var(--line-light);
+  font-size: var(--fs-small);
+  line-height: 1.65;
+  color: var(--on-light);
+}
+
+.pt-tower-input-list li:nth-last-child(-n + 2) {
+  border-bottom: 1px solid var(--line-light);
+}
+
+.pt-tower-input-list .pt-num {
+  flex: none;
+}
+
+.pt-tower-notes-list {
+  display: grid;
+}
+
+.pt-tower-notes-list div {
+  display: grid;
+  grid-template-columns: 6.5em minmax(0, 1fr);
+  gap: 16px;
+  padding-block: 18px;
+  border-top: 1px solid var(--line-light);
+}
+
+.pt-tower-notes-list div:last-child {
+  border-bottom: 1px solid var(--line-light);
+}
+
+.pt-tower-notes-list dt {
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: var(--on-light);
+}
+
+.pt-tower-notes-list dd {
+  font-size: var(--fs-small);
+  line-height: 1.8;
+  color: var(--on-light-muted);
+}
+
+.is-dark .pt-tower-input-list li {
+  border-top-color: var(--line-dark);
+  color: var(--on-dark);
+}
+
+.is-dark .pt-tower-input-list li:nth-last-child(-n + 2) {
+  border-bottom-color: var(--line-dark);
+}
+
+.is-dark .pt-tower-notes-list div {
+  border-top-color: var(--line-dark);
+}
+
+.is-dark .pt-tower-notes-list div:last-child {
+  border-bottom-color: var(--line-dark);
+}
+
+.is-dark .pt-tower-notes-list dt {
+  color: var(--on-dark);
+}
+
+.is-dark .pt-tower-notes-list dd {
+  color: var(--on-dark-muted);
+}
+
+.pt-tower-closing {
+  border-top: 1px solid var(--line-dark);
+}
+
+.pt-tower-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 32px;
+  margin-top: 40px;
+}
+
+/* ---------- 响应式 ---------- */
+
+@media (max-width: 1099px) {
+  .pt-tower-visual-col,
+  .pt-tower-steps-wrap,
+  .pt-tower-inputs-col,
+  .pt-tower-notes-col {
+    grid-column: 1 / -1;
+  }
+
+  .pt-gallery-grid li,
+  .pt-gallery-grid li.is-wide {
+    grid-column: span 6;
+  }
+
+  .pt-gallery-grid.is-count-3 li:first-child,
+  .pt-gallery-grid.is-count-5 li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .pt-tower-visual-col {
+    position: sticky;
+    top: 68px;
+    z-index: 10;
+    padding-block: 8px 12px;
+    border-bottom: 1px solid var(--line-dark);
+    background: var(--ink);
+  }
+
+  .pt-tower-stage {
+    min-height: 0;
+  }
+
+  .pt-tower-svg {
+    height: min(38svh, 330px);
+  }
+
+  .pt-tower-connector {
+    display: none;
+  }
+
+  .pt-tower-step {
+    min-height: 0;
+    padding-block: 28px;
+  }
+
+  .pt-tower-step[data-dimmed="true"] {
+    opacity: 0.48;
+  }
+}
+
+@media (max-width: 719px) {
+  .pt-gallery-grid li,
+  .pt-gallery-grid li.is-wide,
+  .pt-gallery-grid.is-count-3 li:first-child,
+  .pt-gallery-grid.is-count-5 li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .pt-lightbox {
+    padding: 12px;
+  }
+
+  .pt-lightbox-stage {
+    min-height: clamp(220px, 44svh, 380px);
+  }
+
+  .pt-lightbox-foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pt-lightbox-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 639px) {
+  .pt-tower-stage-foot {
+    gap: 10px 12px;
+    padding-top: 10px;
+  }
+
+  .pt-tower-caption {
+    display: none;
+  }
+
+  .pt-tower-steps-wrap {
+    padding-left: 18px;
+  }
+
+  .pt-tower-step[data-active="true"]::before {
+    left: -20px;
+  }
+
+  .pt-tower-closing-line {
+    font-size: clamp(1.85rem, 8vw, 2.25rem);
+  }
+
+  .pt-tower-input-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pt-tower-input-list li:nth-last-child(2) {
+    border-bottom: 0;
+  }
+
+  .pt-tower-notes-list div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .pt-tower-cta-row .pt-button {
+    width: 100%;
+  }
+}

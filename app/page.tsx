@@ -1,208 +1,396 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Reveal } from "@/components/reveal";
-import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { productFamilies } from "@/app/products/product-data";
+import { contactInfo } from "@/components/contact-data";
+import { BriefWorkbench } from "./brief-workbench";
+import { CredentialsExplorer } from "./credentials-explorer";
+import { HomeClient } from "./home-client";
+import { PartnerOrbitWall } from "./partner-orbit-wall";
+import { SiteFooter } from "./site-footer";
+import {
+  companyMilestones,
+  heroContent,
+  industryApplications,
+  manufacturingGallery,
+  manufacturingSteps,
+} from "./home-data";
+import "./site.css";
 
-const products = [
-  {
-    id: "equipment",
-    index: "02",
-    title: "钢衬四氟塔器",
-    english: "STEEL / PTFE LINED COLUMN",
-    summary: "吸收 / 洗涤 / 精馏",
-    image: "/images/product-column.png",
-    imageAlt: "厂房内的大型钢衬四氟塔器",
-    objectPosition: "64% center",
-    tone: "dark",
-    align: "left",
-    href: "/products/towers",
+export const metadata: Metadata = {
+  title: "兆辉化工设备 | 钢衬防腐储罐、反应釜、塔器与管道",
+  description: "江苏兆辉防腐科技有限公司专注钢衬四氟、PO、PE、PFA、PVDF 等防腐储罐、反应釜、塔器与管道制造，配套板衬、滚塑与喷涂工艺。",
+  alternates: {
+    canonical: "/",
   },
-  {
-    id: "vessel",
-    index: "03",
-    title: "钢衬四氟储罐",
-    english: "PTFE LINED VESSEL",
-    summary: "储存 / 处理 / 耐腐蚀",
-    image: "/images/product-vessel.png",
-    imageAlt: "明亮厂房内的卧式钢衬四氟储罐",
-    objectPosition: "40% center",
-    tone: "light",
-    align: "right",
-    href: "/products/tanks",
+  openGraph: {
+    title: "兆辉化工设备 | 钢衬防腐储罐、反应釜、塔器与管道",
+    description: "专注钢衬四氟、PO、PE、PFA、PVDF 等防腐储罐、反应釜、塔器与管道制造，按介质与工况分层选材。",
+    url: "https://jszhff.cn/",
+    siteName: "兆辉化工设备",
+    locale: "zh_CN",
+    type: "website",
+    images: [
+      {
+        url: "/images/site/hero-cleanroom.webp",
+        width: 1920,
+        height: 1080,
+        alt: "洁净车间内的钢衬防腐储罐与反应设备实拍",
+      },
+    ],
   },
-  {
-    id: "reactor",
-    index: "04",
-    title: "反应釜",
-    english: "REACTION VESSEL",
-    summary: "反应 / 混合 / 高效传热",
-    image: "/images/product-reactor.png",
-    imageAlt: "带有多组法兰接口的大型反应釜",
-    objectPosition: "30% center",
-    tone: "dark",
-    align: "right",
-    href: "/products/reactors",
-  },
-] as const;
+};
 
-function SectionLabel({ index, label, inverse = false }: { index: string; label: string; inverse?: boolean }) {
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "江苏兆辉防腐科技有限公司",
+  alternateName: "兆辉化工设备",
+  url: "https://jszhff.cn/",
+  logo: "https://jszhff.cn/images/brand/zhaohui-logo-on-light.png",
+  email: contactInfo.email.display,
+  telephone: contactInfo.phones[0].display,
+  address: contactInfo.addresses.map((item) => ({
+    "@type": "PostalAddress",
+    addressCountry: "CN",
+    addressRegion: item.region,
+    streetAddress: item.address.replace(/\u00A0/g, " "),
+  })),
+};
+
+function SectionLabel({ index, children }: { index: string; children: string }) {
   return (
-    <p className={`section-label ${inverse ? "text-white/72" : "text-[#171b1e]/72"}`}>
-      <span>{index}</span> / {label}
+    <p className="pt-label">
+      <span>{index}</span>
+      {children}
     </p>
   );
 }
 
-function ProductSection({ product }: { product: (typeof products)[number] }) {
-  const isDark = product.tone === "dark";
-  const isRight = product.align === "right";
-
+export default function HomePage() {
   return (
-    <section id={product.id} className={`product-hero ${isDark ? "product-dark" : "product-light"}`}>
-      <Image
-        src={product.image}
-        alt={product.imageAlt}
-        fill
-        loading="eager"
-        sizes="100vw"
-        style={{ objectPosition: product.objectPosition }}
-        className="product-image"
+    <HomeClient>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
-      <div className={`product-scrim ${isRight ? "scrim-right" : "scrim-left"}`} aria-hidden="true" />
-      <div className="site-grid relative z-[1] h-full items-center px-[5.75vw]">
-        <Reveal className={`${isRight ? "col-start-9 col-end-13 md:ml-8" : "col-start-1 col-end-6"} product-copy`}>
-          <SectionLabel index={product.index} label="EQUIPMENT" inverse={isDark} />
-          <h2>{product.title}</h2>
-          <p className="product-english">{product.english}</p>
-          <span className="accent-line" aria-hidden="true" />
-          <p className="product-summary">{product.summary}</p>
-          <Link href={product.href} className="text-link">
-            探索设备
-          </Link>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-export default function Home() {
-  return (
-    <main id="top">
-      <SiteHeader />
-
-      <section className="hero-section">
+      {/* 首屏 */}
+      <section className="pt-hero">
         <Image
-          src="/images/hero-column.png"
-          alt="暗色大型工业厂房内的钢衬四氟塔器"
+          src="/images/site/hero-cleanroom.webp"
+          alt="洁净车间内的钢衬防腐储罐与反应设备实拍"
           fill
           priority
           sizes="100vw"
-          className="hero-image"
+          className="pt-hero-image"
+          data-hero-image
         />
-        <div className="hero-scrim" aria-hidden="true" />
-        <div className="site-grid relative z-[1] h-full items-center px-[5.75vw] pt-16">
-          <div className="col-start-1 col-end-7 max-w-[640px] -translate-y-10 text-white">
-            <SectionLabel index="00" label="ZHAOHUI" inverse />
-            <h1 className="mt-9 text-[clamp(2.25rem,3.5vw,3.6rem)] font-semibold leading-[1.12] tracking-[-0.045em]">
-              为严苛工况制造
-            </h1>
-            <p className="mt-5 text-[clamp(1rem,1.4vw,1.25rem)] font-light tracking-[0.04em] text-white/78">
-              钢衬四氟塔器、储罐及反应设备
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="about" className="manifesto-section">
-        <div className="site-grid mx-auto h-full max-w-[1600px] items-center px-[5.75vw]">
-          <Reveal className="col-start-1 col-end-7 relative z-[1]">
-            <SectionLabel index="01" label="ZHAOHUI" />
-            <h2 className="mt-7 max-w-[680px] text-[clamp(1.65rem,2.55vw,3rem)] font-semibold leading-[1.38] tracking-[-0.035em] text-[#111518]">
-              面对腐蚀、温度与复杂工况，
+        <div className="pt-hero-scrim" aria-hidden="true" />
+        <div className="pt-wrap pt-hero-inner">
+          <div className="pt-hero-copy">
+            <h1 data-hero-item>
+              {heroContent.headingLines[0]}
               <br />
-              设备本身必须足够可靠。
-            </h2>
-            <span className="accent-line mt-8" aria-hidden="true" />
-          </Reveal>
-          <Image
-            src="/images/column-blueprint-transparent.png"
-            alt="塔器工程结构线稿"
-            width={1122}
-            height={1402}
-            className="blueprint col-start-8 col-end-13 justify-self-center"
-          />
-        </div>
-      </section>
-
-      {products.map((product) => (
-        <ProductSection key={product.id} product={product} />
-      ))}
-
-      <section id="projects" className="project-section">
-        <Image
-          src="/images/projects-plant.png"
-          alt="多套塔器与管廊组成的化工工程项目现场"
-          fill
-          loading="eager"
-          sizes="100vw"
-          className="project-image"
-        />
-        <div className="project-scrim" aria-hidden="true" />
-        <div className="site-grid relative z-[1] h-full items-start px-[5.75vw] pt-[clamp(2rem,3.5vw,3.5rem)]">
-          <Reveal className="col-start-1 col-end-6 text-[#15191c]">
-            <SectionLabel index="05" label="PROJECTS" />
-            <h2 className="mt-4 text-[clamp(1.65rem,2.55vw,3rem)] font-semibold leading-tight tracking-[-0.04em]">
-              精选工程项目
-            </h2>
-            <p className="mt-2 max-w-[34rem] text-xs leading-6 text-[#252a2e]/68">
-              严苛工况下的制造与交付，源于每一处细节。
+              {heroContent.headingLines[1]}
+            </h1>
+            <p className="pt-hero-sub" data-hero-item>
+              {heroContent.leadLines[0]}
+              <br />
+              {heroContent.leadLines[1]}
             </p>
-            <a href="#manufacturing" className="text-link text-[#15191c]">
-              查看制造
-            </a>
-          </Reveal>
-        </div>
-      </section>
+          </div>
 
-      <section id="manufacturing" className="manufacturing-section">
-        <Image
-          src="/images/manufacturing-floor.png"
-          alt="大型化工设备制造与装配现场"
-          fill
-          loading="eager"
-          sizes="100vw"
-          className="manufacturing-image"
-        />
-        <div className="manufacturing-scrim" aria-hidden="true" />
-        <div className="site-grid relative z-[1] h-full items-end px-[5.75vw] pb-[clamp(4rem,8vw,7rem)]">
-          <Reveal className="col-start-1 col-end-7 max-w-[680px] text-white">
-            <SectionLabel index="06" label="MANUFACTURING" inverse />
-            <h2 className="mt-6 text-[clamp(2rem,3.7vw,4rem)] font-semibold leading-tight tracking-[-0.04em]">
-              从制造现场，建立可靠。
-            </h2>
-            <p className="mt-5 max-w-[34rem] text-base leading-8 text-white/68">
-              材料、衬里、装配与检验，以一致的制造标准贯穿设备交付。
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="closing-section">
-        <div className="site-grid mx-auto max-w-[1600px] px-[5.75vw] py-[clamp(5rem,10vw,10rem)]">
-          <Reveal className="col-start-1 col-end-10">
-            <p className="text-[clamp(2.15rem,5.4vw,6rem)] font-semibold leading-[1.12] tracking-[-0.055em] text-[#111518]">
-              让设备，经得住现场。
-            </p>
-          </Reveal>
-          <div className="col-start-10 col-end-13 self-end text-right text-xs leading-6 tracking-[0.08em] text-[#20262a]/58">
-            CHEMICAL EQUIPMENT
-            <br />
-            ENGINEERED FOR DUTY
+          <div className="pt-hero-dock" data-hero-item>
+            <ul className="pt-hero-metrics" aria-label="交付规模与服务周期">
+              {heroContent.metrics.map((metric) => (
+                <li key={metric.label}>
+                  <span className="pt-hero-metric-head">
+                    <strong className="pt-hero-metric-value">{metric.value}</strong>
+                    <span className="pt-hero-metric-unit">{metric.unit}</span>
+                  </span>
+                  <span className="pt-hero-metric-label">{metric.label}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="pt-hero-slogan">{heroContent.slogan}</p>
           </div>
         </div>
       </section>
 
-      <SiteFooter />
-    </main>
+      {/* 01 关于 */}
+      <section id="about" className="pt-section is-paper pt-about-section" data-section>
+        <Image
+          src="/images/site/about-facade.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="pt-about-bg"
+        />
+        <div className="pt-about-scrim" aria-hidden="true" />
+        <div className="pt-wrap">
+          <PartnerOrbitWall />
+
+          <ol className="pt-milestones" aria-label="兆辉发展历程与产能布局">
+            {companyMilestones.map((item) => (
+              <li key={item.title} data-rise>
+                <div className="pt-milestone-meta">
+                  <strong className={`pt-milestone-value${item.unit ? "" : " is-text"}`}>{item.value}</strong>
+                  {item.unit ? <span className="pt-milestone-unit">{item.unit}</span> : null}
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 02 设备 */}
+      <section id="equipment" className="pt-section is-dark pt-equipment" data-section>
+        <div className="pt-wrap pt-section-head">
+          <div data-rise>
+            <SectionLabel index="02">设备</SectionLabel>
+            <h2 className="pt-h2">储存、反应、分离与输送。</h2>
+          </div>
+        </div>
+
+        <div className="pt-products">
+          {productFamilies.map((product, index) => (
+            <article key={product.slug} className={`pt-product ${index % 2 === 1 ? "is-reversed" : ""}`}>
+              <div className="pt-product-media">
+                <Image
+                  src={product.image}
+                  alt={product.imageAlt}
+                  fill
+                  sizes="(min-width: 900px) 58vw, 100vw"
+                />
+              </div>
+              <div className="pt-product-body" data-rise>
+                <span className="pt-num">{product.index}</span>
+                <h3>{product.title}</h3>
+                <p className="pt-product-summary">{product.applications.join("、")}。</p>
+                <ul className="pt-product-variants" aria-label={`${product.title}产品`}>
+                  {product.variants.map((variant) => (
+                    <li key={variant}>{variant}</li>
+                  ))}
+                </ul>
+                <Link
+                  href={`/products/${product.slug}`}
+                  className="pt-button"
+                  aria-label={`了解${product.title}详情`}
+                >
+                  了解详情
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* 03 应用与资质 */}
+      <section id="credentials" className="pt-section is-paper" data-section>
+        <div className="pt-wrap pt-section-head">
+          <div data-rise>
+            <SectionLabel index="03">应用与资质</SectionLabel>
+            <h2 className="pt-h2">
+              服务多行业工艺现场，
+              <br />
+              资质与专利均可核验。
+            </h2>
+          </div>
+          <p className="pt-section-aside" data-rise>
+            面向化工、光伏储能、海水淡化、电力及食品加工等行业；生产许可、体系认证与有效专利证书均可按项目需要提供查验。
+          </p>
+        </div>
+
+        <div className="pt-wrap">
+          <div className="pt-industries" data-rise>
+            <h3 className="pt-h3">应用行业</h3>
+            <ol className="pt-industry-grid">
+              {industryApplications.map((industry, index) => (
+                <li key={industry.title} className={index < 2 ? "is-wide" : ""}>
+                  <figure>
+                    <div className="pt-industry-media">
+                      <Image
+                        src={industry.image}
+                        alt={industry.imageAlt}
+                        fill
+                        sizes={index < 2 ? "(min-width: 900px) 46vw, 100vw" : "(min-width: 900px) 30vw, 100vw"}
+                      />
+                    </div>
+                    <figcaption>
+                      <span className="pt-num">{industry.index}</span>
+                      <h4>{industry.title}</h4>
+                      <p>{industry.summary}</p>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <CredentialsExplorer />
+        </div>
+      </section>
+
+      {/* 04 制造 */}
+      <section id="manufacturing" className="pt-section is-dark pt-manufacturing" data-section>
+        <div className="pt-manufacturing-hero">
+          <Image
+            src="/images/site/manufacturing-roto.webp"
+            alt="大型钢衬防腐设备滚塑成型制造现场实拍"
+            fill
+            sizes="100vw"
+            className="pt-manufacturing-image"
+          />
+          <div className="pt-manufacturing-scrim" aria-hidden="true" />
+          <div className="pt-wrap pt-manufacturing-copy" data-rise>
+            <SectionLabel index="04">制造</SectionLabel>
+            <h2 className="pt-h2">从制造现场，建立可靠。</h2>
+            <p className="pt-lead">材料、壳体、衬里、接口与检验，按同一套流程贯穿每一台设备。</p>
+          </div>
+        </div>
+
+        <div className="pt-wrap">
+          <ul className="pt-site-gallery" aria-label="生产车间与基地实景">
+            {manufacturingGallery.map((item) => (
+              <li key={item.label} data-rise>
+                <figure>
+                  <div className="pt-site-media">
+                    <Image
+                      src={item.image}
+                      alt={item.imageAlt}
+                      fill
+                      sizes="(min-width: 900px) 30vw, 100vw"
+                    />
+                  </div>
+                  <figcaption>
+                    <strong>{item.label}</strong>
+                    <span>{item.caption}</span>
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="pt-wrap pt-steps">
+          <div className="pt-steps-head">
+            <h3 className="pt-h3">从审核到出厂</h3>
+            <p>五个环节依次进行。具体检验项目与判定标准，以项目技术协议为准。</p>
+          </div>
+          <ol className="pt-steps-list">
+            {manufacturingSteps.map((step) => (
+              <li key={step.step} data-rise>
+                <span className="pt-num">{step.step}</span>
+                <div>
+                  <h4>{step.title}</h4>
+                  <p>{step.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 05 询价准备 */}
+      <section id="brief" className="pt-section is-paper" data-section>
+        <div className="pt-wrap pt-section-head">
+          <div data-rise>
+            <SectionLabel index="05">询价准备</SectionLabel>
+            <h2 className="pt-h2">
+              带着工况来，
+              <br />
+              沟通会更快。
+            </h2>
+          </div>
+          <p className="pt-section-aside" data-rise>
+            填写已知条件，生成一份标准简报。不确定的项目可以留空，技术人员会与您逐项确认。页面不提供自动选材或报价。
+          </p>
+        </div>
+        <div className="pt-wrap">
+          <BriefWorkbench />
+        </div>
+      </section>
+
+      {/* 06 联系我们 */}
+      <section id="contact" className="pt-section is-dark pt-contact" data-section>
+        <div className="pt-wrap pt-section-head">
+          <div data-rise>
+            <SectionLabel index="06">联系我们</SectionLabel>
+            <h2 className="pt-h2">
+              直接沟通工况，
+              <br />
+              欢迎致电或到厂考察。
+            </h2>
+          </div>
+          <p className="pt-section-aside" data-rise>
+            可通过电话、邮件或微信发送工况简报与图纸，技术与业务人员将按项目条件对接。
+          </p>
+        </div>
+
+        <div className="pt-wrap pt-contact-grid">
+          <dl className="pt-contact-list" data-rise>
+            <div className="pt-contact-row">
+              <dt>联系电话</dt>
+              <dd className="pt-contact-phones">
+                {contactInfo.phones.map((phone, index) => (
+                  <span key={phone.href}>
+                    {index > 0 && <span className="pt-contact-sep" aria-hidden="true">/</span>}
+                    <a href={phone.href}>{phone.display}</a>
+                  </span>
+                ))}
+              </dd>
+            </div>
+            <div className="pt-contact-row">
+              <dt>联系邮箱</dt>
+              <dd className="pt-contact-email">
+                <a href={contactInfo.email.href}>{contactInfo.email.display}</a>
+              </dd>
+            </div>
+            <div className="pt-contact-row">
+              <dt>联系地址</dt>
+              <dd className="pt-contact-addresses">
+                {contactInfo.addresses.map((item) => (
+                  <p key={item.address}>
+                    <span className="pt-contact-region">{item.region}</span>
+                    <span>{item.address}</span>
+                  </p>
+                ))}
+              </dd>
+            </div>
+          </dl>
+
+          <div className="pt-contact-social" data-rise>
+            <h3 className="pt-contact-social-title">社交平台</h3>
+            <ul className="pt-qr-grid" aria-label="官方社交平台二维码">
+              {contactInfo.socialQrs.map((item) => (
+                <li key={item.id}>
+                  <figure className="pt-qr-item">
+                    <div className="pt-qr-frame">
+                      <Image src={item.image} alt={item.alt} width={200} height={200} />
+                    </div>
+                    <figcaption>
+                      <strong>{item.name}</strong>
+                      <span>{item.hint}</span>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 结尾 */}
+      <section className="pt-closing is-bordered">
+        <div className="pt-wrap">
+          <p className="pt-closing-line">让设备，经得住现场。</p>
+        </div>
+      </section>
+
+      <SiteFooter isHome />
+    </HomeClient>
   );
 }
