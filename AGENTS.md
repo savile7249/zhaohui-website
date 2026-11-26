@@ -26,17 +26,22 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 | 项 | 现状 |
 |---|---|
 | 框架 | Next.js 16（App Router）+ React 19 + TypeScript 7 |
-| 样式 | Tailwind CSS 4（仅旧页面使用）+ 页面级原生 CSS（主线） |
-| 动效 | GSAP 3 + ScrollTrigger（只用于滚动淡入与导航高亮） |
-| 输出 | 静态导出：`output: "export"`、`trailingSlash: true`、`images.unoptimized: true`（见 `next.config.mjs`） |
+| 样式 | 原生 CSS，通用设计令牌定义在 `app/site.css` 的 `.pt-root` |
+| 动效 | CSS 入场，GSAP 3 + ScrollTrigger 处理滚动淡入、导航高亮和产品结构组装 |
+| 输出 | 静态导出，配置见 [`next.config.mjs`](next.config.mjs)（`output: "export"`、`trailingSlash: true`、`images.unoptimized: true`） |
 | 语言 | 简体中文（`<html lang="zh-CN">`） |
 
-## 2. 路由与状态
+## 2. 正式路由
 
-| 路由 | 状态 | 说明 |
-|---|---|---|
-| `/` | **主线，线上正式版** | 遵循 `DESIGN.md`，已正式替换旧版首页并部署至 `https://jszhff.cn/` |
-| `/products/{tanks,reactors,towers,piping}` | **主线，线上正式版** | 四类设备独立交互详情页，遵循 `DESIGN.md`；`/products` 总览页已由首页 `#equipment` 取代（Nginx 301 重定向） |
+| 路由 | 源码 |
+|---|---|
+| `/` | [`app/page.tsx`](app/page.tsx)，设备入口在 `/#equipment`，询价简报在 `/#brief` |
+| `/products/tanks/` | [`app/products/tanks/page.tsx`](app/products/tanks/page.tsx) |
+| `/products/reactors/` | [`app/products/reactors/page.tsx`](app/products/reactors/page.tsx) |
+| `/products/towers/` | [`app/products/towers/page.tsx`](app/products/towers/page.tsx) |
+| `/products/piping/` | [`app/products/piping/page.tsx`](app/products/piping/page.tsx) |
+
+官网域名为 `https://jszhff.cn/`。旧总览、动态产品页和演示页的迁移与历史重定向见 [`design-qa.md`](design-qa.md)。本地预览使用上表的正式路由。
 
 ## 3. 目录地图
 
@@ -44,34 +49,38 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 app/
   layout.tsx              根布局（全站 SEO 元信息、viewport、globals.css）
   globals.css             基础全局重置
-  site.css                主线全部样式与设计令牌（.pt-root）
+  site.css                首页与共用组件样式、设计令牌（.pt-root）
   page.tsx                正式首页 /
   home-client.tsx         页头、导航高亮、滚动淡入（客户端）
   home-data.ts            首页文案与媒体数据（里程碑、合作客户、行业、资质专利、制造步骤等）
   brief-workbench.tsx     询价简报生成器（客户端）
-  credentials-explorer.tsx 资质证书与专利展示（客户端）
+  credentials-explorer.tsx 资质证书与专利展示
   partner-orbit-wall.tsx  合作客户轨道墙（客户端）
-  site-footer.tsx         全站页脚（客户端/服务端共享）
+  site-footer.tsx         全站页脚
   not-found.tsx           自定义 404 页面（导出为 404.html）
   robots.txt / sitemap.xml / icon.svg / favicon.ico / apple-icon.png   SEO 与浏览器图标
   products/
-    product-data.ts       四类设备唯一数据源
+    product-data.ts       四类设备的共用资料与询价入口
     product-gallery.tsx   产品实拍图集（客户端）
     product-page.css      产品详情页共享样式
-    tanks/ | reactors/ | towers/ | piping/   四类设备独立详情页与结构交互
+    tanks/ | reactors/ | towers/ | piping/
+      page.tsx            各产品详情页
+      *-data.ts           各产品的图集、工艺说明与结构步骤
+      *-assembly.tsx      结构交互组件，读取 *-geometry.generated.ts
+      build-*.mjs         几何生成脚本
 components/
   zhaohui-mark.tsx        矢量 Logo（tone="inverse" 深底 / "dark" 浅底）
   zhaohui-logo.tsx        页头自适应明暗双版 Logo
-  contact-data.ts         联系方式、双厂区地址与官方二维码数据
+  contact-data.ts         公开电话、邮箱、双厂区地址与官方二维码
 public/images/
   brand/                  页头明暗双版 Logo
   contact/                微信、公众号、抖音二维码
-  site/                   实拍与业务 WebP 素材
+  site/                   首屏、厂区、产品实拍及行业、证书、专利和合作伙伴素材
 DESIGN.md                 设计系统规范
 design-qa.md              历次设计验收记录（只追加，不改历史）
 ```
 
-根目录的 `*.png` 截图、`效果图.png`、`*.xlsx`、`*.tar.gz`、`*.mp4`、`*.blend` 是参考资料或历史产物，**不要修改、移动、删除，也不要引用到页面里**。
+根目录的本地参考资料（如 `效果图.png`、员工手册、压缩包、视频和 Blender 源文件）留在本机。保护原件，禁止纳入网页、`public/` 或源码提交。`design-qa.md` 中的旧截图路径是历史验收证据，已归档的文件可按路径从 Git 历史取回。
 
 ## 4. 内容红线（来自《防腐设备员工参阅手册》）
 
@@ -83,60 +92,47 @@ design-qa.md              历次设计验收记录（只追加，不改历史）
 - 氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等**高危介质只写"专项审核"**，不给选材结论。
 - 喷涂是**工艺**，不是独立产品。
 - 禁用绝对化表述：耐所有酸碱、永不腐蚀、零维护、行业第一。
-- 行业应用在手册中均为"待销售确认"，不要做成行业矩阵或客户案例。
+- 首页已展示应用行业。新增或修改行业应用须经销售确认，手册中标为「待销售确认」的条目不能据此扩展为行业矩阵或客户案例。
 - **不虚构**联系方式、工程师、专利、资质、合作伙伴、客户名称。资料缺失时删掉该区块，不放"待填 / 预留"占位。
 - 文案用对用户说话的语气，不描述界面自身（禁止"左侧标题保持锁定""点击下方体验"之类）。
 
 ## 5. 编码约定
 
-### 主线（`app/prototype/`）
+- 样式沿用 `pt-` 前缀、`.pt-root` 作用域和现有 CSS 令牌。首页及共用组件使用 `app/site.css`，详情页专用规则使用 `app/products/product-page.css`。重置规则用 `:where()`，避免覆盖组件样式。主线使用原生 CSS，沿用现有色相。
+- 默认使用服务端组件。状态和事件放在独立的 `"use client"` 组件中。共用设备资料和询价入口维护在 `app/products/product-data.ts`，首页内容维护在 `app/home-data.ts`，详情页专属资料维护在对应的 `*-data.ts`。复用已有数据，避免在 JSX 中重复定义。
+- 首屏 CSS 入场保持首帧可见。滚动淡入使用 `data-rise`，由 `home-client.tsx` 或相应 `*-page-client.tsx` 处理。结构动效由 `*-assembly.tsx` 管理。新增动效须适配 `prefers-reduced-motion`。禁止滚动劫持、逐字飞入、锁屏和 `clip-path` 开幕。
+- 图片使用 `next/image`，优先加载限于首屏关键图像，其他图片默认懒加载。使用 `fill` 时填写 `sizes`。
+- 保留跳转链接、`aria-current`、可见焦点和图集键盘操作。Tab 保留 `role`、`aria-selected`、`aria-controls`。表单控件使用 `<label>`，字段组使用 `<legend>`。
+- 更新结构几何时，从仓库根目录运行对应的 `build-*.mjs`（如 `node app/products/tanks/build-tank.mjs --audit`），并检查生成文件差异。生成脚本依赖本地的 `.agents/skills/anatomy/kit/`。普通构建直接读取已跟踪的几何数据。
+- 新增依赖须经用户确认。`next-env.d.ts` 由 Next.js 生成，`package-lock.json` 随依赖变更更新。`.next/` 和 `out/` 由工具生成。
 
-- **样式**：全部写在 `prototype.css`，类名统一 `pt-` 前缀，挂在 `.pt-root` 作用域下。只用文件顶部的 CSS 变量，不写裸色值、不加新色相。
-- **重置规则**用 `:where()` 归零优先级。新增元素重置时沿用这个写法，否则会覆盖组件类的 margin。
-- **不要在主线里用 Tailwind 工具类**，避免两套体系混用。
-- **组件**默认是服务端组件；只有需要状态或事件时才加 `"use client"`，并拆成独立文件。
-- **数据**：设备数据只从 `app/products/product-data.ts` 读取；主线其余文案放在 `prototype-data.ts`。不要在 JSX 里硬编码重复数据。
-- **动效**：
-  - 首屏入场用 CSS 动画（`@keyframes pt-hero-*`），保证首帧可见。
-  - 滚动出现只给元素加 `data-rise`，由 `prototype-client.tsx` 统一处理。
-  - 必须在 `prefers-reduced-motion: no-preference` 条件下运行。
-  - 不引入 Lenis、SplitText、pin 锁屏、clip-path 开幕。`lenis` 仍在 `package.json` 里，只给废弃的 `/topology-demo` 用，主线禁止导入。
-- **图片**：用 `next/image`。只有首屏图加 `priority`，其余默认懒加载；`fill` 时必须写 `sizes`。
-- **无障碍**：保留跳转链接、`aria-current`、Tab 的 `role` / `aria-selected` / `aria-controls`、可见焦点框。表单控件都要有 `<label>` 或 `<legend>`。
-
-### 通用
-
-- 不新增依赖，除非用户明确同意。
-- 不要修改 `next-env.d.ts`、`package-lock.json`，除非是依赖变更的必然结果。
-- `out/`、`.next/` 是构建产物，已被 git 忽略，不要手动编辑。
-
-## 6. 命令与验证
+## 6. 本地预览与验证
 
 ```bash
-npm run typecheck     # tsc --noEmit
-npm run build         # 静态导出到 out/
-npm run dev           # 开发服务器（会重写本文件上方的 Next 区块，属正常现象）
+npm ci
+npm run dev
 ```
 
-- 项目没有配置 lint 和测试。**每次改动后至少跑 `typecheck` 和 `build`**，两者都要通过。
-- `node_modules` 是在 Windows 上安装的（带 `.cmd` 脚本），Linux 下可直接用 `node_modules/.bin/next` 与 `node_modules/.bin/tsc`。
-- **界面改动必须截图自查**：
-  1. `npm run build` 后，静态服务 `out/`（如 `python3 -m http.server -d out`）。
-  2. 至少在 **1440×900** 和 **390×844** 两个尺寸截图，逐区块滚动检查（GSAP 的淡入依赖滚动触发，一次性超高视口截图会看到半透明内容，不代表真实效果）。
-  3. 检查清单：无横向溢出；没有小于 14px 的文字；标题没有单字成行；深浅区块交替正确；页头在页面底部仍为实色。
-- 截图放到临时目录，**不要提交到仓库根目录**。
+首次安装或锁文件变更后，在当前操作系统运行 `npm ci`。按终端显示的地址打开第 2 节路由（默认 `http://localhost:3000/`）。`next dev` 会维护本文件顶部自动区块。
 
-## 7. 已知待办（按优先级）
+每次改动后运行 `git diff --check`、`npm run typecheck` 和 `npm run build`。用静态 HTTP 服务预览导出的 `out/`。
 
-1. 联系方式：没有可公开的电话、邮箱或表单接收端。拿到核准信息前，页面只写"请将询价简报发送给您的兆辉业务联系人"。
-2. 图片：`public/images` 全是 AI 生成的占位图，单张约 2 MB，且关闭了图片优化。需要替换为实拍照片，并转成 WebP/AVIF（1920 宽约 200–300 KB）。
-3. 产品页 `/products`、`/products/[slug]` 迁移到 `DESIGN.md` 体系。
-4. 主线替换 `/`：迁移完成后，把 `/prototype` 内容移到 `app/page.tsx`，去掉 `noindex`，删除旧首页与 `/topology-demo`。
-5. 品牌资产：官方字体授权与 Logo 母版尚未提供，目前使用系统字体与 `zhaohui-mark.tsx` 矢量 Logo。
+```bash
+python3 -m http.server 4173 --bind 127.0.0.1 --directory out
+```
 
-## 8. 交付与沟通
+- 改动涉及路由或资源时，在 `http://127.0.0.1:4173/` 核对受影响的正式入口、站内跳转、图片和静态资源。
+- 界面改动须在 **1440 × 900** 和 **390 × 844** 逐区块滚动截图，检查横向溢出、14px 字号下限、中文标题断行、区块明暗和滚动后的页头底色。截图存到仓库外。
+- 设计验收结论追加到 [`design-qa.md`](design-qa.md) 末尾，保留历史记录。
 
-- 用中文回复用户。
-- 改完后说明：改了哪些文件、是否通过 `typecheck` / `build`、截图检查了哪些尺寸、还有哪些没验证。
-- 遇到内容不确定（手册里没有、或标为待确认）时，**停下来问**，不要自行补写。
-- 做设计验收时，把结论追加到 `design-qa.md` 末尾，不要改写历史记录。
+## 7. 内容与资源现状
+
+- 首页和页脚使用 `components/contact-data.ts` 的公开电话、邮箱和双厂区地址。询价简报在浏览器生成和复制。新增在线提交前，先确认接收端和资料处理流程。
+- 首页、制造现场和四类产品使用 WebP 实拍，行业配图、证书、专利、合作伙伴标识与二维码按各自用途维护。静态导出直接提供源图，替换素材时核对公开授权、实际内容、尺寸和体积。
+- 页头使用明暗双版 Logo，页脚使用矢量字标，正文沿用系统中文字体。品牌资源更新以获准素材为准。
+
+## 8. 提需求与交付
+
+- 给 agent 的需求写明正式路由或区块锚点、要改的内容、可用素材、验收条件，以及是否授权提交、推送或部署。界面任务可参考 [`DESIGN.md` 的示例](DESIGN.md#9-agent-prompt-guide-代理提示指南)。
+- 本地提交记录 Git 变更，推送更新远端源码。部署需单独授权，并验收官网实际提供的构建与路由。
+- 用中文报告修改文件、类型检查、构建、冒烟检查和适用的截图尺寸。明确标出未验证项。资料不确定时向用户核实，禁止自行补写。

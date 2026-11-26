@@ -4,3 +4,12 @@ out/
 npm-debug.log*
 .DS_Store
 *.tsbuildinfo
+
+# Historical QA captures and the local design reference.
+/design-qa-comparison-*.png
+/design-qa-products-comparison.png
+/homepage-*.png
+/products-overview-*.png
+/products-tanks-desktop.png
+/products-towers-mobile.png
+/效果图.png
