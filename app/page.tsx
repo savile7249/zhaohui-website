@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { productFamilies } from "@/app/products/product-data";
 import { contactInfo } from "@/components/contact-data";
+import { getCanonicalBase, managedSnapshot } from "@/lib/managed-content";
 import { BriefWorkbench } from "./brief-workbench";
 import { CredentialsExplorer } from "./credentials-explorer";
 import { HomeClient } from "./home-client";
@@ -17,16 +18,18 @@ import {
 } from "./home-data";
 import "./site.css";
 
+const canonicalBase = getCanonicalBase();
+
 export const metadata: Metadata = {
   title: "兆辉化工设备 | 钢衬防腐储罐、反应釜、塔器与管道",
   description: "江苏兆辉防腐科技有限公司专注钢衬四氟、PO、PE、PFA、PVDF 等防腐储罐、反应釜、塔器与管道制造，配套板衬、滚塑与喷涂工艺。",
   alternates: {
-    canonical: "/",
+    canonical: `${canonicalBase}/`,
   },
   openGraph: {
     title: "兆辉化工设备 | 钢衬防腐储罐、反应釜、塔器与管道",
     description: "专注钢衬四氟、PO、PE、PFA、PVDF 等防腐储罐、反应釜、塔器与管道制造，按介质与工况分层选材。",
-    url: "https://jszhff.cn/",
+    url: `${canonicalBase}/`,
     siteName: "兆辉化工设备",
     locale: "zh_CN",
     type: "website",
@@ -169,7 +172,9 @@ export default function HomePage() {
               <div className="pt-product-body" data-rise>
                 <span className="pt-num">{product.index}</span>
                 <h3>{product.title}</h3>
-                <p className="pt-product-summary">{product.applications.join("、")}。</p>
+                <p className="pt-product-summary">
+                  {managedSnapshot ? product.summary : `${product.applications.join("、")}。`}
+                </p>
                 <Link
                   href={`/products/${product.slug}`}
                   className="pt-button"

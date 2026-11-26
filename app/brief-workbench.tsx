@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { isProductSlug, productFamilies, type ProductSlug } from "@/app/products/product-data";
 import { contactInfo } from "@/components/contact-data";
+import { trackBriefCopySuccess } from "@/components/site-tracker";
 import { liningProcessOptions, mediumRiskOptions, shellMaterialOptions, volumePresets } from "./home-data";
 
 function BriefQuerySync({ onProductFromUrl }: { onProductFromUrl: (slug: ProductSlug | null) => void }) {
@@ -83,6 +84,7 @@ export function BriefWorkbench() {
     try {
       await navigator.clipboard.writeText(briefText);
       setCopied(true);
+      trackBriefCopySuccess(slug || "");
       window.setTimeout(() => setCopied(false), 2400);
     } catch {
       setCopied(false);

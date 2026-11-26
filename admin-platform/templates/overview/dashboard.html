@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+{% block title %}{{ site.name }} 运营总览 | 兆辉多站点管理后台{% endblock %}
+{% block content %}
+<div class="ops-topbar">
+  <div>
+    <p class="ops-label"><span>01</span>分站点分域名运营总览</p>
+    <h1 class="ops-h1">{{ site.name }} · {{ overview.scope_label }}</h1>
+  </div>
+
+  <form method="get" class="ops-filters" aria-label="站点与域名筛选">
+    <div class="ops-field">
+      <label for="f-site">站点</label>
+      <select id="f-site" name="site" class="ops-select" onchange="this.form.submit()">
+        {% for s in sites %}
+        <option value="{{ s.slug }}" {% if s.slug == site.slug %}selected{% endif %}>{{ s.name }}（{{ s.slug }}）</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="ops-field">
+      <label for="f-domain">域名范围</label>
+      <select id="f-domain" name="domain" class="ops-select" onchange="this.form.submit()">
+        <option value="all" {% if domain_param == 'all' %}selected{% endif %}>全部已启用域名</option>
+        {% for row in overview.domain_rows %}
+        <option value="{{ row.domain.official_domain }}" {% if domain_param == row.domain.official_domain %}selected{% endif %}>
+          {{ row.domain.official_domain }}（{{ row.state.label }}）
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="ops-field">
+      <label for="f-range">时间范围</label>
+      <select id="f-range" name="range" class="ops-select" onchange="this.form.submit()">
+        {% for rk, rl in range_choices %}
+        <option value="{{ rk }}" {% if rk == overview.range_key %}selected{% endif %}>{{ rl }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="ops-btn">刷新视图</button>
+    <a class="ops-btn is-secondary" href="{% url 'overview:export' 'csv' %}?site={{ site.slug }}&domain={{ domain_param }}&range={{ overview.range_key }}">导出 CSV</a>
+    <a class="ops-btn is-secondary" href="{% url 'overview:export' 'json' %}?site={{ site.slug }}&domain={{ domain_param }}&range={{ overview.range_key }}">导出 JSON</a>
+    {% if can_edit %}
+    <a class="ops-btn is-dark" href="{% url 'publishing:studio' site.slug %}">进入内容编辑与发布</a>
+    {% endif %}
+  </form>
+</div>
+
+<!-- 时间范围、采集开始时间、最后更新时间、线上收件状态 -->
+<dl class="ops-meta-strip">
+  <div class="ops-meta-cell">
+    <dt>统计时间范围</dt>
+    <dd>{{ overview.range_label }}</dd>
+  </div>
+  <div class="ops-meta-cell">
+    <dt>采集开始时间（从开始采集之日起）</dt>
+    <dd>{% if overview.collection_started_at %}{{ overview.collection_started_at|date:"Y-m-d H:i:s" }}{% else %}尚未开始采集{% endif %}</dd>
+  </div>
+  <div class="ops-meta-cell">
+    <dt>最后更新时间</dt>
+    <dd>{% if overview.last_updated_at %}{{ overview.last_updated_at|date:"Y-m-d H:i:s" }}{% else %}暂无上报{% endif %}</dd>
+  </div>
+  <div class="ops-meta-cell">
+    <dt>在线询盘收件状态</dt>
+    <dd><span class="ops-tag is-alert">未启用线上收件</span></dd>
+  </div>
+</dl>
+
+<!-- 四个核心业务问题 KPI -->
+<section class="ops-kpi-grid" aria-label="核心指标">
+  <article class="ops-panel">
+    <p class="ops-kpi-title">页面浏览量（首页与产品详情）</p>
+    <p class="ops-kpi-val">{{ overview.totals.page_views }}</p>
+    <p class="ops-kpi-sub">
+      产品详情浏览 {{ overview.totals.product_page_views }} 次 · 单页导航切换 {{ overview.totals.spa_page_views }} 次<br />
+      首版不估算跨域独立访客
+    </p>
+  </article>
+
+  <article class="ops-panel">
+    <p class="ops-kpi-title">服务器网关请求（另列资源请求）</p>
+    <p class="ops-kpi-val">{{ overview.totals.gw_total_requests }}</p>
+    <p class="ops-kpi-sub">
+      文档请求 {{ overview.totals.gw_html_requests }} · 静态资源请求 {{ overview.totals.gw_static_asset_requests }}<br />
+      4xx：{{ overview.totals.gw_4xx }} · 5xx：{{ overview.totals.gw_5xx }}
+    </p>
+  </article>
+
+  <article class="ops-panel">
+    <p class="ops-kpi-title">匿名询价动作（非实际询盘/成交）</p>
+    <p class="ops-kpi-val">{{ overview.totals.inquiry_actions_total }}</p>
+    <p class="ops-kpi-sub">
+      简报复制成功 {{ overview.totals.brief_copy_success }} · 点击电话 {{ overview.totals.phone_click }} · 点击邮箱 {{ overview.totals.email_click }}<br />
+      每百次产品浏览对应动作数：<strong>{{ overview.totals.actions_per_100_product_views }}</strong>
+    </p>
+  </article>
+
+  <article class="ops-panel is-dark is-accent-left">
+    <p class="ops-kpi-title">销售收到了多少条在线询盘？</p>
+    <p class="ops-kpi-val" style="font-size:24px;">未启用线上收件</p>
+    <p class="ops-kpi-sub">
+      当前只有线下电话/邮件/微信联系。严禁把页面点击或复制动作标成实际询盘或成交；严禁采集表单正文、电话、邮箱或剪贴板内容。
+    </p>
+  </article>
+</section>
+
+<!-- 四态区分口径说明与分域名并排诊断表 -->
+<section class="ops-section">
+  <div class="ops-section-head">
+    <h2 class="ops-h2">02 域名状态判别与三路并排诊断（页面事件 / 网关请求 / 外部探测）</h2>
+    <p class="ops-section-note">站点汇总严格等于各已启用域名计数之和；预览域与未知域名默认排除不入账。</p>
+  </div>
+
+  <div class="ops-state-legend" aria-label="四态区分说明">
+    <div class="ops-state-card">
+      <strong>真实零访问</strong>
+      域名已启用、外部探测正常、网关心跳在线，统计窗口内浏览量确为 0。
+    </div>
+    <div class="ops-state-card">
+      <strong>数据中断</strong>
+      网关失联或采集标记中断，此时计数为 0 不可误判为真实零访问。
+    </div>
+    <div class="ops-state-card">
+      <strong>待备案</strong>
+      如 zhaohuifangfu.com，保持公网关闭，仅用于本地离线配置与预览验证。
+    </div>
+    <div class="ops-state-card">
+      <strong>未接入</strong>
+      尚未完成域名控制权核验与网关接入，尚未开启采集。
+    </div>
+  </div>
+
+  <div class="ops-table-wrap">
+    <table class="ops-table">
+      <thead>
+        <tr>
+          <th>正式域名 / 测试主机</th>
+          <th>状态判别</th>
+          <th>备案号 / 规范网址</th>
+          <th>页面事件（匿名）</th>
+          <th>网关请求（耗时 / 4xx / 5xx）</th>
+          <th>外部探测（HTTPS / 证书 / 首页标记）</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in overview.domain_rows %}
+        <tr>
+          <td>
+            <strong>{{ row.domain.official_domain }}</strong>{% if row.domain.is_primary %} <span class="ops-tag is-ink">主域</span>{% endif %}<br />
+            <span style="color:var(--on-light-muted);">测试：{{ row.domain.test_host }}</span><br />
+            <span style="color:var(--on-light-muted);">公网：{% if row.domain.public_enabled %}允许试点{% else %}公网关闭{% endif %}</span>
+          </td>
+          <td>
+            {% if row.state.code == 'interrupted' or row.state.code == 'fault' %}
+            <span class="ops-tag is-alert">{{ row.state.label }}</span>
+            {% elif row.state.code == 'pending_icp' or row.state.code == 'not_onboarded' %}
+            <span class="ops-tag is-muted">{{ row.state.label }}</span>
+            {% else %}
+            <span class="ops-tag is-ink">{{ row.state.label }}</span>
+            {% endif %}
+            <div style="margin-top:6px;color:var(--on-light-muted);max-width:220px;">{{ row.state.detail }}</div>
+          </td>
+          <td>
+            {{ row.domain.icp_number|default:"未填写" }}<br />
+            <span style="color:var(--on-light-muted);">Canonical：{{ row.domain.get_canonical_base }}/</span>
+          </td>
+          <td>
+            浏览：<strong>{{ row.page_views }}</strong>（产品页 {{ row.product_page_views }}，SPA {{ row.spa_page_views }}）<br />
+            复制成功：{{ row.brief_copy_success }} · 电话：{{ row.phone_click }} · 邮箱：{{ row.email_click }}<br />
+            每百次产品浏览动作：{{ row.actions_per_100_product_views }}
+          </td>
+          <td>
+            总请求：<strong>{{ row.gw_total_requests }}</strong>（文档 {{ row.gw_html_requests }} / 资源 {{ row.gw_static_asset_requests }}）<br />
+            4xx：{{ row.gw_4xx }} · 5xx：{{ row.gw_5xx }}<br />
+            均耗 {{ row.gw_avg_latency_ms }} ms / 峰值 {{ row.gw_max_latency_ms }} ms<br />
+            <span style="color:var(--on-light-muted);">心跳：{% if row.domain.last_gateway_heartbeat_at %}{{ row.domain.last_gateway_heartbeat_at|date:"H:i:s" }}{% else %}无{% endif %}</span>
+          </td>
+          <td>
+            {% if row.latest_probe %}
+              {% if row.latest_probe.is_success %}
+                <span class="ops-tag is-ink">HTTPS {{ row.latest_probe.http_status }}</span>
+              {% else %}
+                <span class="ops-tag is-alert">故障：{{ row.latest_probe.error_code }}</span>
+              {% endif %}
+              {% if row.latest_probe.cert_warning %}
+                <span class="ops-tag is-alert">证书临期（余 {{ row.latest_probe.cert_days_remaining }} 天）</span>
+              {% elif row.latest_probe.cert_days_remaining != None %}
+                <span>证书余 {{ row.latest_probe.cert_days_remaining }} 天</span>
+              {% endif %}
+              <br />
+              首页标记：{% if row.latest_probe.content_marker_ok %}正常{% else %}<strong style="color:var(--accent);">异常</strong>{% endif %} · 耗时 {{ row.latest_probe.response_time_ms }} ms<br />
+              最后一次成功：{% if row.last_success_at %}{{ row.last_success_at|date:"Y-m-d H:i:s" }}{% else %}尚无成功记录{% endif %}
+            {% else %}
+              <span class="ops-tag is-muted">未探测</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 热门产品与故障/恢复记录 -->
+<section class="ops-section ops-grid-2">
+  <div>
+    <div class="ops-section-head">
+      <h2 class="ops-h2">03 热门产品浏览与动作拆分</h2>
+      <p class="ops-section-note">按站点/域名实时汇总，不含任何表单或个人数据。</p>
+    </div>
+    <div class="ops-table-wrap">
+      <table class="ops-table">
+        <thead>
+          <tr>
+            <th>产品类别</th>
+            <th>产品展示名</th>
+            <th>详情页浏览量</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prod in overview.top_products %}
+          <tr>
+            <td>{{ prod.slug }}</td>
+            <td><strong>{{ prod.name }}</strong></td>
+            <td>{{ prod.views }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" style="color:var(--on-light-muted);">当前范围暂无产品详情浏览记录。</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="ops-panel" style="margin-top:16px;">
+      <strong>询价动作独立计数（每百次产品浏览对应值）</strong>
+      <p class="ops-kpi-sub" style="margin-top:8px;">
+        简报复制成功：{{ overview.totals.brief_copy_success }} 次（{{ overview.totals.brief_copy_per_100 }} / 百次产品浏览，复制失败不计入）<br />
+        点击电话：{{ overview.totals.phone_click }} 次（{{ overview.totals.phone_click_per_100 }} / 百次产品浏览）<br />
+        点击邮箱：{{ overview.totals.email_click }} 次（{{ overview.totals.email_click_per_100 }} / 百次产品浏览）
+      </p>
+    </div>
+  </div>
+
+  <div>
+    <div class="ops-section-head">
+      <h2 class="ops-h2">04 故障告警与恢复记录</h2>
+      <p class="ops-section-note">涵盖首页异常、TLS 证书临期与采集数据中断。</p>
+    </div>
+    <div class="ops-table-wrap">
+      <table class="ops-table">
+        <thead>
+          <tr>
+            <th>域名</th>
+            <th>告警类型</th>
+            <th>状态</th>
+            <th>最后成功 / 恢复时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for alert in overview.recent_alerts %}
+          <tr>
+            <td>{{ alert.domain.official_domain }}</td>
+            <td>
+              <strong>{{ alert.get_alert_type_display }}</strong><br />
+              <span style="color:var(--on-light-muted);">{{ alert.message }}</span>
+            </td>
+            <td>
+              {% if alert.status == 'open' %}
+              <span class="ops-tag is-alert">告警中</span>
+              {% else %}
+              <span class="ops-tag is-ink">已恢复</span>
+              {% endif %}
+            </td>
+            <td>
+              最后成功：{% if alert.last_success_at %}{{ alert.last_success_at|date:"m-d H:i:s" }}{% else %}无{% endif %}<br />
+              {% if alert.resolved_at %}恢复：{{ alert.resolved_at|date:"m-d H:i:s" }}{% else %}触发：{{ alert.opened_at|date:"m-d H:i:s" }}{% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" style="color:var(--on-light-muted);">暂无故障或证书告警记录。</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 最近发布与审计日志 -->
+<section class="ops-section ops-grid-2">
+  <div>
+    <div class="ops-section-head">
+      <h2 class="ops-h2">05 最近发布与回滚记录</h2>
+      {% if can_edit %}<a href="{% url 'publishing:studio' site.slug %}">管理全部版本 →</a>{% endif %}
+    </div>
+    <div class="ops-table-wrap">
+      <table class="ops-table">
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>目标域名</th>
+            <th>版本 / 类型</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rel in recent_releases %}
+          <tr>
+            <td>{{ rel.created_at|date:"m-d H:i:s" }}</td>
+            <td>{{ rel.domain.official_domain }}</td>
+            <td>{{ rel.release_version }}（{{ rel.get_build_type_display }}）</td>
+            <td>
+              {% if rel.status == 'failed' %}
+              <span class="ops-tag is-alert">失败（保留旧版）</span>
+              {% elif rel.is_current %}
+              <span class="ops-tag is-ink">当前生效</span>
+              {% else %}
+              <span class="ops-tag">{{ rel.get_status_display }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" style="color:var(--on-light-muted);">暂无发布记录。</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="ops-section-head">
+      <h2 class="ops-h2">06 最近审计日志（写入与导出）</h2>
+      {% if request.user.is_staff %}<a href="/admin/core/auditlog/">查看全部审计 →</a>{% endif %}
+    </div>
+    <div class="ops-table-wrap">
+      <table class="ops-table">
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>操作人</th>
+            <th>操作类型</th>
+            <th>摘要</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in recent_audits %}
+          <tr>
+            <td>{{ log.created_at|date:"m-d H:i:s" }}</td>
+            <td>{{ log.actor_username }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ log.summary }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" style="color:var(--on-light-muted);">暂无审计记录。</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

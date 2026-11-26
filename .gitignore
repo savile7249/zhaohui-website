@@ -13,3 +13,9 @@ npm-debug.log*
 /products-tanks-desktop.png
 /products-towers-mobile.png
 /效果图.png
+
+# Local isolated multisite admin test runtime & Python env
+/.local-test-env/
+/admin-platform/.venv/
+**/__pycache__/
+*.pyc

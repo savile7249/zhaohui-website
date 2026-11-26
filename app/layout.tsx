@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { SiteTracker } from "@/components/site-tracker";
+import { getCanonicalBase } from "@/lib/managed-content";
 import "./globals.css";
 
+const canonicalBase = getCanonicalBase();
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jszhff.cn"),
+  metadataBase: new URL(canonicalBase),
   title: {
     default: "兆辉化工设备 | 钢衬防腐储罐、反应釜、塔器与管道",
     template: "%s | 兆辉化工设备",
@@ -57,7 +61,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN" data-scroll-behavior="smooth">
-      <body>{children}</body>
+      <body>
+        <SiteTracker />
+        {children}
+      </body>
     </html>
   );
 }

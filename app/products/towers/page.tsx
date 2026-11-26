@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
+import { getCanonicalBase } from "@/lib/managed-content";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { TowerAssemblyExplorer } from "./tower-assembly";
@@ -10,17 +11,20 @@ import { TowerPageClient } from "./tower-page-client";
 import "../../site.css";
 import "../product-page.css";
 
+const towerProduct = findProduct("towers");
+const canonicalBase = getCanonicalBase();
+
 export const metadata: Metadata = {
-  title: "塔器",
-  description: "钢衬四氟塔器、钢衬PE塔、钢衬PFA塔及衬四氟塔节结构装配示意与工况沟通条件。",
+  title: towerProduct?.title ?? "塔器",
+  description: towerProduct?.summary ?? "钢衬四氟塔器、钢衬PE塔、钢衬PFA塔及衬四氟塔节结构装配示意与工况沟通条件。",
   alternates: {
-    canonical: "/products/towers/",
+    canonical: `${canonicalBase}/products/towers/`,
   },
   openGraph: {
-    title: "塔器 | 兆辉化工设备",
-    description: "钢衬四氟塔器、钢衬PE塔、钢衬PFA塔及衬四氟塔节结构装配示意与工况沟通条件。",
-    url: "https://jszhff.cn/products/towers/",
-    images: [{ url: "/images/site/product-towers.webp", alt: "钢衬防腐塔器实拍" }],
+    title: `${towerProduct?.title ?? "塔器"} | 兆辉化工设备`,
+    description: towerProduct?.summary ?? "钢衬四氟塔器、钢衬PE塔、钢衬PFA塔及衬四氟塔节结构装配示意与工况沟通条件。",
+    url: `${canonicalBase}/products/towers/`,
+    images: [{ url: towerProduct?.image ?? "/images/site/product-towers.webp", alt: towerProduct?.imageAlt ?? "钢衬防腐塔器实拍" }],
   },
 };
 

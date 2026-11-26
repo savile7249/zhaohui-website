@@ -1,3 +1,5 @@
+import { managedSnapshot } from "@/lib/managed-content";
+
 export interface ContactPhone {
   display: string;
   href: string;
@@ -16,7 +18,7 @@ export interface SocialQrItem {
   alt: string;
 }
 
-export const contactInfo = {
+const baseContactInfo = {
   phones: [
     { display: "133-0617-0776", href: "tel:13306170776" },
     { display: "139-6173-8292", href: "tel:13961738292" },
@@ -59,3 +61,12 @@ export const contactInfo = {
     },
   ] as readonly SocialQrItem[],
 } as const;
+
+const contactOverride = managedSnapshot?.contact;
+
+export const contactInfo = {
+  phones: (contactOverride?.phones?.length ? contactOverride.phones : baseContactInfo.phones) as readonly ContactPhone[],
+  email: contactOverride?.email?.display ? contactOverride.email : baseContactInfo.email,
+  addresses: (contactOverride?.addresses?.length ? contactOverride.addresses : baseContactInfo.addresses) as readonly ContactAddress[],
+  socialQrs: baseContactInfo.socialQrs,
+};

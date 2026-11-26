@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
+import { getCanonicalBase } from "@/lib/managed-content";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { ReactorAssemblyExplorer } from "./reactor-assembly";
@@ -10,17 +11,20 @@ import { ReactorPageClient } from "./reactor-page-client";
 import "../../site.css";
 import "../product-page.css";
 
+const reactorProduct = findProduct("reactors");
+const canonicalBase = getCanonicalBase();
+
 export const metadata: Metadata = {
-  title: "反应釜",
-  description: "钢衬四氟、PO、PE、PFA 反应釜及搅拌罐结构装配示意与工况沟通条件。",
+  title: reactorProduct?.title ?? "反应釜",
+  description: reactorProduct?.summary ?? "钢衬四氟、PO、PE、PFA 反应釜及搅拌罐结构装配示意与工况沟通条件。",
   alternates: {
-    canonical: "/products/reactors/",
+    canonical: `${canonicalBase}/products/reactors/`,
   },
   openGraph: {
-    title: "反应釜 | 兆辉化工设备",
-    description: "钢衬四氟、PO、PE、PFA 反应釜及搅拌罐结构装配示意与工况沟通条件。",
-    url: "https://jszhff.cn/products/reactors/",
-    images: [{ url: "/images/site/product-reactors.webp", alt: "钢衬防腐反应釜实拍" }],
+    title: `${reactorProduct?.title ?? "反应釜"} | 兆辉化工设备`,
+    description: reactorProduct?.summary ?? "钢衬四氟、PO、PE、PFA 反应釜及搅拌罐结构装配示意与工况沟通条件。",
+    url: `${canonicalBase}/products/reactors/`,
+    images: [{ url: reactorProduct?.image ?? "/images/site/product-reactors.webp", alt: reactorProduct?.imageAlt ?? "钢衬防腐反应釜实拍" }],
   },
 };
 

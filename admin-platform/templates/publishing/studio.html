@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% block title %}{{ site.name }} 内容编辑与发布 | 兆辉多站点管理后台{% endblock %}
+{% block content %}
+<div class="ops-topbar">
+  <div>
+    <p class="ops-label"><span>03</span>受管内容编辑、指定域名预览、审核发布与回滚</p>
+    <h1 class="ops-h1">{{ site.name }}（{{ site.slug }}）· 内容与发布工作台</h1>
+  </div>
+  <div class="ops-filters">
+    <a class="ops-btn is-secondary" href="{% url 'overview:dashboard' %}?site={{ site.slug }}">← 返回运营总览</a>
+    {% for s in sites %}
+      {% if s.slug != site.slug %}
+      <a class="ops-btn is-secondary" href="{% url 'publishing:studio' s.slug %}">切换至 {{ s.name }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<div class="ops-panel is-accent-left" style="margin-bottom:24px;">
+  <strong>首版受管字段边界（严格执行内容红线）</strong>
+  <p class="ops-kpi-sub" style="margin-top:6px;">
+    本后台仅开放编辑：<strong>产品展示名称、产品简介、已核准图片（仅限预核准清单）与公开联系方式</strong>。
+    技术参数、工艺承诺与结构组装图继续保留在代码审核流程中，后台不可修改。
+  </p>
+</div>
+
+<!-- 1. 产品受管内容编辑 -->
+<section class="ops-section">
+  <div class="ops-section-head">
+    <h2 class="ops-h2">01 受管产品列表（改一次即可预览到本站所有域名）</h2>
+    <p class="ops-section-note">当前角色：{{ role }} · 每次保存均写入审计日志。</p>
+  </div>
+
+  <div class="ops-grid-2">
+    {% for prod in products %}
+    <form method="post" action="{% url 'publishing:save_product' site.slug prod.id %}" class="ops-panel">
+      {% csrf_token %}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <strong>{{ prod.display_order|stringformat:"02d" }} · {{ prod.display_name }}（{{ prod.slug }}）</strong>
+        <span class="ops-tag">受管字段</span>
+      </div>
+      <div class="ops-field" style="margin-bottom:10px;">
+        <label for="dn-{{ prod.id }}">产品展示名称</label>
+        <input id="dn-{{ prod.id }}" name="display_name" class="ops-input" value="{{ prod.display_name }}" required />
+      </div>
+      <div class="ops-field" style="margin-bottom:10px;">
+        <label for="sum-{{ prod.id }}">产品简介</label>
+        <textarea id="sum-{{ prod.id }}" name="summary" class="ops-textarea" required>{{ prod.summary }}</textarea>
+      </div>
+      <div class="ops-field" style="margin-bottom:14px;">
+        <label for="img-{{ prod.id }}">已核准主图（限定预核准清单）</label>
+        <select id="img-{{ prod.id }}" name="approved_asset_id" class="ops-select">
+          {% for a in assets %}
+          <option value="{{ a.id }}" {% if a.id == prod.approved_asset_id %}selected{% endif %}>{{ a.label }}（{{ a.image_path }}）</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="ops-btn">保存产品草稿</button>
+    </form>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- 2. 公开联系方式编辑 + 生成内容快照 -->
+<section class="ops-section ops-grid-2">
+  {% if contact %}
+  <form method="post" action="{% url 'publishing:save_contact' site.slug %}" class="ops-panel">
+    {% csrf_token %}
+    <h2 class="ops-h2">02 公开联系方式（未启用线上收件）</h2>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="c-email">公开联系邮箱</label>
+      <input id="c-email" name="email_display" class="ops-input" value="{{ contact.email_display }}" required />
+    </div>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="c-phones">公开联系电话（每行一个）</label>
+      <textarea id="c-phones" name="phones_lines" class="ops-textarea">{% for p in contact.phones_json %}{{ p.display }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}</textarea>
+    </div>
+    <div class="ops-field" style="margin-bottom:14px;">
+      <label for="c-addr">公开厂区地址（每行格式：地区|地址）</label>
+      <textarea id="c-addr" name="addresses_lines" class="ops-textarea">{% for a in contact.addresses_json %}{{ a.region }}|{{ a.address }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}</textarea>
+    </div>
+    <button type="submit" class="ops-btn">保存联系方式草稿</button>
+  </form>
+  {% endif %}
+
+  <div class="ops-panel">
+    <h2 class="ops-h2">03 生成带校验和的内容快照</h2>
+    <p class="ops-kpi-sub" style="margin-bottom:14px;">
+      流程：<strong>编辑草稿 → 生成快照 → 指定域名预览 → 审核 → 构建与冒烟验证 → 原子切换版本</strong>。
+      失败时保留上一版继续提供服务。
+    </p>
+    <form method="post" action="{% url 'publishing:create_snapshot' site.slug %}">
+      {% csrf_token %}
+      <div class="ops-field" style="margin-bottom:12px;">
+        <label for="snap-note">变更说明</label>
+        <input id="snap-note" name="note" class="ops-input" placeholder="例如：更新储罐产品简介与主图核对" required />
+      </div>
+      <button type="submit" class="ops-btn">生成新版本快照</button>
+    </form>
+
+    <div style="margin-top:20px;border-top:1px solid var(--line-light);padding-top:14px;">
+      <strong>本站已绑定域名配置（独立备案号与规范网址）</strong>
+      <ul style="padding-left:18px;margin:8px 0 0;font-size:14px;">
+        {% for d in domains %}
+        <li style="margin-bottom:6px;">
+          <strong>{{ d.official_domain }}</strong>（{{ d.get_domain_status_display }}）<br />
+          备案号：{{ d.icp_number }} · Canonical：{{ d.get_canonical_base }}/<br />
+          测试预览：<a href="{{ d.get_preview_http_url }}" target="_blank" rel="noreferrer">{{ d.get_preview_http_url }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 快照版本与预览/审核/发布操作 -->
+<section class="ops-section">
+  <div class="ops-section-head">
+    <h2 class="ops-h2">04 内容快照列表（预览、审核与发布）</h2>
+    <p class="ops-section-note">编辑可生成草稿并预览；发布者负责审核通过、选择目标域名发布与回滚。</p>
+  </div>
+  <div class="ops-table-wrap">
+    <table class="ops-table">
+      <thead>
+        <tr>
+          <th>快照版本</th>
+          <th>状态</th>
+          <th>SHA-256 校验和</th>
+          <th>说明 / 创建与审核人</th>
+          <th>预览 / 审核 / 发布操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for snap in snapshots %}
+        <tr>
+          <td><strong>{{ snap.version }}</strong></td>
+          <td><span class="ops-tag {% if snap.status == 'published' or snap.status == 'approved' %}is-ink{% endif %}">{{ snap.get_status_display }}</span></td>
+          <td>{{ snap.checksum|slice:":16" }}…</td>
+          <td>
+            {{ snap.note }}<br />
+            <span style="color:var(--on-light-muted);">创建：{{ snap.created_by.username|default:"system" }} · 审核：{{ snap.approved_by.username|default:"待审核" }}</span>
+          </td>
+          <td>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <form method="post" action="{% url 'publishing:preview_snapshot' site.slug snap.id %}" class="ops-inline-form">
+                {% csrf_token %}
+                <select name="domain_id" class="ops-select" style="min-height:34px;padding:4px 8px;">
+                  <option value="all">全部本站域名预览</option>
+                  {% for d in domains %}
+                  <option value="{{ d.id }}">{{ d.official_domain }}（{{ d.preview_host }}）</option>
+                  {% endfor %}
+                </select>
+                <button type="submit" class="ops-btn ops-btn-sm is-secondary">构建预览</button>
+              </form>
+
+              {% if can_publish %}
+              <div class="ops-inline-form">
+                {% if snap.status == 'draft' or snap.status == 'previewed' %}
+                <form method="post" action="{% url 'publishing:approve_snapshot' site.slug snap.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="ops-btn ops-btn-sm is-dark">审核通过</button>
+                </form>
+                {% endif %}
+                {% if snap.status == 'approved' or snap.status == 'published' %}
+                <form method="post" action="{% url 'publishing:publish_snapshot' site.slug snap.id %}" class="ops-inline-form">
+                  {% csrf_token %}
+                  <select name="domain_id" class="ops-select" style="min-height:34px;padding:4px 8px;">
+                    {% for d in domains %}
+                    <option value="{{ d.id }}">{{ d.official_domain }}</option>
+                    {% endfor %}
+                  </select>
+                  <button type="submit" class="ops-btn ops-btn-sm">正式发布切换</button>
+                </form>
+                {% endif %}
+              </div>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 4. 发布历史与按版本回滚 -->
+<section class="ops-section">
+  <div class="ops-section-head">
+    <h2 class="ops-h2">05 发布历史、失败保护与一键回滚</h2>
+    <p class="ops-section-note">发布失败不会影响当前生效静态产物；支持一键回滚到任一历史成功版本并自动核对页面与资源。</p>
+  </div>
+  <div class="ops-table-wrap">
+    <table class="ops-table">
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>目标域名</th>
+          <th>发布版本 / 快照</th>
+          <th>类型</th>
+          <th>状态与冒烟结果</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rel in releases %}
+        <tr>
+          <td>{{ rel.created_at|date:"Y-m-d H:i:s" }}</td>
+          <td>{{ rel.domain.official_domain }}</td>
+          <td>
+            <strong>{{ rel.release_version }}</strong><br />
+            <span style="color:var(--on-light-muted);">快照 {{ rel.snapshot.version }}</span>
+          </td>
+          <td>{{ rel.get_build_type_display }}</td>
+          <td>
+            {% if rel.status == 'failed' %}
+              <span class="ops-tag is-alert">失败（旧版继续服务）</span>
+              <div style="color:var(--accent);margin-top:4px;">{{ rel.error_message }}</div>
+            {% elif rel.is_current %}
+              <span class="ops-tag is-ink">当前生效</span>
+              <span style="color:var(--on-light-muted);">冒烟通过</span>
+            {% else %}
+              <span class="ops-tag">{{ rel.get_status_display }}</span>
+              {% if rel.smoke_check_passed %}<span style="color:var(--on-light-muted);">冒烟通过</span>{% endif %}
+            {% endif %}
+            {% if rel.rolled_back_from %}
+              <div style="color:var(--on-light-muted);">回滚自：{{ rel.rolled_back_from.release_version }}</div>
+            {% endif %}
+          </td>
+          <td>
+            {% if can_publish and rel.build_type == 'release' and rel.status == 'succeeded' and not rel.is_current %}
+            <form method="post" action="{% url 'publishing:rollback_release' site.slug rel.id %}">
+              {% csrf_token %}
+              <button type="submit" class="ops-btn ops-btn-sm is-secondary">回滚到此版本</button>
+            </form>
+            {% elif rel.build_type == 'preview' and rel.status == 'succeeded' %}
+            <a class="ops-btn ops-btn-sm is-secondary" href="{{ rel.domain.get_preview_http_url }}" target="_blank" rel="noreferrer">打开预览</a>
+            {% elif rel.is_current %}
+            <a class="ops-btn ops-btn-sm is-dark" href="{{ rel.domain.get_test_http_url }}" target="_blank" rel="noreferrer">访问生效页</a>
+            {% else %}
+            —
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" style="color:var(--on-light-muted);">暂无发布记录。</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

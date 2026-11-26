@@ -1,0 +1,49 @@
+{% load static %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}兆辉多站点监测与管理后台{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'overview/ops.css' %}" />
+</head>
+<body>
+  <header class="ops-header">
+    <div class="ops-header-inner">
+      <a class="ops-brand" href="{% url 'overview:dashboard' %}">
+        <span class="ops-brand-mark" aria-hidden="true"></span>
+        <span>兆辉多站点监测与管理后台</span>
+      </a>
+      {% if request.user.is_authenticated %}
+      <nav class="ops-nav" aria-label="后台导航">
+        <a href="{% url 'overview:dashboard' %}{% if site %}?site={{ site.slug }}{% endif %}" class="{% if request.resolver_match.app_name == 'overview' %}is-active{% endif %}">运营总览</a>
+        {% if site and can_edit or request.resolver_match.app_name == 'publishing' %}
+        <a href="{% url 'publishing:studio' site.slug %}" class="{% if request.resolver_match.app_name == 'publishing' %}is-active{% endif %}">内容与发布</a>
+        {% endif %}
+        {% if request.user.is_staff %}
+        <a href="/admin/">Django Admin</a>
+        {% endif %}
+      </nav>
+      <div class="ops-user">
+        <span>{{ request.user.username }}{% if role %}（{{ role }}）{% endif %}</span>
+        <form method="post" action="{% url 'overview:logout' %}" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="ops-btn ops-btn-sm is-dark">退出</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="ops-main">
+    {% if messages %}
+    <ul class="ops-messages" role="status">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

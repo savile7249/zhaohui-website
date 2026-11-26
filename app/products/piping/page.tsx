@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
+import { getCanonicalBase } from "@/lib/managed-content";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { PipingAssemblyExplorer } from "./piping-assembly";
@@ -10,17 +11,20 @@ import { PipingPageClient } from "./piping-page-client";
 import "../../site.css";
 import "../product-page.css";
 
+const pipingProduct = findProduct("piping");
+const canonicalBase = getCanonicalBase();
+
 export const metadata: Metadata = {
-  title: "管道与管件",
-  description: "钢衬四氟管道、钢衬 PO 管道及衬氟管件结构装配示意与工况沟通条件。",
+  title: pipingProduct?.title ?? "管道与管件",
+  description: pipingProduct?.summary ?? "钢衬四氟管道、钢衬 PO 管道及衬氟管件结构装配示意与工况沟通条件。",
   alternates: {
-    canonical: "/products/piping/",
+    canonical: `${canonicalBase}/products/piping/`,
   },
   openGraph: {
-    title: "管道与管件 | 兆辉化工设备",
-    description: "钢衬四氟管道、钢衬 PO 管道及衬氟管件结构装配示意与工况沟通条件。",
-    url: "https://jszhff.cn/products/piping/",
-    images: [{ url: "/images/site/product-piping.webp", alt: "钢衬防腐管道与管件实拍" }],
+    title: `${pipingProduct?.title ?? "管道与管件"} | 兆辉化工设备`,
+    description: pipingProduct?.summary ?? "钢衬四氟管道、钢衬 PO 管道及衬氟管件结构装配示意与工况沟通条件。",
+    url: `${canonicalBase}/products/piping/`,
+    images: [{ url: pipingProduct?.image ?? "/images/site/product-piping.webp", alt: pipingProduct?.imageAlt ?? "钢衬防腐管道与管件实拍" }],
   },
 };
 

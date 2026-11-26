@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
+import { getCanonicalBase } from "@/lib/managed-content";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { TankAssemblyExplorer } from "./tank-assembly";
@@ -10,17 +11,20 @@ import { TankPageClient } from "./tank-page-client";
 import "../../site.css";
 import "../product-page.css";
 
+const tankProduct = findProduct("tanks");
+const canonicalBase = getCanonicalBase();
+
 export const metadata: Metadata = {
-  title: "储罐",
-  description: "钢衬四氟、PO、PE、PFA、PVDF 防腐储罐结构装配示意与工况沟通条件。",
+  title: tankProduct?.title ?? "储罐",
+  description: tankProduct?.summary ?? "钢衬四氟、PO、PE、PFA、PVDF 防腐储罐结构装配示意与工况沟通条件。",
   alternates: {
-    canonical: "/products/tanks/",
+    canonical: `${canonicalBase}/products/tanks/`,
   },
   openGraph: {
-    title: "储罐 | 兆辉化工设备",
-    description: "钢衬四氟、PO、PE、PFA、PVDF 防腐储罐结构装配示意与工况沟通条件。",
-    url: "https://jszhff.cn/products/tanks/",
-    images: [{ url: "/images/site/product-tanks.webp", alt: "钢衬防腐储罐实拍" }],
+    title: `${tankProduct?.title ?? "储罐"} | 兆辉化工设备`,
+    description: tankProduct?.summary ?? "钢衬四氟、PO、PE、PFA、PVDF 防腐储罐结构装配示意与工况沟通条件。",
+    url: `${canonicalBase}/products/tanks/`,
+    images: [{ url: tankProduct?.image ?? "/images/site/product-tanks.webp", alt: tankProduct?.imageAlt ?? "钢衬防腐储罐实拍" }],
   },
 };
 

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}登录 | 兆辉多站点监测与管理后台{% endblock %}
+{% block content %}
+<section class="ops-login-wrap">
+  <p class="ops-label"><span>00</span>内部运营管理入口</p>
+  <h1>登录多站点管理后台</h1>
+  <p>账户启用强密码校验与会话安全保护，所有登录、写入与导出均留存审计日志。公开官网由独立静态产物提供服务。</p>
+  {% if error %}
+  <div class="ops-panel is-accent-left" style="margin-bottom:16px;padding:10px 14px;">
+    <strong>{{ error }}</strong>
+  </div>
+  {% endif %}
+  <form method="post" class="ops-login-form">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <div class="ops-field">
+      <label for="id_username">账号</label>
+      <input id="id_username" name="username" type="text" class="ops-input" required autocomplete="username" />
+    </div>
+    <div class="ops-field">
+      <label for="id_password">密码</label>
+      <input id="id_password" name="password" type="password" class="ops-input" required autocomplete="current-password" />
+    </div>
+    <button type="submit" class="ops-btn">登录后台</button>
+  </form>
+</section>
+{% endblock %}

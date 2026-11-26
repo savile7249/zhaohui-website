@@ -1,4 +1,6 @@
-export const productFamilies = [
+import { managedSnapshot } from "@/lib/managed-content";
+
+const baseProductFamilies = [
   {
     slug: "tanks",
     index: "01",
@@ -53,7 +55,37 @@ export const productFamilies = [
   },
 ] as const;
 
-export type ProductSlug = (typeof productFamilies)[number]["slug"];
+export type ProductSlug = (typeof baseProductFamilies)[number]["slug"];
+
+export interface ProductFamilyItem {
+  slug: ProductSlug;
+  index: string;
+  title: string;
+  english: string;
+  summary: string;
+  image: string;
+  imageAlt: string;
+  objectPosition: string;
+  variants: readonly string[];
+  applications: readonly string[];
+  inputs: readonly string[];
+}
+
+const snapshotProductMap = new Map(
+  (managedSnapshot?.products ?? []).map((item) => [item.slug, item]),
+);
+
+export const productFamilies: readonly ProductFamilyItem[] = baseProductFamilies.map((base) => {
+  const override = snapshotProductMap.get(base.slug);
+  if (!override) return base;
+  return {
+    ...base,
+    title: override.title || base.title,
+    summary: override.summary || base.summary,
+    image: override.image || base.image,
+    imageAlt: override.imageAlt || base.imageAlt,
+  };
+});
 
 export function isProductSlug(slug: string | null | undefined): slug is ProductSlug {
   return typeof slug === "string" && productFamilies.some((product) => product.slug === slug);

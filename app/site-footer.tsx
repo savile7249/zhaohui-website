@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { contactInfo } from "@/components/contact-data";
 import { ZhaohuiMark } from "@/components/zhaohui-mark";
+import { getManagedIcpNumber } from "@/lib/managed-content";
 
 interface SiteFooterProps {
   /** 是否在首页内渲染（首页使用页内锚点；子页面使用 /#... 链接） */
@@ -64,7 +65,7 @@ export function SiteFooter({ isHome = false, showQr = false }: SiteFooterProps) 
         <div className="pt-footer-legal">
           <p>© {new Date().getFullYear()} 兆辉化工设备</p>
           <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">
-            苏ICP备20000966号-6
+            {getManagedIcpNumber()}
           </a>
         </div>
       </div>
