@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { findProduct } from "@/app/products/product-data";
+import { findProduct, getProductBriefHref } from "@/app/products/product-data";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { ReactorAssemblyExplorer } from "./reactor-assembly";
@@ -137,7 +137,7 @@ export default function ReactorsPage() {
               ))}
             </dl>
             <div className="pt-tower-cta-row">
-              <Link href="/#brief" className="pt-button">
+              <Link href={getProductBriefHref("reactors")} className="pt-button">
                 准备反应釜询价简报
               </Link>
               <Link href="/#equipment" className="pt-link is-inverse">

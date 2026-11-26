@@ -1,26 +1,57 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { productFamilies } from "@/app/products/product-data";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { isProductSlug, productFamilies, type ProductSlug } from "@/app/products/product-data";
 import { contactInfo } from "@/components/contact-data";
 import { liningProcessOptions, mediumRiskOptions, shellMaterialOptions, volumePresets } from "./home-data";
 
-type Slug = (typeof productFamilies)[number]["slug"];
+function BriefQuerySync({ onProductFromUrl }: { onProductFromUrl: (slug: ProductSlug | null) => void }) {
+  const searchParams = useSearchParams();
+  const productParam = searchParams.get("product");
+
+  useEffect(() => {
+    onProductFromUrl(isProductSlug(productParam) ? productParam : null);
+  }, [productParam, onProductFromUrl]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#brief") return;
+    const target = document.getElementById("brief");
+    if (!target) return;
+
+    const rafId = window.requestAnimationFrame(() => {
+      const rect = target.getBoundingClientRect();
+      if (rect.top < 0 || rect.top > window.innerHeight * 0.6) {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      }
+    });
+
+    return () => window.cancelAnimationFrame(rafId);
+  }, [productParam]);
+
+  return null;
+}
 
 export function BriefWorkbench() {
-  const [slug, setSlug] = useState<Slug>("tanks");
-  const [volume, setVolume] = useState<string>(volumePresets[1]);
+  const [slug, setSlug] = useState<ProductSlug | "">("");
+  const [volume, setVolume] = useState("");
   const [size, setSize] = useState("");
-  const [shell, setShell] = useState<string>(shellMaterialOptions[0]);
-  const [lining, setLining] = useState<string>(liningProcessOptions[3]);
-  const [riskId, setRiskId] = useState<string>(mediumRiskOptions[1].id);
+  const [shell, setShell] = useState("");
+  const [lining, setLining] = useState("");
+  const [riskId, setRiskId] = useState("");
   const [medium, setMedium] = useState("");
   const [temperature, setTemperature] = useState("");
   const [pressure, setPressure] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const product = productFamilies.find((item) => item.slug === slug) ?? productFamilies[0];
-  const risk = mediumRiskOptions.find((item) => item.id === riskId) ?? mediumRiskOptions[0];
+  const handleProductFromUrl = useCallback((nextSlug: ProductSlug | null) => {
+    setSlug(nextSlug ?? "");
+  }, []);
+
+  const product = productFamilies.find((item) => item.slug === slug) ?? null;
+  const risk = mediumRiskOptions.find((item) => item.id === riskId) ?? null;
   const isTank = slug === "tanks";
 
   const briefText = useMemo(() => {
@@ -28,17 +59,21 @@ export function BriefWorkbench() {
     return [
       "兆辉化工设备 · 询价工况简报",
       "",
-      `设备类型　${product.title}`,
-      isTank ? `容积　　　${volume}` : `主要尺寸　${size.trim() || pending}`,
-      `壳体材料　${shell}`,
-      `防腐工艺　${lining}`,
+      `设备类型　${product ? product.title : pending}`,
+      isTank ? `容积　　　${volume || pending}` : `主要尺寸　${size.trim() || pending}`,
+      `壳体材料　${shell || pending}`,
+      `防腐工艺　${lining || pending}`,
       `介质　　　${medium.trim() || `${pending}（名称、浓度、杂质）`}`,
       `温度　　　${temperature.trim() || pending}`,
       `压力　　　${pressure.trim() || `${pending}（注明是否负压）`}`,
-      `审核类别　${risk.tier} · ${risk.label}`,
+      `审核类别　${risk ? `${risk.tier} · ${risk.label}` : pending}`,
       "",
-      `还需确认：${product.inputs.join("、")}`,
-      `随附资料：${risk.extraInputs.join("、")}`,
+      product
+        ? `还需确认：${product.inputs.join("、")}`
+        : `还需确认：${pending}（选择设备类型后列出对应核对项）`,
+      risk
+        ? `随附资料：${risk.extraInputs.join("、")}`
+        : `随附资料：${pending}（如有完整组分、浓度、温度及 SDS 可一并附送）`,
       "",
       "本简报仅用于前期沟通，不构成选材或报价结论，最终方案以技术审核为准。",
     ].join("\n");
@@ -56,6 +91,10 @@ export function BriefWorkbench() {
 
   return (
     <div className="pt-brief">
+      <Suspense fallback={null}>
+        <BriefQuerySync onProductFromUrl={handleProductFromUrl} />
+      </Suspense>
+
       <form className="pt-brief-form" onSubmit={(event) => event.preventDefault()}>
         <fieldset className="pt-field">
           <legend>设备类型</legend>
@@ -84,7 +123,7 @@ export function BriefWorkbench() {
                   type="button"
                   aria-pressed={volume === preset}
                   className="pt-chip"
-                  onClick={() => setVolume(preset)}
+                  onClick={() => setVolume((prev) => (prev === preset ? "" : preset))}
                 >
                   {preset}
                 </button>
@@ -97,7 +136,13 @@ export function BriefWorkbench() {
             <input
               id="pt-size"
               className="pt-input"
-              placeholder={slug === "piping" ? "例如：DN100，总长 60 m" : "例如：直径 2000 mm，高度 8 m"}
+              placeholder={
+                slug === "piping"
+                  ? "例如：DN100，总长 60 m"
+                  : slug
+                    ? "例如：直径 2000 mm，高度 8 m"
+                    : "例如：20 m³，或直径 2000 mm、高度 8 m / DN100"
+              }
               value={size}
               onChange={(event) => setSize(event.target.value)}
             />
@@ -108,16 +153,22 @@ export function BriefWorkbench() {
           <div className="pt-field">
             <label htmlFor="pt-shell">壳体材料</label>
             <select id="pt-shell" className="pt-input" value={shell} onChange={(event) => setShell(event.target.value)}>
+              <option value="">待补充</option>
               {shellMaterialOptions.map((option) => (
-                <option key={option}>{option}</option>
+                <option key={option} value={option}>
+                  {option}
+                </option>
               ))}
             </select>
           </div>
           <div className="pt-field">
             <label htmlFor="pt-lining">防腐工艺</label>
             <select id="pt-lining" className="pt-input" value={lining} onChange={(event) => setLining(event.target.value)}>
+              <option value="">待补充</option>
               {liningProcessOptions.map((option) => (
-                <option key={option}>{option}</option>
+                <option key={option} value={option}>
+                  {option}
+                </option>
               ))}
             </select>
           </div>
@@ -176,9 +227,11 @@ export function BriefWorkbench() {
               </label>
             ))}
           </div>
-          <p className={`pt-risk-note ${risk.id === "special" ? "is-special" : ""}`} role="status">
-            <strong>{risk.tier}</strong>
-            {risk.note}
+          <p className={`pt-risk-note ${risk?.id === "special" ? "is-special" : ""}`} role="status">
+            <strong>{risk ? risk.tier : "待补充"}</strong>
+            {risk
+              ? risk.note
+              : "未确定介质类别时可留空，技术人员将根据实际组分与浓度核对；氢氟酸、混酸等高危或强氧化介质需进入专项审核。"}
           </p>
         </fieldset>
       </form>

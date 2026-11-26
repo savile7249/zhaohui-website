@@ -645,11 +645,16 @@
 
 .pt-gallery-media {
   position: relative;
+  display: block;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 1px solid var(--line-light);
   background: var(--paper-raised);
   transition: border-color 220ms ease;
+}
+
+.pt-gallery-trigger:focus-visible .pt-gallery-media {
+  border-color: var(--accent);
 }
 
 .pt-gallery-media img {
@@ -694,25 +699,6 @@
   color: var(--on-light-faint);
 }
 
-.pt-gallery-zoom-btn {
-  padding: 0 0 2px;
-  border: 0;
-  border-bottom: 1px solid var(--line-light-strong);
-  background: none;
-  font-size: var(--fs-meta);
-  font-weight: 500;
-  color: var(--on-light-muted);
-  cursor: pointer;
-  transition:
-    color 200ms ease,
-    border-color 200ms ease;
-}
-
-.pt-gallery-zoom-btn:hover {
-  color: var(--on-light);
-  border-color: var(--on-light);
-}
-
 .pt-gallery-meta h3 {
   margin-top: 10px;
   font-size: 1.25rem;
@@ -728,15 +714,32 @@
   color: var(--on-light-muted);
 }
 
-/* 实拍大图灯箱（0 圆角、无阴影、实色深底） */
+/* 实拍大图灯箱（原生 dialog.showModal，0 圆角、无阴影、实色深底） */
 .pt-lightbox {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: clamp(16px, 3vw, 40px);
+  border: 0;
+  background: transparent;
+  color: var(--on-dark);
+}
+
+.pt-lightbox:not([open]) {
+  display: none;
+}
+
+.pt-lightbox[open] {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(16px, 3vw, 40px);
+}
+
+.pt-lightbox::backdrop {
   background: rgb(5 9 13 / 0.94);
 }
 
@@ -745,6 +748,7 @@
   flex-direction: column;
   width: min(1120px, 100%);
   max-height: 100%;
+  overflow: auto;
   border: 1px solid var(--line-dark);
   background: var(--ink);
   color: var(--on-dark);

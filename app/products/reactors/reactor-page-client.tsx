@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getProductBriefHref } from "@/app/products/product-data";
 import { detectHeaderSurface, ZhaohuiLogo, type BrandSurfaceTone } from "@/components/zhaohui-logo";
 
 const navigation = [
@@ -118,7 +119,7 @@ export function ReactorPageClient({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="pt-header-actions">
-            <Link href="/#brief" className="pt-header-cta">
+            <Link href={getProductBriefHref("reactors")} className="pt-header-cta">
               询价准备
             </Link>
             <details className="pt-mobile-menu" ref={menuRef}>
@@ -135,7 +136,7 @@ export function ReactorPageClient({ children }: { children: ReactNode }) {
                     </Link>
                   ),
                 )}
-                <Link href="/#brief">询价准备</Link>
+                <Link href={getProductBriefHref("reactors")}>询价准备</Link>
               </nav>
             </details>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 
 export interface ProductPhotoItem {
   readonly id: string;
@@ -18,18 +18,37 @@ interface ProductPhotoGalleryProps {
   readonly photos: readonly ProductPhotoItem[];
 }
 
+const FOCUSABLE_SELECTOR =
+  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function getFocusableElements(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (element) => !element.hasAttribute("inert") && element.getClientRects().length > 0,
+  );
+}
+
 export function ProductPhotoGallery({ productTitle, photos }: ProductPhotoGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const isOpen = activeIndex !== null;
 
-  const closeLightbox = useCallback(() => {
-    setActiveIndex(null);
+  const restoreFocusToOpener = useCallback(() => {
     const opener = openerRef.current;
     if (opener && opener.isConnected) {
-      requestAnimationFrame(() => opener.focus());
+      opener.focus();
     }
   }, []);
+
+  const closeLightbox = useCallback(() => {
+    const dialog = dialogRef.current;
+    if (dialog?.open) {
+      dialog.close();
+    }
+    setActiveIndex(null);
+    restoreFocusToOpener();
+  }, [restoreFocusToOpener]);
 
   const showPrev = useCallback(() => {
     setActiveIndex((prev) => {
@@ -51,31 +70,75 @@ export function ProductPhotoGallery({ productTitle, photos }: ProductPhotoGaller
   }
 
   useEffect(() => {
-    if (activeIndex === null) return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (!isOpen) {
+      if (dialog.open) {
+        dialog.close();
+      }
+      return;
+    }
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    if (!dialog.open) {
+      dialog.showModal();
+    }
     closeButtonRef.current?.focus();
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeLightbox();
-      } else if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        showPrev();
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        showNext();
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
+      if (dialog.open) {
+        dialog.close();
+      }
     };
-  }, [activeIndex, closeLightbox, showNext, showPrev]);
+  }, [isOpen]);
+
+  function handleDialogKeyDown(event: ReactKeyboardEvent<HTMLDialogElement>) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeLightbox();
+      return;
+    }
+
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      showPrev();
+      return;
+    }
+
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      showNext();
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const focusables = getFocusableElements(dialog);
+      if (focusables.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const activeElement = document.activeElement as HTMLElement | null;
+
+      if (event.shiftKey) {
+        if (!activeElement || activeElement === first || !dialog.contains(activeElement)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (!activeElement || activeElement === last || !dialog.contains(activeElement)) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
 
   const count = photos.length;
   const gridClass =
@@ -96,14 +159,14 @@ export function ProductPhotoGallery({ productTitle, photos }: ProductPhotoGaller
                   onClick={(event) => openLightbox(idx, event.currentTarget)}
                   aria-label={`放大查看 ${photo.title} 实拍图`}
                 >
-                  <div className="pt-gallery-media">
+                  <span className="pt-gallery-media">
                     <Image
                       src={photo.image}
                       alt={photo.imageAlt}
                       fill
                       sizes={isWide ? "(min-width: 900px) 46vw, 100vw" : "(min-width: 900px) 30vw, 100vw"}
                     />
-                  </div>
+                  </span>
                 </button>
 
                 <figcaption className="pt-gallery-meta">
@@ -112,13 +175,6 @@ export function ProductPhotoGallery({ productTitle, photos }: ProductPhotoGaller
                       <span className="pt-num">{photo.index}</span>
                       <span className="pt-gallery-tag">{photo.tag}</span>
                     </span>
-                    <button
-                      type="button"
-                      className="pt-gallery-zoom-btn"
-                      onClick={(event) => openLightbox(idx, event.currentTarget)}
-                    >
-                      查看大图
-                    </button>
                   </div>
                   <h3>{photo.title}</h3>
                   <p>{photo.caption}</p>
@@ -129,16 +185,21 @@ export function ProductPhotoGallery({ productTitle, photos }: ProductPhotoGaller
         })}
       </ol>
 
-      {activePhoto !== null && activeIndex !== null ? (
-        <div
-          className="pt-lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${activePhoto.title} 实拍大图`}
-          onClick={(event) => {
-            if (event.target === event.currentTarget) closeLightbox();
-          }}
-        >
+      <dialog
+        ref={dialogRef}
+        className="pt-lightbox"
+        aria-modal="true"
+        aria-label={activePhoto ? `${activePhoto.title} 实拍大图` : `${productTitle} 实拍大图`}
+        onCancel={(event) => {
+          event.preventDefault();
+          closeLightbox();
+        }}
+        onKeyDown={handleDialogKeyDown}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) closeLightbox();
+        }}
+      >
+        {activePhoto !== null && activeIndex !== null ? (
           <div className="pt-lightbox-panel">
             <div className="pt-lightbox-bar">
               <div className="pt-lightbox-title">
@@ -175,8 +236,8 @@ export function ProductPhotoGallery({ productTitle, photos }: ProductPhotoGaller
               ) : null}
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </dialog>
     </>
   );
 }

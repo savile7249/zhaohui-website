@@ -53,6 +53,16 @@ export const productFamilies = [
   },
 ] as const;
 
+export type ProductSlug = (typeof productFamilies)[number]["slug"];
+
+export function isProductSlug(slug: string | null | undefined): slug is ProductSlug {
+  return typeof slug === "string" && productFamilies.some((product) => product.slug === slug);
+}
+
+export function getProductBriefHref(slug: ProductSlug) {
+  return `/?product=${slug}#brief`;
+}
+
 export function findProduct(slug: string) {
   return productFamilies.find((product) => product.slug === slug);
 }
