@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily MariaDB Full Logical Backup for zhaohui_admin (03:15 CST)
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+RandomizedDelaySec=120s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

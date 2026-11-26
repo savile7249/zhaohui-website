@@ -51,11 +51,12 @@ def probe_domain(
     timeout_sec: float = 5.0,
 ) -> ProbeResult:
     now = timezone.now()
-    host_ip = target_host or settings.PROBE_TARGET_HOST
+    use_official = getattr(settings, "PROBE_USE_OFFICIAL_DOMAIN", False)
+    sni_host = domain.official_domain if use_official else domain.test_host
+    host_ip = target_host or settings.PROBE_TARGET_HOST or sni_host
     port = int(target_port or settings.PROBE_TARGET_PORT)
-    cafile = ca_cert_path or settings.PROBE_CA_CERT_PATH
-    sni_host = domain.test_host
-    probe_url = f"https://{sni_host}:{port}/"
+    cafile = ca_cert_path if ca_cert_path is not None else (settings.PROBE_CA_CERT_PATH or None)
+    probe_url = f"https://{sni_host}/" if port == 443 else f"https://{sni_host}:{port}/"
 
     last_success = ProbeResult.objects.filter(domain=domain, is_success=True).first()
     last_success_at = last_success.checked_at if last_success else None

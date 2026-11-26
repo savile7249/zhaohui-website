@@ -1,0 +1,21 @@
+[Unit]
+Description=Zhaohui Local Loopback HMAC Event Forwarder (127.0.0.1:18081)
+After=network.target zhaohui-admin-gunicorn.service
+Wants=zhaohui-admin-gunicorn.service
+
+[Service]
+Type=simple
+User=zhaohui-admin
+Group=zhaohui-admin
+WorkingDirectory=/opt/zhaohui-admin
+EnvironmentFile=/etc/zhaohui-admin/admin.env
+ExecStart=/usr/bin/python3 /opt/zhaohui-admin/ops/prod-pilot/event_forwarder.py
+Restart=always
+RestartSec=2s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

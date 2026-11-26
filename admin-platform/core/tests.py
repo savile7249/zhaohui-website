@@ -383,3 +383,243 @@ class Stage3PublishingFailureProtectionAndRollbackTests(TestCase):
         self.assertNotIn("二期升级版", rolled_html)
         self.assertTrue((current_link / "assets" / "site.css").is_file())
         self.assertTrue((current_link / "assets" / "tracker.js").is_file())
+
+
+class ProductionPilotReadinessTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        call_command("seed_test_env")
+
+    def test_prune_old_data_dry_run_and_retention_cleanup_with_audit(self):
+        import io
+        from django.core.management.base import CommandError
+
+        zh = Site.objects.get(slug="zhaohui")
+        dom = Domain.objects.get(official_domain="jszhff.cn")
+        now = timezone.now()
+
+        # Expired rows (>180d for events/probes, >365d for metrics/resolved alerts/audit logs)
+        ev_old = PageEvent.objects.create(
+            site=zh, domain=dom, event_type=PageEvent.EVENT_PAGE_VIEW,
+            page_path="/", product_category="", gateway_id="gw-01",
+            occurred_at=now - timedelta(days=200),
+        )
+        ev_new = PageEvent.objects.create(
+            site=zh, domain=dom, event_type=PageEvent.EVENT_PAGE_VIEW,
+            page_path="/products/tanks/", product_category="tanks", gateway_id="gw-01",
+            occurred_at=now - timedelta(days=10),
+        )
+
+        pr_old = ProbeResult.objects.create(
+            site=zh, domain=dom, probe_url="https://jszhff.cn/",
+            checked_at=now - timedelta(days=190), is_success=True, http_status=200,
+        )
+        pr_new = ProbeResult.objects.create(
+            site=zh, domain=dom, probe_url="https://jszhff.cn/",
+            checked_at=now - timedelta(days=5), is_success=True, http_status=200,
+        )
+
+        gm_old = GatewayMetricBucket.objects.create(
+            site=zh, domain=dom, gateway_id="gw-01",
+            bucket_start=now - timedelta(days=400), total_requests=10,
+        )
+        gm_new = GatewayMetricBucket.objects.create(
+            site=zh, domain=dom, gateway_id="gw-01",
+            bucket_start=now - timedelta(days=20), total_requests=5,
+        )
+
+        al_resolved_old = AlertEvent.objects.create(
+            site=zh, domain=dom, alert_type=AlertEvent.TYPE_HOME_ERROR,
+            status=AlertEvent.STATUS_RESOLVED, severity=AlertEvent.SEVERITY_CRITICAL,
+            message="old resolved", resolved_at=now - timedelta(days=380),
+        )
+        al_open_old = AlertEvent.objects.create(
+            site=zh, domain=dom, alert_type=AlertEvent.TYPE_TLS_EXPIRING,
+            status=AlertEvent.STATUS_OPEN, severity=AlertEvent.SEVERITY_WARNING,
+            message="still open alert must never be pruned",
+        )
+        AlertEvent.objects.filter(id=al_open_old.id).update(opened_at=now - timedelta(days=400))
+
+        au_old = AuditLog.objects.create(
+            actor=None, actor_username="legacy_user", site=zh,
+            action="auth.login", target_type="user", target_id="1", summary="old audit",
+        )
+        AuditLog.objects.filter(id=au_old.id).update(created_at=now - timedelta(days=400))
+
+        # Invalid retention days rejected
+        with self.assertRaises(CommandError):
+            call_command("prune_old_data", events_days=0)
+
+        # Dry-run: accurate candidate counts, zero deletions, zero new audit log
+        audit_count_before = AuditLog.objects.count()
+        buf_dry = io.StringIO()
+        call_command("prune_old_data", dry_run=True, as_json=True, stdout=buf_dry)
+        dry_report = json.loads(buf_dry.getvalue())
+        self.assertTrue(dry_report["dry_run"])
+        self.assertEqual(dry_report["counts"]["page_events"], 1)
+        self.assertEqual(dry_report["counts"]["probe_results"], 1)
+        self.assertEqual(dry_report["counts"]["gateway_metrics"], 1)
+        self.assertEqual(dry_report["counts"]["resolved_alerts"], 1)
+        self.assertEqual(dry_report["counts"]["audit_logs"], 1)
+        self.assertTrue(PageEvent.objects.filter(id=ev_old.id).exists())
+        self.assertTrue(AuditLog.objects.filter(id=au_old.id).exists())
+        self.assertEqual(AuditLog.objects.count(), audit_count_before)
+
+        # Real prune run: removes expired rows, keeps recent + open alerts, records AuditLog
+        buf_real = io.StringIO()
+        call_command("prune_old_data", as_json=True, stdout=buf_real)
+        real_report = json.loads(buf_real.getvalue())
+        self.assertFalse(real_report["dry_run"])
+        self.assertEqual(real_report["counts"]["page_events"], 1)
+        self.assertEqual(real_report["counts"]["probe_results"], 1)
+        self.assertEqual(real_report["counts"]["gateway_metrics"], 1)
+        self.assertEqual(real_report["counts"]["resolved_alerts"], 1)
+        self.assertEqual(real_report["counts"]["audit_logs"], 1)
+
+        self.assertFalse(PageEvent.objects.filter(id=ev_old.id).exists())
+        self.assertTrue(PageEvent.objects.filter(id=ev_new.id).exists())
+        self.assertFalse(ProbeResult.objects.filter(id=pr_old.id).exists())
+        self.assertTrue(ProbeResult.objects.filter(id=pr_new.id).exists())
+        self.assertFalse(GatewayMetricBucket.objects.filter(id=gm_old.id).exists())
+        self.assertTrue(GatewayMetricBucket.objects.filter(id=gm_new.id).exists())
+        self.assertFalse(AlertEvent.objects.filter(id=al_resolved_old.id).exists())
+        self.assertTrue(AlertEvent.objects.filter(id=al_open_old.id).exists())
+        self.assertFalse(AuditLog.objects.filter(id=au_old.id).exists())
+
+        prune_audit = AuditLog.objects.filter(action="system.prune_old_data").first()
+        self.assertIsNotNone(prune_audit)
+        self.assertEqual(prune_audit.metadata["deleted"]["page_events"], 1)
+        self.assertEqual(prune_audit.metadata["retention_days"]["events_days"], 180)
+        self.assertEqual(prune_audit.metadata["retention_days"]["audit_days"], 365)
+
+    def test_production_config_validation_and_auth_policy(self):
+        from config.settings import (
+            AUTH_CAPTCHA_ENABLED,
+            AUTH_IP_WHITELIST_ENABLED,
+            AUTH_MTLS_REQUIRED,
+            DEFAULT_TEST_DB_PASSWORD,
+            DEFAULT_TEST_SECRET_KEY,
+            validate_production_config,
+        )
+
+        # Decision #2: strictly username+password only (no CAPTCHA, no mTLS, no IP whitelist)
+        self.assertFalse(AUTH_CAPTCHA_ENABLED)
+        self.assertFalse(AUTH_MTLS_REQUIRED)
+        self.assertFalse(AUTH_IP_WHITELIST_ENABLED)
+
+        # Insecure defaults must be rejected
+        bad_errors = validate_production_config(
+            debug=True,
+            secret_key=DEFAULT_TEST_SECRET_KEY,
+            db_password=DEFAULT_TEST_DB_PASSWORD,
+            allowed_hosts=["*"],
+            csrf_trusted_origins=["http://admin.jszhff.cn"],
+            secure_https=False,
+        )
+        self.assertEqual(len(bad_errors), 6)
+
+        # Hardened production settings pass cleanly
+        ok_errors = validate_production_config(
+            debug=False,
+            secret_key="prod-only-random-secret-key-at-least-48-chars-long-9a8b7c6d",
+            db_password="ProdStrongDbPass!#2026xyz",
+            allowed_hosts=["admin.jszhff.cn", "127.0.0.1"],
+            csrf_trusted_origins=["https://admin.jszhff.cn"],
+            secure_https=True,
+        )
+        self.assertEqual(ok_errors, [])
+
+        # On-server Next.js build guard when ALLOW_ON_SERVER_BUILD=False
+        zh = Site.objects.get(slug="zhaohui")
+        dom = Domain.objects.get(official_domain="jszhff.cn")
+        snap = zh.snapshots.first()
+        admin = User.objects.get(username="platform_admin")
+        with override_settings(ALLOW_ON_SERVER_BUILD=False):
+            rel = build_and_deploy_domain(
+                snapshot=snap, domain=dom, build_type=ReleaseRecord.BUILD_PREVIEW, user=admin
+            )
+            self.assertEqual(rel.status, ReleaseRecord.STATUS_FAILED)
+            self.assertIn("ZHAOHUI_ALLOW_ON_SERVER_BUILD=0", rel.error_message)
+
+    def test_init_prod_pilot_command_and_gateway_scripts_compatibility(self):
+        import importlib.util
+        import tempfile
+        from django.core.management.base import CommandError
+
+        # Reject weak/default gateway secret
+        with self.assertRaises(CommandError):
+            call_command("init_prod_pilot", gateway_secret=settings.DEFAULT_TEST_GATEWAY_SECRET)
+
+        prod_secret = "f" * 64
+        call_command(
+            "init_prod_pilot",
+            gateway_id="prod-zhaohui-nginx-01",
+            gateway_secret=prod_secret,
+        )
+        cred = GatewayCredential.objects.get(gateway_id="prod-zhaohui-nginx-01")
+        self.assertTrue(cred.is_active)
+        self.assertEqual(cred.site.slug, "zhaohui")
+        d_pending = Domain.objects.get(official_domain="zhaohuifangfu.com")
+        self.assertEqual(d_pending.domain_status, Domain.STATUS_PENDING_ICP)
+        self.assertFalse(d_pending.public_enabled)
+
+        # Verify ops/prod-pilot/event_forwarder.py signature matches Django GatewayCredential
+        fwd_path = Path(settings.REPO_ROOT) / "ops" / "prod-pilot" / "event_forwarder.py"
+        spec_fwd = importlib.util.spec_from_file_location("prod_event_forwarder", fwd_path)
+        mod_fwd = importlib.util.module_from_spec(spec_fwd)
+        spec_fwd.loader.exec_module(mod_fwd)
+
+        raw_ev = b'{"event_type":"page_view","page_path":"/"}'
+        ts = str(int(time.time()))
+        sig = mod_fwd.compute_gateway_signature(cred.gateway_id, prod_secret, ts, "jszhff.cn", raw_ev)
+        self.assertTrue(cred.verify_signature(ts, "jszhff.cn", raw_ev, sig))
+
+        # Verify ops/prod-pilot/nginx_log_aggregator.py incremental read + logrotate drain + signature
+        agg_path = Path(settings.REPO_ROOT) / "ops" / "prod-pilot" / "nginx_log_aggregator.py"
+        spec_agg = importlib.util.spec_from_file_location("prod_log_aggregator", agg_path)
+        mod_agg = importlib.util.module_from_spec(spec_agg)
+        spec_agg.loader.exec_module(mod_agg)
+
+        with tempfile.TemporaryDirectory() as td:
+            log_file = Path(td) / "jszhff.cn.metrics.log"
+            rot_file = Path(td) / "jszhff.cn.metrics.log.1"
+            epoch_ts = 1795651200.123
+            line1 = json.dumps({
+                "msec": f"{epoch_ts:.3f}", "host": "jszhff.cn", "server_name": "jszhff.cn",
+                "method": "GET", "uri": "/", "status": 200, "request_time": 0.012,
+            })
+            line2 = json.dumps({
+                "msec": f"{epoch_ts + 1:.3f}", "host": "jszhff.cn", "server_name": "jszhff.cn",
+                "method": "GET", "uri": "/_next/static/app.js", "status": 200, "request_time": 0.004,
+            })
+            line_track = json.dumps({
+                "msec": f"{epoch_ts + 2:.3f}", "host": "jszhff.cn", "server_name": "jszhff.cn",
+                "method": "POST", "uri": "/_track/event", "status": 201, "request_time": 0.015,
+            })
+            log_file.write_text(line1 + "\n", encoding="utf-8")
+
+            lines_a, inode_a, off_a = mod_agg.read_incremental_lines(log_file, {"inode": None, "offset": 0})
+            self.assertEqual(len(lines_a), 1)
+
+            # Simulate logrotate: append line2 to old file, move to .1, create new log_file with line_track
+            with log_file.open("a", encoding="utf-8") as f:
+                f.write(line2 + "\n")
+            log_file.rename(rot_file)
+            log_file.write_text(line_track + "\n", encoding="utf-8")
+
+            lines_b, inode_b, off_b = mod_agg.read_incremental_lines(
+                log_file, {"inode": inode_a, "offset": off_a}
+            )
+            self.assertEqual(len(lines_b), 2)  # drained line2 from .1 + line_track from new file
+            self.assertNotEqual(inode_a, inode_b)
+
+            buckets = mod_agg.aggregate_lines(lines_a + lines_b, {"jszhff.cn"})
+            self.assertEqual(len(buckets), 1)
+            self.assertEqual(buckets[0]["total_requests"], 2)  # /_track/event ignored
+            self.assertEqual(buckets[0]["html_requests"], 1)
+            self.assertEqual(buckets[0]["static_asset_requests"], 1)
+            self.assertEqual(buckets[0]["status_2xx"], 2)
+
+            batch_raw = json.dumps({"gateway_id": cred.gateway_id, "buckets": buckets, "heartbeat_hosts": ["jszhff.cn"]}).encode("utf-8")
+            batch_sig = mod_agg.sign_batch(cred.gateway_id, prod_secret, ts, batch_raw)
+            self.assertTrue(cred.verify_signature(ts, "__batch__", batch_raw, batch_sig))

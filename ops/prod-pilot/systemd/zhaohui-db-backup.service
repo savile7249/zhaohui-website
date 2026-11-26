@@ -1,0 +1,13 @@
+[Unit]
+Description=Zhaohui Isolated MariaDB Logical Backup (zhaohui_admin)
+After=mariadb.service
+Requires=mariadb.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+EnvironmentFile=/etc/zhaohui-admin/admin.env
+ExecStart=/opt/zhaohui-admin/ops/prod-pilot/backup_mariadb.sh
+NoNewPrivileges=true
+PrivateTmp=true

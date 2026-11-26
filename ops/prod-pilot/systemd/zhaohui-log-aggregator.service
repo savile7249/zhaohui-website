@@ -1,0 +1,16 @@
+[Unit]
+Description=Zhaohui Nginx Per-Domain Metrics Log Aggregator
+After=network.target zhaohui-admin-gunicorn.service
+
+[Service]
+Type=oneshot
+User=zhaohui-admin
+Group=adm
+WorkingDirectory=/opt/zhaohui-admin
+EnvironmentFile=/etc/zhaohui-admin/admin.env
+ExecStart=/usr/bin/python3 /opt/zhaohui-admin/ops/prod-pilot/nginx_log_aggregator.py
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/zhaohui-admin
+ReadOnlyPaths=/var/log/nginx

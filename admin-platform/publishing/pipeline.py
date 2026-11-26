@@ -138,7 +138,21 @@ def build_domain_snapshot_doc(snapshot: ContentSnapshot, domain: Domain, build_t
     return doc
 
 
+def _domain_site_dir(domain: Domain) -> Path:
+    dir_name = (
+        domain.official_domain
+        if getattr(settings, "USE_OFFICIAL_DOMAIN_PATHS", False)
+        else domain.test_host
+    )
+    return settings.SITES_ROOT / dir_name
+
+
 def _build_nextjs_site(snapshot_json_path: Path, artifact_dir: Path):
+    if not getattr(settings, "ALLOW_ON_SERVER_BUILD", True):
+        raise BuildPipelineError(
+            "生产源站已禁用本机 Next.js 构建（ZHAOHUI_ALLOW_ON_SERVER_BUILD=0）。"
+            "请导出内容快照 JSON 后在本地或 CI 执行 ops/prod-pilot/build_and_stage.sh 构建并同步产物。"
+        )
     lock_file = settings.RUNTIME_DIR / "next-build.lock"
     lock_file.parent.mkdir(parents=True, exist_ok=True)
     with open(lock_file, "w") as lf:
@@ -464,7 +478,7 @@ def build_and_deploy_domain(
     snap_file = snap_dir / f"{rel_ver}-{domain.test_host}.json"
     snap_file.write_text(json.dumps(domain_doc, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    site_domain_root = settings.SITES_ROOT / domain.test_host
+    site_domain_root = _domain_site_dir(domain)
     if build_type == ReleaseRecord.BUILD_PREVIEW:
         artifact_dir = site_domain_root / "previews" / rel_ver
     else:
@@ -571,7 +585,7 @@ def rollback_domain(domain: Domain, target_release: ReleaseRecord, user, request
         raise BuildPipelineError("目标历史版本完整性校验未通过：" + "；".join(report.get("errors", [])))
 
     prev_current = ReleaseRecord.objects.filter(domain=domain, is_current=True).first()
-    site_domain_root = settings.SITES_ROOT / domain.test_host
+    site_domain_root = _domain_site_dir(domain)
     _atomic_symlink(site_domain_root / "current", artifact_dir)
 
     ReleaseRecord.objects.filter(domain=domain, is_current=True).update(is_current=False)

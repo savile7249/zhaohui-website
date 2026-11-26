@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Data Retention Pruning for Zhaohui Admin (03:45 CST)
+
+[Timer]
+OnCalendar=*-*-* 03:45:00
+RandomizedDelaySec=120s
+Persistent=true
+
+[Install]
+WantedBy=timers.target
