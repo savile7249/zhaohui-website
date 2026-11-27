@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
     h.strip()
     for h in os.environ.get(
         "DJANGO_ALLOWED_HOSTS",
-        "admin.jszhff.cn,127.0.0.1,localhost" if IS_PRODUCTION else "127.0.0.1,localhost,admin.localhost",
+        "admin.wuxifangfu.cn,127.0.0.1,localhost" if IS_PRODUCTION else "127.0.0.1,localhost,admin.localhost",
     ).split(",")
     if h.strip()
 ]
@@ -40,7 +40,7 @@ CSRF_TRUSTED_ORIGINS = [
     o.strip()
     for o in os.environ.get(
         "DJANGO_CSRF_TRUSTED_ORIGINS",
-        "https://admin.jszhff.cn"
+        "https://admin.wuxifangfu.cn"
         if IS_PRODUCTION
         else "http://127.0.0.1:18000,http://localhost:18000,http://admin.localhost:18000",
     ).split(",")
