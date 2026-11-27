@@ -104,18 +104,71 @@ if ! grep -Fq "rel=\"canonical\" href=\"${EXPECTED_CANONICAL}\"" "${OUT_DIR}/ind
   exit 1
 fi
 
-# Verify every local static asset referenced in index.html exists
-python3 - "${OUT_DIR}" <<'PY'
-import re, sys
+# Verify every local static asset referenced in index.html exists + sub-product/article pages & sitemap completeness
+python3 - "${OUT_DIR}" "${REPO_ROOT}/content/managed-catalog.json" "${SNAPSHOT_PATH}" "${EXPECTED_CANONICAL%/}" <<'PY'
+import json, re, sys
 from pathlib import Path
+
 out_dir = Path(sys.argv[1])
+default_catalog = Path(sys.argv[2])
+snapshot_path = Path(sys.argv[3]) if sys.argv[3] else None
+canonical_base = sys.argv[4].rstrip("/")
+
 html = (out_dir / "index.html").read_text(encoding="utf-8", errors="ignore")
 refs = sorted(set(re.findall(r'(?:src|href)="(/[^\s"?#]+\.(?:css|js|webp|png|jpg|jpeg|svg|ico))"', html)))
 missing = [r for r in refs if not (out_dir / r.lstrip("/")).is_file()]
 if not refs or missing:
     print(f"[ERROR] Static asset check failed: count={len(refs)} missing={missing[:10]}", file=sys.stderr)
     sys.exit(1)
-print(f"[smoke] Verified {len(refs)} referenced static assets in out/index.html (0 missing).")
+
+catalog = {}
+if snapshot_path and snapshot_path.is_file():
+    snap = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    if snap.get("variants"):
+        catalog = snap
+if not catalog and default_catalog.is_file():
+    catalog = json.loads(default_catalog.read_text(encoding="utf-8"))
+
+sitemap_xml = (out_dir / "sitemap.xml").read_text(encoding="utf-8", errors="ignore")
+checked_variants = 0
+checked_articles = 0
+published_keys = set()
+
+for v in catalog.get("variants") or []:
+    if v.get("isPublished", True) is False:
+        continue
+    cat, vslug = v["categorySlug"], v["variantSlug"]
+    published_keys.add((cat, vslug))
+    v_file = out_dir / "products" / cat / vslug / "index.html"
+    v_url = f"{canonical_base}/products/{cat}/{vslug}/"
+    if not v_file.is_file():
+        print(f"[ERROR] Missing variant export page: {v_file}", file=sys.stderr)
+        sys.exit(1)
+    if v_url not in sitemap_xml:
+        print(f"[ERROR] Variant URL missing in sitemap.xml: {v_url}", file=sys.stderr)
+        sys.exit(1)
+    checked_variants += 1
+
+for a in catalog.get("articles") or []:
+    if a.get("status") != "published":
+        continue
+    cat, vslug, aslug = a["categorySlug"], a["variantSlug"], a["articleSlug"]
+    if (cat, vslug) not in published_keys:
+        continue
+    a_file = out_dir / "products" / cat / vslug / aslug / "index.html"
+    a_url = f"{canonical_base}/products/{cat}/{vslug}/{aslug}/"
+    if not a_file.is_file():
+        print(f"[ERROR] Missing article export page: {a_file}", file=sys.stderr)
+        sys.exit(1)
+    if a_url not in sitemap_xml:
+        print(f"[ERROR] Article URL missing in sitemap.xml: {a_url}", file=sys.stderr)
+        sys.exit(1)
+    checked_articles += 1
+
+print(
+    f"[smoke] Verified {len(refs)} assets, {checked_variants} sub-product pages, "
+    f"{checked_articles} article pages, and sitemap.xml entries (0 missing)."
+)
 PY
 
 if [[ "${MODE}" == "local-only" ]]; then

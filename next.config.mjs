@@ -22,6 +22,7 @@ const nextConfig = {
   },
   env: {
     NEXT_PUBLIC_ZHAOHUI_SNAPSHOT: serializedSnapshot,
+    ZHAOHUI_SNAPSHOT_PATH: snapshotPath || "",
   },
 };
 

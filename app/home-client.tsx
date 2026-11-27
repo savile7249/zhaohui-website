@@ -3,21 +3,13 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { detectHeaderSurface, ZhaohuiLogo, type BrandSurfaceTone } from "@/components/zhaohui-logo";
-
-const navigation = [
-  ["关于", "about"],
-  ["设备", "equipment"],
-  ["应用与资质", "credentials"],
-  ["制造", "manufacturing"],
-  ["联系", "contact"],
-] as const;
+import { SiteHeader } from "@/components/site-header";
+import { detectHeaderSurface, type BrandSurfaceTone } from "@/components/zhaohui-logo";
 
 const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export function HomeClient({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDetailsElement>(null);
   const [active, setActive] = useState<string>("");
   const [scrolled, setScrolled] = useState(false);
   const [headerSurface, setHeaderSurface] = useState<BrandSurfaceTone>("dark");
@@ -81,52 +73,19 @@ export function HomeClient({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  function closeMenu() {
-    menuRef.current?.removeAttribute("open");
-  }
-
   return (
     <div id="top" ref={rootRef} className="pt-root">
       <a className="pt-skip-link" href="#pt-main">
         跳到主要内容
       </a>
 
-      <header
-        className="pt-header"
-        data-scrolled={scrolled ? "true" : undefined}
-        data-surface={headerSurface}
-      >
-        <div className="pt-header-inner">
-          <a href="#top" aria-label="兆辉智能装备 · 返回顶部" className="pt-logo-link">
-            <ZhaohuiLogo surface={headerSurface} className="pt-brand-logo" priority />
-          </a>
-
-          <nav className="pt-desktop-nav" aria-label="主导航">
-            {navigation.map(([label, id]) => (
-              <a key={id} href={`#${id}`} aria-current={active === id ? "location" : undefined}>
-                {label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="pt-header-actions">
-            <a href="#brief" className="pt-header-cta">
-              询价准备
-            </a>
-            <details className="pt-mobile-menu" ref={menuRef}>
-              <summary>菜单</summary>
-              <nav aria-label="移动端导航" onClick={closeMenu}>
-                {navigation.map(([label, id]) => (
-                  <a key={id} href={`#${id}`} aria-current={active === id ? "location" : undefined}>
-                    {label}
-                  </a>
-                ))}
-                <a href="#brief">询价准备</a>
-              </nav>
-            </details>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        isHome
+        activeSection={active}
+        briefHref="#brief"
+        scrolled={scrolled}
+        surface={headerSurface}
+      />
 
       <main id="pt-main">{children}</main>
     </div>

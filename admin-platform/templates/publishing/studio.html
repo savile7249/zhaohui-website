@@ -3,7 +3,7 @@
 {% block content %}
 <div class="ops-topbar">
   <div>
-    <p class="ops-label"><span>03</span>受管内容编辑、指定域名预览、审核发布与回滚</p>
+    <p class="ops-label"><span>03</span>受管内容编辑、子产品规格与关联文章、预览审核发布与回滚</p>
     <h1 class="ops-h1">{{ site.name }}（{{ site.slug }}）· 内容与发布工作台</h1>
   </div>
   <div class="ops-filters">
@@ -16,18 +16,39 @@
   </div>
 </div>
 
+{% include "publishing/_subnav.html" %}
+
+<div class="ops-meta-strip">
+  <dl class="ops-meta-cell">
+    <dt>已管理子产品（四类设备）</dt>
+    <dd><a href="{% url 'publishing:variants' site.slug %}">{{ published_variant_count }} / {{ variant_count }} 款已启用 →</a></dd>
+  </dl>
+  <dl class="ops-meta-cell">
+    <dt>产品关联技术文章</dt>
+    <dd><a href="{% url 'publishing:variants' site.slug %}">{{ published_article_count }} 篇已发布（共 {{ article_count }} 篇） →</a></dd>
+  </dl>
+  <dl class="ops-meta-cell">
+    <dt>已核准图片素材</dt>
+    <dd><a href="{% url 'publishing:assets' site.slug %}">{{ assets|length }} 项（支持上传 WebP/PNG/JPG） →</a></dd>
+  </dl>
+  <dl class="ops-meta-cell">
+    <dt>快照协议版本</dt>
+    <dd>schemaVersion 1.1 · 内容红线门禁已开启</dd>
+  </dl>
+</div>
+
 <div class="ops-panel is-accent-left" style="margin-bottom:24px;">
-  <strong>首版受管字段边界（严格执行内容红线）</strong>
+  <strong>受管内容范围与红线门禁（依据《防腐设备员工参阅手册》）</strong>
   <p class="ops-kpi-sub" style="margin-top:6px;">
-    本后台仅开放编辑：<strong>产品展示名称、产品简介、已核准图片（仅限预核准清单）与公开联系方式</strong>。
-    技术参数、工艺承诺与结构组装图继续保留在代码审核流程中，后台不可修改。
+    本工作台支持维护：<strong>设备大类基础文案、全系 18 款及扩展子产品标准化规格表、关联技术文章（Markdown 上传/编辑）、核准图片上传与公开联系方式</strong>。
+    系统自动拦截绝对化违禁词（如「永不腐蚀」「零维护」「行业第一」）；若涉及具体温压数值或待确认牌号（如 F30/F40/F46/Q235B/316L），须由发布者显式勾选技术负责人审核确认后方可审批发布。
   </p>
 </div>
 
 <!-- 1. 产品受管内容编辑 -->
 <section class="ops-section">
   <div class="ops-section-head">
-    <h2 class="ops-h2">01 受管产品列表（改一次即可预览到本站所有域名）</h2>
+    <h2 class="ops-h2">01 设备大类受管内容（改一次即可预览到本站所有域名）</h2>
     <p class="ops-section-note">当前角色：{{ role }} · 每次保存均写入审计日志。</p>
   </div>
 
@@ -84,16 +105,15 @@
   {% endif %}
 
   <div class="ops-panel">
-    <h2 class="ops-h2">03 生成带校验和的内容快照</h2>
+    <h2 class="ops-h2">03 生成带校验和的内容快照（v1.1）</h2>
     <p class="ops-kpi-sub" style="margin-bottom:14px;">
-      流程：<strong>编辑草稿 → 生成快照 → 指定域名预览 → 审核 → 构建与冒烟验证 → 原子切换版本</strong>。
-      失败时保留上一版继续提供服务。
+      流程：<strong>编辑子产品与文章 → 生成快照（含全部子产品与已发布文章）→ 预览 → 审核 → 构建冒烟验证 → 原子切换</strong>。
     </p>
     <form method="post" action="{% url 'publishing:create_snapshot' site.slug %}">
       {% csrf_token %}
       <div class="ops-field" style="margin-bottom:12px;">
         <label for="snap-note">变更说明</label>
-        <input id="snap-note" name="note" class="ops-input" placeholder="例如：更新储罐产品简介与主图核对" required />
+        <input id="snap-note" name="note" class="ops-input" placeholder="例如：补充钢衬四氟储罐规格参数与选型文章" required />
       </div>
       <button type="submit" class="ops-btn">生成新版本快照</button>
     </form>
@@ -125,7 +145,7 @@
         <tr>
           <th>快照版本</th>
           <th>状态</th>
-          <th>SHA-256 校验和</th>
+          <th>校验和 / 红线检查</th>
           <th>说明 / 创建与审核人</th>
           <th>预览 / 审核 / 发布操作</th>
         </tr>
@@ -135,7 +155,16 @@
         <tr>
           <td><strong>{{ snap.version }}</strong></td>
           <td><span class="ops-tag {% if snap.status == 'published' or snap.status == 'approved' %}is-ink{% endif %}">{{ snap.get_status_display }}</span></td>
-          <td>{{ snap.checksum|slice:":16" }}…</td>
+          <td>
+            {{ snap.checksum|slice:":16" }}…<br />
+            {% if snap.redline_error_count %}
+              <span class="ops-tag is-alert">红线拦截 {{ snap.redline_error_count }} 项</span>
+            {% elif snap.redline_warning_count %}
+              <span class="ops-tag is-alert">待技术确认 {{ snap.redline_warning_count }} 项</span>
+            {% else %}
+              <span class="ops-tag">红线通过</span>
+            {% endif %}
+          </td>
           <td>
             {{ snap.note }}<br />
             <span style="color:var(--on-light-muted);">创建：{{ snap.created_by.username|default:"system" }} · 审核：{{ snap.approved_by.username|default:"待审核" }}</span>
@@ -156,8 +185,14 @@
               {% if can_publish %}
               <div class="ops-inline-form">
                 {% if snap.status == 'draft' or snap.status == 'previewed' %}
-                <form method="post" action="{% url 'publishing:approve_snapshot' site.slug snap.id %}">
+                <form method="post" action="{% url 'publishing:approve_snapshot' site.slug snap.id %}" class="ops-inline-form">
                   {% csrf_token %}
+                  {% if snap.redline_warning_count %}
+                  <label style="display:inline-flex;align-items:center;gap:6px;font-size:14px;">
+                    <input type="checkbox" name="redline_confirmed" value="1" required />
+                    已经技术负责人审核确认
+                  </label>
+                  {% endif %}
                   <button type="submit" class="ops-btn ops-btn-sm is-dark">审核通过</button>
                 </form>
                 {% endif %}

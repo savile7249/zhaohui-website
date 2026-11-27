@@ -1,0 +1,14 @@
+<div class="ops-subnav-bar">
+  <nav class="ops-subnav" aria-label="内容工作台分区">
+    <a href="{% url 'publishing:studio' site.slug %}" class="{% if active_subnav == 'studio' %}is-active{% endif %}">01 站点概览与发布</a>
+    <a href="{% url 'publishing:variants' site.slug %}" class="{% if active_subnav == 'variants' %}is-active{% endif %}">02 子产品与规格参数</a>
+    <a href="{% url 'publishing:assets' site.slug %}" class="{% if active_subnav == 'assets' %}is-active{% endif %}">03 图片素材库与上传</a>
+  </nav>
+  {% if local_dev_sync_enabled %}
+  <form method="post" action="{% url 'publishing:dev_sync' site.slug %}" class="ops-inline-form" style="margin:0;">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}" />
+    <button type="submit" class="ops-btn ops-btn-sm is-dark">同步到本地前端工作区（Dev Sync）</button>
+  </form>
+  {% endif %}
+</div>

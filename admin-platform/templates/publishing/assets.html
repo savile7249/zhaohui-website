@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}图片素材库与上传 · {{ site.name }} | 兆辉多站点管理后台{% endblock %}
+{% block content %}
+<div class="ops-topbar">
+  <div>
+    <p class="ops-label"><span>03 / 素材库</span>上传受管实拍图并登记 Alt 替代文本</p>
+    <h1 class="ops-h1">{{ site.name }} · 已核准图片素材库</h1>
+  </div>
+  <div class="ops-filters">
+    <a class="ops-btn is-secondary" href="{% url 'publishing:variants' site.slug %}">前往子产品与参数 →</a>
+  </div>
+</div>
+
+{% include "publishing/_subnav.html" %}
+
+<section class="ops-section">
+  <form method="post" action="{% url 'publishing:upload_asset' site.slug %}" enctype="multipart/form-data" class="ops-panel is-accent-left">
+    {% csrf_token %}
+    <h2 class="ops-h2">上传新图片素材（WebP / PNG / JPG，上限 5 MB）</h2>
+    <p class="ops-kpi-sub" style="margin-bottom:16px;">
+      上传后自动校验文件头与像素尺寸，写入受管静态目录 <code>/images/site/managed/</code> 并立即登记为已核准素材，供子产品主图与技术文章插图直接选用。
+    </p>
+    <div class="ops-grid-3">
+      <div class="ops-field">
+        <label for="up-file">选择图片文件（必填）</label>
+        <input id="up-file" name="image_file" type="file" accept=".webp,.png,.jpg,.jpeg,image/webp,image/png,image/jpeg" class="ops-input" required />
+      </div>
+      <div class="ops-field">
+        <label for="up-label">素材名称（必填）</label>
+        <input id="up-label" name="label" class="ops-input" placeholder="例如：钢衬四氟储罐法兰翻边细节" required />
+      </div>
+      <div class="ops-field">
+        <label for="up-alt">图片替代文本 Alt（必填，用于 SEO 与无障碍）</label>
+        <input id="up-alt" name="image_alt" class="ops-input" placeholder="客观描述画面内容，例如：钢衬四氟储罐顶部法兰白色翻边密封面实拍" required />
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <button type="submit" class="ops-btn">校验并上传图片</button>
+    </div>
+  </form>
+</section>
+
+<section class="ops-section">
+  <div class="ops-section-head">
+    <h2 class="ops-h2">已登记图片清单（共 {{ assets|length }} 项）</h2>
+    <p class="ops-section-note">点击「复制 Markdown」可直接粘贴到关联技术文章正文中。</p>
+  </div>
+  <div class="ops-asset-grid">
+    {% for asset in assets %}
+    <article class="ops-panel ops-asset-card">
+      <div class="ops-asset-thumb">
+        <img src="{{ asset.preview_url }}" alt="{{ asset.image_alt }}" loading="lazy" />
+      </div>
+      <div class="ops-asset-body">
+        <strong>{{ asset.label }}</strong>
+        <p class="ops-kpi-sub" style="margin-top:4px;word-break:break-all;">{{ asset.image_path }}</p>
+        <p class="ops-kpi-sub" style="margin-top:4px;">Alt：{{ asset.image_alt }}</p>
+        {% if asset.width and asset.height %}
+        <p class="ops-kpi-sub" style="margin-top:4px;">{{ asset.width }} × {{ asset.height }} px · {{ asset.file_size|filesizeformat }}</p>
+        {% endif %}
+        <div class="ops-inline-form" style="margin-top:10px;">
+          <button
+            type="button"
+            class="ops-btn ops-btn-sm is-secondary"
+            data-copy-text="![{{ asset.image_alt }}]({{ asset.image_path }})"
+            onclick="copyAssetSnippet(this)"
+          >复制 Markdown</button>
+          <button
+            type="button"
+            class="ops-btn ops-btn-sm is-secondary"
+            data-copy-text="{{ asset.image_path }}"
+            onclick="copyAssetSnippet(this)"
+          >复制路径</button>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+function copyAssetSnippet(btn) {
+  var text = btn.getAttribute("data-copy-text") || "";
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      var orig = btn.textContent;
+      btn.textContent = "已复制";
+      setTimeout(function() { btn.textContent = orig; }, 1600);
+    });
+  }
+}
+</script>
+{% endblock %}

@@ -89,33 +89,47 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Real isolated MariaDB database (never defaults to SQLite)
+# Database engine: MariaDB by default (mandatory in production); SQLite allowed ONLY for local dev CMS.
+DB_ENGINE = os.environ.get("ZHAOHUI_DB_ENGINE", "mariadb").strip().lower()
+if IS_PRODUCTION and DB_ENGINE != "mariadb":
+    raise ImproperlyConfigured("生产环境仅允许使用 MariaDB，禁止启用 SQLite。")
+
 DB_NAME = os.environ.get("ZHAOHUI_DB_NAME", "zhaohui_admin" if IS_PRODUCTION else "zhaohui_admin_test")
 DB_USER = os.environ.get("ZHAOHUI_DB_USER", "zhaohui_admin_app" if IS_PRODUCTION else "zhaohui_app")
 DB_PASSWORD = os.environ.get("ZHAOHUI_DB_PASSWORD", "" if IS_PRODUCTION else DEFAULT_TEST_DB_PASSWORD)
 DB_HOST = os.environ.get("ZHAOHUI_DB_HOST", "127.0.0.1")
 DB_PORT = os.environ.get("ZHAOHUI_DB_PORT", "3306" if IS_PRODUCTION else "13306")
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": DB_HOST,
-        "PORT": DB_PORT,
-        "CONN_MAX_AGE": int(os.environ.get("ZHAOHUI_DB_CONN_MAX_AGE", "60")),
-        "OPTIONS": {
-            "charset": "utf8mb4",
-            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-        "TEST": {
-            "NAME": os.environ.get("ZHAOHUI_TEST_DB_NAME", "test_zhaohui_admin_test"),
-            "CHARSET": "utf8mb4",
-            "COLLATION": "utf8mb4_unicode_ci",
-        },
+if DB_ENGINE == "sqlite":
+    SQLITE_PATH = Path(os.environ.get("ZHAOHUI_SQLITE_PATH", str(RUNTIME_DIR / "local-cms.sqlite3")))
+    SQLITE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": str(SQLITE_PATH),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": DB_NAME,
+            "USER": DB_USER,
+            "PASSWORD": DB_PASSWORD,
+            "HOST": DB_HOST,
+            "PORT": DB_PORT,
+            "CONN_MAX_AGE": int(os.environ.get("ZHAOHUI_DB_CONN_MAX_AGE", "60")),
+            "OPTIONS": {
+                "charset": "utf8mb4",
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+            "TEST": {
+                "NAME": os.environ.get("ZHAOHUI_TEST_DB_NAME", "test_zhaohui_admin_test"),
+                "CHARSET": "utf8mb4",
+                "COLLATION": "utf8mb4_unicode_ci",
+            },
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -211,6 +225,22 @@ BACKUPS_ROOT = Path(
 )
 DATA_RETENTION_EVENTS_DAYS = int(os.environ.get("ZHAOHUI_DATA_RETENTION_EVENTS_DAYS", "180"))
 DATA_RETENTION_AUDIT_DAYS = int(os.environ.get("ZHAOHUI_DATA_RETENTION_AUDIT_DAYS", "365"))
+
+# Managed catalog, image uploads, and local dev workspace sync
+MANAGED_CATALOG_PATH = Path(
+    os.environ.get("ZHAOHUI_MANAGED_CATALOG_PATH", str(REPO_ROOT / "content" / "managed-catalog.json"))
+)
+MANAGED_UPLOAD_DIR = Path(
+    os.environ.get(
+        "ZHAOHUI_MANAGED_UPLOAD_DIR",
+        str(REPO_ROOT / "public" / "images" / "site" / "managed"),
+    )
+)
+MANAGED_IMAGE_URL_PREFIX = "/images/site/managed/"
+MAX_UPLOAD_IMAGE_BYTES = int(os.environ.get("ZHAOHUI_MAX_UPLOAD_IMAGE_BYTES", str(5 * 1024 * 1024)))
+LOCAL_DEV_SYNC_ENABLED = (not IS_PRODUCTION) and (
+    os.environ.get("ZHAOHUI_LOCAL_DEV_SYNC", "1") == "1"
+)
 
 
 def validate_production_config(

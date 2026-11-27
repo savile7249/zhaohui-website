@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
 import { getCanonicalBase } from "@/lib/managed-content";
+import { getCategoryGalleryPhotos } from "@/lib/product-catalog";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { TowerAssemblyExplorer } from "./tower-assembly";
@@ -40,6 +41,8 @@ function SectionLabel({ index, children }: { index: string; children: string }) 
 export default function TowersPage() {
   const product = findProduct("towers");
   if (!product) return null;
+  const catalogPhotos = getCategoryGalleryPhotos("towers");
+  const galleryPhotos = catalogPhotos.length > 0 ? catalogPhotos : towerGalleryPhotos;
 
   return (
     <TowerPageClient>
@@ -92,12 +95,12 @@ export default function TowersPage() {
             </h2>
           </div>
           <p className="pt-section-aside" data-rise>
-            以下为衬氟塔器成品外观及塔内喷淋、栅板等实拍记录，实际塔径、分段方式与塔内件配置均按项目工艺条件定制。
+            覆盖钢衬四氟塔器、钢衬 PE 塔、钢衬 PFA 塔及衬四氟塔节，实际塔径、分段方式与塔内件配置均按项目工艺条件定制。
           </p>
         </div>
 
         <div className="pt-wrap">
-          <ProductPhotoGallery productTitle={product.title} photos={towerGalleryPhotos} />
+          <ProductPhotoGallery productTitle={product.title} photos={galleryPhotos} />
         </div>
       </section>
 

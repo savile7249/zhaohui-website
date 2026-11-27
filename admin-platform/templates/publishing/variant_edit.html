@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% block title %}编辑 {{ variant.title }} · 标准化参数 | 兆辉多站点管理后台{% endblock %}
+{% block content %}
+<div class="ops-topbar">
+  <div>
+    <p class="ops-label"><span>{{ category_label }}</span>路由：{{ variant.get_public_path }}</p>
+    <h1 class="ops-h1">{{ variant.title }} · 详情与标准化规格编辑</h1>
+  </div>
+  <div class="ops-filters">
+    <a class="ops-btn is-secondary" href="{% url 'publishing:variants' site.slug %}">← 返回子产品列表</a>
+    <a class="ops-btn is-dark" href="{% url 'publishing:articles' site.slug variant.id %}">管理关联文章（{{ article_count }}） →</a>
+  </div>
+</div>
+
+{% include "publishing/_subnav.html" %}
+
+{% if redline.errors %}
+<div class="ops-panel ops-redline-error" style="margin-bottom:20px;">
+  <strong>内容红线硬性拦截（必须修正后才能保存或发布）</strong>
+  <ul>
+    {% for err in redline.errors %}
+    <li>{{ err.message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+{% if redline.warnings %}
+<div class="ops-panel ops-redline-warn" style="margin-bottom:20px;">
+  <strong>技术审核提示（检测到 {{ redline.warnings|length }} 项需确认内容）</strong>
+  <ul>
+    {% for w in redline.warnings %}
+    <li>{{ w.message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<form method="post" id="variant-edit-form" action="{% url 'publishing:variant_edit' site.slug variant.id %}">
+  {% csrf_token %}
+  <input type="hidden" name="specs_json_payload" id="specs-json-payload" value="" />
+
+  <section class="ops-section ops-grid-2">
+    <div class="ops-panel">
+      <h2 class="ops-h2">01 基础文案与 SEO 元信息</h2>
+      <div class="ops-grid-2" style="gap:12px;">
+        <div class="ops-field">
+          <label for="v-title">子产品名称</label>
+          <input id="v-title" name="title" class="ops-input" value="{{ variant.title }}" required />
+        </div>
+        <div class="ops-field">
+          <label for="v-tag">工艺/结构标签</label>
+          <input id="v-tag" name="craft_tag" class="ops-input" value="{{ variant.craft_tag }}" required />
+        </div>
+      </div>
+      <div class="ops-grid-2" style="gap:12px;margin-top:12px;">
+        <div class="ops-field">
+          <label for="v-order">同大类展示顺序</label>
+          <input id="v-order" name="display_order" type="number" min="1" class="ops-input" value="{{ variant.display_order }}" />
+        </div>
+        <div class="ops-field" style="justify-content:flex-end;">
+          <label style="display:flex;align-items:center;gap:8px;min-height:40px;cursor:pointer;">
+            <input type="checkbox" name="is_published" value="1" {% if variant.is_published %}checked{% endif %} />
+            启用该子产品详情页（纳入构建与 Sitemap）
+          </label>
+        </div>
+      </div>
+      <div class="ops-field" style="margin-top:12px;">
+        <label for="v-summary">首屏产品概述</label>
+        <textarea id="v-summary" name="summary" class="ops-textarea" required>{{ variant.summary }}</textarea>
+      </div>
+      <div class="ops-field" style="margin-top:12px;">
+        <label for="v-seo-title">SEO 页面标题（&lt;title&gt;）</label>
+        <input id="v-seo-title" name="seo_title" class="ops-input" value="{{ variant.seo_title }}" />
+      </div>
+      <div class="ops-field" style="margin-top:12px;">
+        <label for="v-seo-desc">SEO 页面摘要（meta description）</label>
+        <textarea id="v-seo-desc" name="seo_description" class="ops-textarea" style="min-height:72px;">{{ variant.seo_description }}</textarea>
+      </div>
+    </div>
+
+    <div class="ops-panel">
+      <h2 class="ops-h2">02 核准实拍主图与多图配置</h2>
+      <div class="ops-variant-preview-box">
+        <img id="hero-preview-img" src="{{ hero_preview_url }}" alt="{{ variant.title }}" />
+      </div>
+      <div class="ops-field" style="margin-top:12px;">
+        <label for="v-hero">主图（可先到「图片素材库」上传新实拍图）</label>
+        <select id="v-hero" name="hero_asset_id" class="ops-select" onchange="updateHeroPreview(this)">
+          {% for a in assets %}
+          <option value="{{ a.id }}" data-preview="{{ a.preview_url }}" {% if a.id == variant.hero_asset_id %}selected{% endif %}>{{ a.label }}（{{ a.image_path }}）</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="ops-field" style="margin-top:14px;">
+        <label>附加实拍图（可选多选，详情页支持多图切换）</label>
+        <div class="ops-checkbox-list">
+          {% for a in assets %}
+          <label class="ops-checkbox-item">
+            <input type="checkbox" name="gallery_asset_ids" value="{{ a.id }}" {% if a.id in selected_gallery_ids %}checked{% endif %} />
+            <span>{{ a.label }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="ops-field" style="margin-top:14px;">
+        <label for="v-inputs">选型沟通需确认条件（每行一项）</label>
+        <textarea id="v-inputs" name="confirm_inputs_lines" class="ops-textarea" style="min-height:110px;">{{ confirm_inputs_text }}</textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 可视化标准化规格表编辑器 -->
+  <section class="ops-section">
+    <div class="ops-section-head">
+      <h2 class="ops-h2">03 标准化规格与配置表（支持增删改行与排序）</h2>
+      <div class="ops-inline-form">
+        <button type="button" class="ops-btn ops-btn-sm is-secondary" onclick="addSpecRow()">+ 新增一行规格</button>
+      </div>
+    </div>
+    <p class="ops-section-note" style="margin-bottom:12px;">
+      「规格参数」列留空时，官网前台自动展示「按项目工况核定」；填入经技术负责人审核的具体参数后，前台即自动呈现该数值。
+    </p>
+    <div class="ops-table-wrap">
+      <table class="ops-table" id="specs-editor-table">
+        <thead>
+          <tr>
+            <th style="width:14%;">规格分类</th>
+            <th style="width:20%;">规格种类（必填）</th>
+            <th style="width:22%;">规格参数（留空按工况核定）</th>
+            <th style="width:10%;">单位</th>
+            <th style="width:22%;">口径与说明</th>
+            <th style="width:12%;">排序 / 删除</th>
+          </tr>
+        </thead>
+        <tbody id="specs-editor-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 技术审核确认与提交 -->
+  <section class="ops-section ops-panel">
+    <h2 class="ops-h2">04 保存与技术审核留档</h2>
+    <div class="ops-grid-2" style="align-items:end;">
+      <div class="ops-field">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" name="redline_confirmed" value="1" {% if variant.redline_confirmed %}checked{% endif %} />
+          <span>若本次填写包含具体数值或待确认牌号，我确认已经技术负责人审核批准</span>
+        </label>
+      </div>
+      <div class="ops-field">
+        <label for="v-review-note">技术审核备注（可选，例如审核人/技术协议号）</label>
+        <input id="v-review-note" name="redline_review_note" class="ops-input" value="{{ variant.redline_review_note }}" placeholder="例如：2026-11 技术部王工审定" />
+      </div>
+    </div>
+    <div class="ops-inline-form" style="margin-top:16px;">
+      <button type="submit" class="ops-btn">保存子产品与规格参数</button>
+      <a class="ops-btn is-secondary" href="{% url 'publishing:variants' site.slug %}">返回列表</a>
+    </div>
+  </section>
+</form>
+
+<!-- 05 独立批量导入参数表（CSV / JSON） -->
+<section class="ops-section">
+  <form method="post" action="{% url 'publishing:import_variant_specs' site.slug variant.id %}" enctype="multipart/form-data" class="ops-panel">
+    {% csrf_token %}
+    <h2 class="ops-h2">批量上传导入规格表（.csv / .json）</h2>
+    <p class="ops-kpi-sub" style="margin-bottom:12px;">
+      CSV 支持 UTF-8 表头：<code>规格分类,规格种类,规格参数,单位,口径与说明</code>（或英文 <code>group,label,value,unit,note</code>）；JSON 支持对象数组。上传将直接替换当前规格表并通过内容红线检测。
+    </p>
+    <div class="ops-inline-form">
+      <input type="file" name="specs_file" accept=".csv,.json,text/csv,application/json" class="ops-input" required />
+      <button type="submit" class="ops-btn is-dark">上传并覆盖导入参数表</button>
+    </div>
+  </form>
+</section>
+
+<script id="initial-specs-data" type="application/json">{{ specs_json_str|safe }}</script>
+<script>
+(function() {
+  var rows = [];
+  try {
+    rows = JSON.parse(document.getElementById("initial-specs-data").textContent || "[]");
+  } catch (e) {
+    rows = [];
+  }
+  var tbody = document.getElementById("specs-editor-body");
+
+  function esc(val) {
+    return String(val || "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function render() {
+    tbody.innerHTML = "";
+    if (!rows.length) {
+      var trEmpty = document.createElement("tr");
+      trEmpty.innerHTML = '<td colspan="6" style="color:var(--on-light-muted);">暂无规格行，点击右上角「+ 新增一行规格」添加。</td>';
+      tbody.appendChild(trEmpty);
+      return;
+    }
+    rows.forEach(function(row, idx) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td><input type="text" name="spec_group" class="ops-input ops-input-compact" value="' + esc(row.group) + '" data-idx="' + idx + '" data-key="group" /></td>' +
+        '<td><input type="text" name="spec_label" class="ops-input ops-input-compact" value="' + esc(row.label) + '" data-idx="' + idx + '" data-key="label" required /></td>' +
+        '<td><input type="text" name="spec_value" class="ops-input ops-input-compact" value="' + esc(row.value) + '" placeholder="留空按工况核定" data-idx="' + idx + '" data-key="value" /></td>' +
+        '<td><input type="text" name="spec_unit" class="ops-input ops-input-compact" value="' + esc(row.unit) + '" placeholder="m³/mm" data-idx="' + idx + '" data-key="unit" /></td>' +
+        '<td><input type="text" name="spec_note" class="ops-input ops-input-compact" value="' + esc(row.note) + '" data-idx="' + idx + '" data-key="note" /></td>' +
+        '<td style="white-space:nowrap;">' +
+          '<button type="button" class="ops-btn ops-btn-sm is-secondary" onclick="moveSpecRow(' + idx + ', -1)" title="上移">↑</button> ' +
+          '<button type="button" class="ops-btn ops-btn-sm is-secondary" onclick="moveSpecRow(' + idx + ', 1)" title="下移">↓</button> ' +
+          '<button type="button" class="ops-btn ops-btn-sm is-secondary" onclick="removeSpecRow(' + idx + ')" title="删除">删</button>' +
+        '</td>';
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll("input[data-idx]").forEach(function(input) {
+      input.addEventListener("input", function() {
+        var i = Number(this.getAttribute("data-idx"));
+        var k = this.getAttribute("data-key");
+        if (rows[i]) rows[i][k] = this.value;
+      });
+    });
+  }
+
+  window.addSpecRow = function() {
+    rows.push({ group: "基本规格", label: "", value: "", unit: "", note: "" });
+    render();
+  };
+  window.removeSpecRow = function(idx) {
+    rows.splice(idx, 1);
+    render();
+  };
+  window.moveSpecRow = function(idx, delta) {
+    var target = idx + delta;
+    if (target < 0 || target >= rows.length) return;
+    var tmp = rows[idx];
+    rows[idx] = rows[target];
+    rows[target] = tmp;
+    render();
+  };
+  window.updateHeroPreview = function(sel) {
+    var opt = sel.options[sel.selectedIndex];
+    var url = opt ? opt.getAttribute("data-preview") : "";
+    if (url) document.getElementById("hero-preview-img").src = url;
+  };
+
+  document.getElementById("variant-edit-form").addEventListener("submit", function() {
+    document.getElementById("specs-json-payload").value = JSON.stringify(rows);
+  });
+
+  render();
+})();
+</script>
+{% endblock %}

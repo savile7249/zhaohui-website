@@ -8,6 +8,7 @@ from core.management.commands.seed_test_env import (
     _extract_zhaohui_icp_from_code,
     _extract_zhaohui_products_from_code,
 )
+from publishing.catalog_seed import seed_zhaohui_catalog_from_repo
 from publishing.models import ApprovedAsset, ContentSnapshot, ManagedContact, ManagedProduct
 from publishing.pipeline import build_snapshot_payload
 
@@ -162,6 +163,7 @@ class Command(BaseCommand):
                 "addresses_json": zh_contact["addresses"],
             },
         )
+        seed_zhaohui_catalog_from_repo(zhaohui_site)
 
         # 5. Baseline approved snapshot if none exists
         if not zhaohui_site.snapshots.exists():

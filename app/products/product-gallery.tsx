@@ -1,7 +1,6 @@
-"use client";
-
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import Link from "next/link";
+import { isFullBleedProductImage } from "@/lib/product-media";
 
 export interface ProductPhotoItem {
   readonly id: string;
@@ -11,6 +10,8 @@ export interface ProductPhotoItem {
   readonly caption: string;
   readonly image: string;
   readonly imageAlt: string;
+  readonly detailHref?: string;
+  readonly articleCount?: number;
 }
 
 interface ProductPhotoGalleryProps {
@@ -18,226 +19,81 @@ interface ProductPhotoGalleryProps {
   readonly photos: readonly ProductPhotoItem[];
 }
 
-const FOCUSABLE_SELECTOR =
-  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-function getFocusableElements(container: HTMLElement): HTMLElement[] {
-  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
-    (element) => !element.hasAttribute("inert") && element.getClientRects().length > 0,
-  );
-}
-
 export function ProductPhotoGallery({ productTitle, photos }: ProductPhotoGalleryProps) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const openerRef = useRef<HTMLElement | null>(null);
-  const isOpen = activeIndex !== null;
-
-  const restoreFocusToOpener = useCallback(() => {
-    const opener = openerRef.current;
-    if (opener && opener.isConnected) {
-      opener.focus();
-    }
-  }, []);
-
-  const closeLightbox = useCallback(() => {
-    const dialog = dialogRef.current;
-    if (dialog?.open) {
-      dialog.close();
-    }
-    setActiveIndex(null);
-    restoreFocusToOpener();
-  }, [restoreFocusToOpener]);
-
-  const showPrev = useCallback(() => {
-    setActiveIndex((prev) => {
-      if (prev === null) return null;
-      return (prev - 1 + photos.length) % photos.length;
-    });
-  }, [photos.length]);
-
-  const showNext = useCallback(() => {
-    setActiveIndex((prev) => {
-      if (prev === null) return null;
-      return (prev + 1) % photos.length;
-    });
-  }, [photos.length]);
-
-  function openLightbox(index: number, trigger: HTMLElement | null) {
-    openerRef.current = trigger;
-    setActiveIndex(index);
-  }
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    if (!isOpen) {
-      if (dialog.open) {
-        dialog.close();
-      }
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    if (!dialog.open) {
-      dialog.showModal();
-    }
-    closeButtonRef.current?.focus();
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      if (dialog.open) {
-        dialog.close();
-      }
-    };
-  }, [isOpen]);
-
-  function handleDialogKeyDown(event: ReactKeyboardEvent<HTMLDialogElement>) {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      closeLightbox();
-      return;
-    }
-
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      showPrev();
-      return;
-    }
-
-    if (event.key === "ArrowRight") {
-      event.preventDefault();
-      showNext();
-      return;
-    }
-
-    if (event.key === "Tab") {
-      const dialog = dialogRef.current;
-      if (!dialog) return;
-      const focusables = getFocusableElements(dialog);
-      if (focusables.length === 0) {
-        event.preventDefault();
-        dialog.focus();
-        return;
-      }
-
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      const activeElement = document.activeElement as HTMLElement | null;
-
-      if (event.shiftKey) {
-        if (!activeElement || activeElement === first || !dialog.contains(activeElement)) {
-          event.preventDefault();
-          last.focus();
-        }
-      } else if (!activeElement || activeElement === last || !dialog.contains(activeElement)) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-  }
-
   const count = photos.length;
   const gridClass =
-    count === 2 ? "is-count-2" : count === 3 ? "is-count-3" : count === 5 ? "is-count-5" : "is-count-default";
-  const activePhoto = activeIndex !== null ? photos[activeIndex] : null;
+    count === 2
+      ? "is-count-2"
+      : count === 3
+        ? "is-count-3"
+        : count === 4
+          ? "is-count-4"
+          : count === 5
+            ? "is-count-5"
+            : "is-count-default";
 
   return (
-    <>
-      <ol className={`pt-gallery-grid ${gridClass}`} aria-label={`${productTitle}产品实拍图`}>
-        {photos.map((photo, idx) => {
-          const isWide = count === 2 || (count === 5 && idx < 2);
-          return (
-            <li key={photo.id} className={isWide ? "is-wide" : ""} data-rise>
-              <figure className="pt-gallery-card">
-                <button
-                  type="button"
+    <ol className={`pt-gallery-grid ${gridClass}`} aria-label={`${productTitle}产品实拍与细分机型`}>
+      {photos.map((photo, idx) => {
+        const isWide = count === 2 || count === 4 || (count === 5 && idx < 2);
+        const isFullBleed = isFullBleedProductImage(photo.image);
+        const mediaClass = isFullBleed ? "pt-gallery-media is-full-bleed" : "pt-gallery-media";
+        const imageSizes = isWide ? "(min-width: 900px) 46vw, 100vw" : "(min-width: 900px) 30vw, 100vw";
+
+        return (
+          <li key={photo.id} className={isWide ? "is-wide" : ""} data-rise>
+            <figure className="pt-gallery-card">
+              {photo.detailHref ? (
+                <Link
+                  href={photo.detailHref}
                   className="pt-gallery-trigger"
-                  onClick={(event) => openLightbox(idx, event.currentTarget)}
-                  aria-label={`放大查看 ${photo.title} 实拍图`}
+                  aria-label={`查看 ${photo.title} 规格与说明`}
                 >
-                  <span className="pt-gallery-media">
-                    <Image
-                      src={photo.image}
-                      alt={photo.imageAlt}
-                      fill
-                      sizes={isWide ? "(min-width: 900px) 46vw, 100vw" : "(min-width: 900px) 30vw, 100vw"}
-                    />
+                  <span className={mediaClass}>
+                    <Image src={photo.image} alt={photo.imageAlt} fill sizes={imageSizes} />
                   </span>
-                </button>
-
-                <figcaption className="pt-gallery-meta">
-                  <div className="pt-gallery-meta-top">
-                    <span className="pt-gallery-index">
-                      <span className="pt-num">{photo.index}</span>
-                      <span className="pt-gallery-tag">{photo.tag}</span>
-                    </span>
-                  </div>
-                  <h3>{photo.title}</h3>
-                  <p>{photo.caption}</p>
-                </figcaption>
-              </figure>
-            </li>
-          );
-        })}
-      </ol>
-
-      <dialog
-        ref={dialogRef}
-        className="pt-lightbox"
-        aria-modal="true"
-        aria-label={activePhoto ? `${activePhoto.title} 实拍大图` : `${productTitle} 实拍大图`}
-        onCancel={(event) => {
-          event.preventDefault();
-          closeLightbox();
-        }}
-        onKeyDown={handleDialogKeyDown}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) closeLightbox();
-        }}
-      >
-        {activePhoto !== null && activeIndex !== null ? (
-          <div className="pt-lightbox-panel">
-            <div className="pt-lightbox-bar">
-              <div className="pt-lightbox-title">
-                <span className="pt-num">
-                  {String(activeIndex + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}
-                </span>
-                <h3>{activePhoto.title}</h3>
-              </div>
-              <button
-                ref={closeButtonRef}
-                type="button"
-                className="pt-lightbox-btn"
-                onClick={closeLightbox}
-              >
-                关闭
-              </button>
-            </div>
-
-            <div className="pt-lightbox-stage">
-              <Image src={activePhoto.image} alt={activePhoto.imageAlt} fill sizes="92vw" priority />
-            </div>
-
-            <div className="pt-lightbox-foot">
-              <p>{activePhoto.caption}</p>
-              {photos.length > 1 ? (
-                <div className="pt-lightbox-nav">
-                  <button type="button" className="pt-lightbox-btn" onClick={showPrev}>
-                    上一张
-                  </button>
-                  <button type="button" className="pt-lightbox-btn" onClick={showNext}>
-                    下一张
-                  </button>
+                </Link>
+              ) : (
+                <div className={mediaClass}>
+                  <Image src={photo.image} alt={photo.imageAlt} fill sizes={imageSizes} />
                 </div>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
-      </dialog>
-    </>
+              )}
+
+              <figcaption className="pt-gallery-meta">
+                <div className="pt-gallery-meta-top">
+                  <span className="pt-gallery-index">
+                    <span className="pt-num">{photo.index}</span>
+                    <span className="pt-gallery-tag">{photo.tag}</span>
+                  </span>
+                  {photo.articleCount && photo.articleCount > 0 ? (
+                    <span className="pt-gallery-article-count">{photo.articleCount} 篇技术说明</span>
+                  ) : null}
+                </div>
+
+                <h3>
+                  {photo.detailHref ? (
+                    <Link href={photo.detailHref} className="pt-gallery-title-link">
+                      {photo.title}
+                    </Link>
+                  ) : (
+                    photo.title
+                  )}
+                </h3>
+
+                <p>{photo.caption}</p>
+
+                {photo.detailHref ? (
+                  <div className="pt-gallery-foot">
+                    <Link href={photo.detailHref} className="pt-link">
+                      查看规格与技术说明
+                    </Link>
+                  </div>
+                ) : null}
+              </figcaption>
+            </figure>
+          </li>
+        );
+      })}
+    </ol>
   );
 }

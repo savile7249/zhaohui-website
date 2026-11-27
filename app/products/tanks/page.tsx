@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
 import { getCanonicalBase } from "@/lib/managed-content";
+import { getCategoryGalleryPhotos } from "@/lib/product-catalog";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { TankAssemblyExplorer } from "./tank-assembly";
@@ -40,6 +41,8 @@ function SectionLabel({ index, children }: { index: string; children: string }) 
 export default function TanksPage() {
   const product = findProduct("tanks");
   if (!product) return null;
+  const catalogPhotos = getCategoryGalleryPhotos("tanks");
+  const galleryPhotos = catalogPhotos.length > 0 ? catalogPhotos : tankGalleryPhotos;
 
   return (
     <TankPageClient>
@@ -97,7 +100,7 @@ export default function TanksPage() {
         </div>
 
         <div className="pt-wrap">
-          <ProductPhotoGallery productTitle={product.title} photos={tankGalleryPhotos} />
+          <ProductPhotoGallery productTitle={product.title} photos={galleryPhotos} />
         </div>
       </section>
 

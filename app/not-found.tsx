@@ -1,11 +1,17 @@
 import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "./site-footer";
 import "./site.css";
 
 export default function NotFound() {
   return (
     <div className="pt-root">
+      <a className="pt-skip-link" href="#pt-main">
+        跳到主要内容
+      </a>
+      <SiteHeader briefHref="/#brief" scrolled surface="dark" />
       <main
+        id="pt-main"
         className="is-dark"
         style={{
           minHeight: "64svh",
@@ -14,7 +20,7 @@ export default function NotFound() {
           background: "#0a0f13",
           color: "#f1f2f2",
           borderBottom: "1px solid rgb(255 255 255 / 0.14)",
-          paddingBlock: "clamp(96px, 12vw, 160px)",
+          paddingBlock: "clamp(112px, 12vw, 160px)",
         }}
       >
         <div className="pt-wrap">

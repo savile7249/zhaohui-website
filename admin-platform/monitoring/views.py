@@ -42,7 +42,7 @@ def normalize_product_category(raw_cat: str, page_path: str) -> str:
     cat = (raw_cat or "").strip().lower()
     if cat and SAFE_SLUG_RE.match(cat):
         return cat
-    match = re.match(r"^/products/([a-z0-9_-]+)/$", page_path)
+    match = re.match(r"^/products/([a-z0-9_-]+)(?:/|$)", page_path)
     if match:
         return match.group(1)
     return ""

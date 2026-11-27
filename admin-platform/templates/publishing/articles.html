@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}{{ variant.title }} 关联技术文章 | 兆辉多站点管理后台{% endblock %}
+{% block content %}
+<div class="ops-topbar">
+  <div>
+    <p class="ops-label"><span>{{ category_label }} / {{ variant.title }}</span>产品关联 SEO 技术文章管理</p>
+    <h1 class="ops-h1">{{ variant.title }} · 关联技术文章</h1>
+  </div>
+  <div class="ops-filters">
+    <a class="ops-btn is-secondary" href="{% url 'publishing:variant_edit' site.slug variant.id %}">← 返回规格参数编辑</a>
+    <a class="ops-btn is-secondary" href="{% url 'publishing:variants' site.slug %}">全部子产品</a>
+  </div>
+</div>
+
+{% include "publishing/_subnav.html" %}
+
+<section class="ops-section">
+  <div class="ops-section-head">
+    <h2 class="ops-h2">01 已有文章列表（共 {{ articles|length }} 篇）</h2>
+    <p class="ops-section-note">文章 URL 强制以 <code>article_</code> 开头；仅「已发布」状态会参与前台静态导出与 Sitemap 收录。</p>
+  </div>
+  <div class="ops-table-wrap">
+    <table class="ops-table">
+      <thead>
+        <tr>
+          <th>文章标题与路径</th>
+          <th>发布日期</th>
+          <th>状态</th>
+          <th>最后编辑</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for art in articles %}
+        <tr>
+          <td>
+            <strong>{{ art.title }}</strong><br />
+            <span style="color:var(--on-light-muted);">{{ art.get_public_path }}</span>
+          </td>
+          <td>{{ art.published_at|date:"Y-m-d" }}</td>
+          <td>
+            {% if art.status == 'published' %}
+              <span class="ops-tag is-ink">已发布</span>
+            {% else %}
+              <span class="ops-tag is-muted">草稿</span>
+            {% endif %}
+          </td>
+          <td>{{ art.updated_by.username|default:"system" }} · {{ art.updated_at|date:"Y-m-d H:i" }}</td>
+          <td>
+            <div class="ops-inline-form">
+              <a class="ops-btn ops-btn-sm" href="{% url 'publishing:article_edit' site.slug variant.id art.id %}">编辑与实时预览</a>
+              <form method="post" action="{% url 'publishing:delete_article' site.slug variant.id art.id %}" onsubmit="return confirm('确认删除文章「{{ art.title|escapejs }}」吗？');" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="ops-btn ops-btn-sm is-secondary">删除</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" style="color:var(--on-light-muted);">该机型暂无关联文章（前台详情页将自动隐藏文章区块，不显示空占位）。可在下方上传 Markdown 文档或直接在线新建。</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="ops-section ops-grid-2">
+  <!-- 方式一：上传 Markdown 文档 -->
+  <form method="post" action="{% url 'publishing:create_article' site.slug variant.id %}" enctype="multipart/form-data" class="ops-panel is-accent-left">
+    {% csrf_token %}
+    <h2 class="ops-h2">02 上传本地 Markdown 文档（.md）新建文章</h2>
+    <p class="ops-kpi-sub" style="margin-bottom:14px;">
+      上传 UTF-8 编码的 <code>.md</code> 文件后，系统自动提取首个一级标题（<code># 标题</code>）与首段摘要，并自动补全 <code>article_</code> 路径前缀。
+    </p>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="md-file">选择 Markdown 文件（.md）</label>
+      <input id="md-file" name="markdown_file" type="file" accept=".md,.markdown,.txt" class="ops-input" required />
+    </div>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="md-slug">文章路径标识（留空则按文件名自动补全 article_ 前缀）</label>
+      <input id="md-slug" name="article_slug" class="ops-input" placeholder="例如：article_ptfe-lining-check" />
+    </div>
+    <div class="ops-grid-2" style="gap:10px;margin-bottom:10px;">
+      <div class="ops-field">
+        <label for="md-status">初始状态</label>
+        <select id="md-status" name="status" class="ops-select">
+          <option value="draft">草稿（先预览确认）</option>
+          <option value="published">已发布</option>
+        </select>
+      </div>
+      <div class="ops-field">
+        <label for="md-date">发布日期</label>
+        <input id="md-date" name="published_at" type="date" class="ops-input" value="{{ today_iso }}" />
+      </div>
+    </div>
+    <div class="ops-field" style="margin-bottom:14px;">
+      <label for="md-cover">可选封面配图</label>
+      <select id="md-cover" name="cover_asset_id" class="ops-select">
+        <option value="">默认沿用所属子产品主图</option>
+        {% for a in assets %}
+        <option value="{{ a.id }}">{{ a.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="ops-btn">导入 Markdown 并进入编辑预览</button>
+  </form>
+
+  <!-- 方式二：在线新建 -->
+  <form method="post" action="{% url 'publishing:create_article' site.slug variant.id %}" class="ops-panel">
+    {% csrf_token %}
+    <h2 class="ops-h2">03 在线新建关联文章</h2>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="na-slug">文章路径标识（自动补全 article_ 前缀）</label>
+      <input id="na-slug" name="article_slug" class="ops-input" placeholder="例如：flange-inspection-guide" required />
+    </div>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="na-title">文章标题（H1）</label>
+      <input id="na-title" name="title" class="ops-input" placeholder="例如：定制{{ variant.title }}前需要核对哪些工况条件？" required />
+    </div>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="na-summary">文章摘要</label>
+      <textarea id="na-summary" name="summary" class="ops-textarea" style="min-height:68px;" placeholder="简明概述本文解答的选型或质控问题。" required></textarea>
+    </div>
+    <div class="ops-field" style="margin-bottom:10px;">
+      <label for="na-body">Markdown 正文</label>
+      <textarea id="na-body" name="body_markdown" class="ops-textarea" style="min-height:110px;" placeholder="## 一、前期需要核对的核心条件&#10;&#10;- 介质名称与浓度&#10;- 温度与压力（注明是否负压）" required></textarea>
+    </div>
+    <input type="hidden" name="published_at" value="{{ today_iso }}" />
+    <div class="ops-inline-form">
+      <select name="status" class="ops-select" style="min-height:40px;">
+        <option value="draft">保存为草稿</option>
+        <option value="published">直接标记已发布</option>
+      </select>
+      <button type="submit" class="ops-btn is-dark">创建文章并打开排版预览</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

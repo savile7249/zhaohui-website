@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block title %}编辑文章 · {{ article.title }} | 兆辉多站点管理后台{% endblock %}
+{% block content %}
+<div class="ops-topbar">
+  <div>
+    <p class="ops-label"><span>{{ category_label }} / {{ variant.title }}</span>路由：{{ article.get_public_path }}</p>
+    <h1 class="ops-h1">编辑关联文章（在线编辑与官网实时预览）</h1>
+  </div>
+  <div class="ops-filters">
+    <a class="ops-btn is-secondary" href="{% url 'publishing:articles' site.slug variant.id %}">← 返回文章列表</a>
+    <a class="ops-btn is-secondary" href="{% url 'publishing:variant_edit' site.slug variant.id %}">编辑子产品规格</a>
+  </div>
+</div>
+
+{% include "publishing/_subnav.html" %}
+
+{% if redline.errors %}
+<div class="ops-panel ops-redline-error" style="margin-bottom:20px;">
+  <strong>内容红线硬性拦截（必须修正后才能保存或发布）</strong>
+  <ul>
+    {% for err in redline.errors %}
+    <li>{{ err.message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+{% if redline.warnings %}
+<div class="ops-panel ops-redline-warn" style="margin-bottom:20px;">
+  <strong>技术审核提示（检测到 {{ redline.warnings|length }} 项需确认内容）</strong>
+  <ul>
+    {% for w in redline.warnings %}
+    <li>{{ w.message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<div class="ops-article-editor-grid">
+  <!-- 左侧：编辑表单 + 配图上传插入 -->
+  <div>
+    <form method="post" action="{% url 'publishing:article_edit' site.slug variant.id article.id %}" enctype="multipart/form-data" class="ops-panel">
+      {% csrf_token %}
+      <h2 class="ops-h2">01 文章元数据与 Markdown 正文</h2>
+
+      <div class="ops-grid-2" style="gap:12px;">
+        <div class="ops-field">
+          <label for="a-slug">文章路径标识（必须 article_ 开头）</label>
+          <input id="a-slug" name="article_slug" class="ops-input" value="{{ article.article_slug }}" required />
+        </div>
+        <div class="ops-field">
+          <label for="a-status">发布状态</label>
+          <select id="a-status" name="status" class="ops-select">
+            <option value="draft" {% if article.status == 'draft' %}selected{% endif %}>草稿（不上线）</option>
+            <option value="published" {% if article.status == 'published' %}selected{% endif %}>已发布（参与静态导出与 Sitemap）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ops-field" style="margin-top:12px;">
+        <label for="a-title">文章标题（H1）</label>
+        <input id="a-title" name="title" class="ops-input" value="{{ article.title }}" required />
+      </div>
+
+      <div class="ops-field" style="margin-top:12px;">
+        <label for="a-summary">文章摘要</label>
+        <textarea id="a-summary" name="summary" class="ops-textarea" style="min-height:72px;" required>{{ article.summary }}</textarea>
+      </div>
+
+      <div class="ops-grid-2" style="gap:12px;margin-top:12px;">
+        <div class="ops-field">
+          <label for="a-date">发布日期</label>
+          <input id="a-date" name="published_at" type="date" class="ops-input" value="{{ article.published_at|date:'Y-m-d' }}" />
+        </div>
+        <div class="ops-field">
+          <label for="a-cover">文章封面图（留空沿用子产品主图）</label>
+          <select id="a-cover" name="cover_asset_id" class="ops-select">
+            <option value="">沿用子产品主图</option>
+            {% for a in assets %}
+            <option value="{{ a.id }}" {% if a.id == article.cover_asset_id %}selected{% endif %}>{{ a.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="ops-grid-2" style="gap:12px;margin-top:12px;">
+        <div class="ops-field">
+          <label for="a-seo-title">SEO 标题（可选，默认同文章标题）</label>
+          <input id="a-seo-title" name="seo_title" class="ops-input" value="{{ article.seo_title }}" />
+        </div>
+        <div class="ops-field">
+          <label for="a-seo-desc">SEO 摘要（可选，默认同文章摘要）</label>
+          <input id="a-seo-desc" name="seo_description" class="ops-input" value="{{ article.seo_description }}" />
+        </div>
+      </div>
+
+      <div class="ops-field" style="margin-top:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;">
+          <label for="a-body">Markdown 正文（支持 ## 小标题、**粗体**、列表、&gt; 引用、管道表格与本地插图）</label>
+        </div>
+        <textarea id="a-body" name="body_markdown" class="ops-textarea ops-md-textarea" required>{{ article.body_markdown }}</textarea>
+      </div>
+
+      <div class="ops-panel" style="margin-top:14px;background:var(--paper);">
+        <div class="ops-field">
+          <label for="a-md-upload">或上传本地 .md 文件覆盖正文（可选）</label>
+          <input id="a-md-upload" name="markdown_file" type="file" accept=".md,.markdown,.txt" class="ops-input" />
+        </div>
+        <label style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;">
+          <input type="checkbox" name="override_title_from_md" value="1" />
+          同时使用 .md 文件中的首个一级标题覆盖当前文章标题
+        </label>
+      </div>
+
+      <div class="ops-grid-2" style="gap:12px;margin-top:14px;align-items:end;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+          <input type="checkbox" name="redline_confirmed" value="1" {% if article.redline_confirmed %}checked{% endif %} />
+          <span>若含技术审核提示，已获技术负责人确认</span>
+        </label>
+        <div class="ops-field">
+          <label for="a-review-note">技术审核备注（可选）</label>
+          <input id="a-review-note" name="redline_review_note" class="ops-input" value="{{ article.redline_review_note }}" />
+        </div>
+      </div>
+
+      <div class="ops-inline-form" style="margin-top:16px;">
+        <button type="submit" class="ops-btn">保存文章</button>
+        <a class="ops-btn is-secondary" href="{% url 'publishing:articles' site.slug variant.id %}">返回文章列表</a>
+      </div>
+    </form>
+
+    <!-- 即时上传文章配图并一键插入 Markdown -->
+    <div class="ops-panel" style="margin-top:20px;">
+      <h2 class="ops-h2">02 上传文章配图并一键插入正文</h2>
+      <p class="ops-kpi-sub" style="margin-bottom:12px;">
+        上传 WebP / PNG / JPG 图片并填写 Alt 后，自动保存至 <code>/images/site/managed/</code> 并在光标处插入 <code>![alt](path)</code>。
+      </p>
+      <div class="ops-field" style="margin-bottom:10px;">
+        <label for="inline-img-file">图片文件（WebP / PNG / JPG，上限 5 MB）</label>
+        <input id="inline-img-file" type="file" accept=".webp,.png,.jpg,.jpeg" class="ops-input" />
+      </div>
+      <div class="ops-grid-2" style="gap:10px;">
+        <div class="ops-field">
+          <label for="inline-img-label">素材名称</label>
+          <input id="inline-img-label" type="text" class="ops-input" placeholder="例如：法兰翻边特写" />
+        </div>
+        <div class="ops-field">
+          <label for="inline-img-alt">图片替代文本 Alt</label>
+          <input id="inline-img-alt" type="text" class="ops-input" placeholder="例如：钢衬四氟管道端面翻边密封面实拍" />
+        </div>
+      </div>
+      <div class="ops-inline-form" style="margin-top:12px;">
+        <button type="button" class="ops-btn ops-btn-sm is-dark" onclick="uploadAndInsertImage()">上传并插入到正文光标处</button>
+        <span id="inline-upload-status" style="font-size:14px;color:var(--on-light-muted);"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：官网纸色正文实时排版预览 -->
+  <aside class="ops-panel ops-preview-pane">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line-light-strong);padding-bottom:10px;margin-bottom:16px;">
+      <strong>官网纸色排版实时预览</strong>
+      <span style="font-size:14px;color:var(--on-light-faint);">与官网 .pt-prose 同款规则</span>
+    </div>
+    <h2 id="preview-title" class="ops-preview-h1">{{ article.title }}</h2>
+    <p id="preview-summary" class="ops-preview-summary">{{ article.summary }}</p>
+    <div id="preview-body" class="ops-preview-prose"></div>
+  </aside>
+</div>
+
+<script>
+(function() {
+  var titleInput = document.getElementById("a-title");
+  var summaryInput = document.getElementById("a-summary");
+  var bodyInput = document.getElementById("a-body");
+  var previewTitle = document.getElementById("preview-title");
+  var previewSummary = document.getElementById("preview-summary");
+  var previewBody = document.getElementById("preview-body");
+  var mediaBase = "{{ image_media_base|escapejs }}";
+
+  function escHtml(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderInline(raw) {
+    var out = escHtml(raw);
+    out = out.replace(/`([^`\n]+)`/g, '<span class="ops-md-code">$1</span>');
+    out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function(_, label, href) {
+      if (/^(\/|#|https?:\/\/|mailto:|tel:)/.test(href)) {
+        return '<a href="' + escHtml(href) + '" target="_blank" rel="noreferrer">' + label + '</a>';
+      }
+      return label;
+    });
+    out = out.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+    out = out.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
+    return out;
+  }
+
+  function splitRow(line) {
+    return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(function(c) { return c.trim(); });
+  }
+  function isSep(line) {
+    if (line.indexOf("|") === -1) return false;
+    var cells = splitRow(line);
+    return cells.length >= 2 && cells.every(function(c) { return /^:?-{3,}:?$/.test(c); });
+  }
+
+  function renderPreview() {
+    previewTitle.textContent = titleInput.value || "（未填写标题）";
+    previewSummary.textContent = summaryInput.value || "";
+    var lines = (bodyInput.value || "").replace(/\r\n/g, "\n").split("\n");
+    var blocks = [];
+    var i = 0;
+    while (i < lines.length) {
+      var trimmed = lines[i].trim();
+      if (!trimmed) { i++; continue; }
+
+      var imgM = trimmed.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
+      if (imgM && imgM[2].indexOf("/images/") === 0 && imgM[2].indexOf("..") === -1) {
+        var rel = imgM[2].slice("/images/".length);
+        var srcUrl = mediaBase + rel;
+        var cap = imgM[1] ? "<figcaption>" + escHtml(imgM[1]) + "</figcaption>" : "";
+        blocks.push('<figure class="ops-preview-fig"><img src="' + escHtml(srcUrl) + '" alt="' + escHtml(imgM[1]) + '" />' + cap + "</figure>");
+        i++; continue;
+      }
+
+      var hM = trimmed.match(/^(#{2,4})\s+(.+)$/);
+      if (hM) {
+        var lv = hM[1].length;
+        blocks.push("<h" + lv + ">" + renderInline(hM[2]) + "</h" + lv + ">");
+        i++; continue;
+      }
+
+      if (/^-{3,}$/.test(trimmed)) {
+        blocks.push("<hr />");
+        i++; continue;
+      }
+
+      if (trimmed.indexOf(">") === 0) {
+        var ql = [];
+        while (i < lines.length && lines[i].trim().indexOf(">") === 0) {
+          ql.push(lines[i].trim().replace(/^>\s?/, ""));
+          i++;
+        }
+        blocks.push("<blockquote>" + ql.filter(Boolean).map(function(x) { return "<p>" + renderInline(x) + "</p>"; }).join("") + "</blockquote>");
+        continue;
+      }
+
+      if (trimmed.indexOf("|") !== -1 && i + 1 < lines.length && isSep(lines[i + 1])) {
+        var headers = splitRow(trimmed);
+        i += 2;
+        var rows = [];
+        while (i < lines.length && lines[i].trim() && lines[i].indexOf("|") !== -1) {
+          rows.push(splitRow(lines[i]));
+          i++;
+        }
+        var th = headers.map(function(h) { return "<th>" + renderInline(h) + "</th>"; }).join("");
+        var tb = rows.map(function(r) {
+          return "<tr>" + headers.map(function(_, idx) { return "<td>" + renderInline(r[idx] || "") + "</td>"; }).join("") + "</tr>";
+        }).join("");
+        blocks.push('<div class="ops-table-wrap" style="margin:16px 0;"><table class="ops-table"><thead><tr>' + th + "</tr></thead><tbody>" + tb + "</tbody></table></div>");
+        continue;
+      }
+
+      if (/^[-*]\s+/.test(trimmed)) {
+        var ul = [];
+        while (i < lines.length && /^[-*]\s+/.test(lines[i].trim())) {
+          ul.push("<li>" + renderInline(lines[i].trim().replace(/^[-*]\s+/, "")) + "</li>");
+          i++;
+        }
+        blocks.push("<ul>" + ul.join("") + "</ul>");
+        continue;
+      }
+
+      if (/^\d+\.\s+/.test(trimmed)) {
+        var ol = [];
+        while (i < lines.length && /^\d+\.\s+/.test(lines[i].trim())) {
+          ol.push("<li>" + renderInline(lines[i].trim().replace(/^\d+\.\s+/, "")) + "</li>");
+          i++;
+        }
+        blocks.push("<ol>" + ol.join("") + "</ol>");
+        continue;
+      }
+
+      var pl = [];
+      while (i < lines.length) {
+        var c = lines[i].trim();
+        if (!c || /^#{2,4}\s+/.test(c) || /^[-*]\s+/.test(c) || /^\d+\.\s+/.test(c) || c.indexOf(">") === 0 || /^!\[/.test(c) || /^-{3,}$/.test(c) || (c.indexOf("|") !== -1 && i + 1 < lines.length && isSep(lines[i + 1]))) break;
+        pl.push(c);
+        i++;
+      }
+      if (pl.length) blocks.push("<p>" + renderInline(pl.join(" ")) + "</p>");
+    }
+    previewBody.innerHTML = blocks.join("\n");
+  }
+
+  titleInput.addEventListener("input", renderPreview);
+  summaryInput.addEventListener("input", renderPreview);
+  bodyInput.addEventListener("input", renderPreview);
+  renderPreview();
+
+  window.uploadAndInsertImage = function() {
+    var fileEl = document.getElementById("inline-img-file");
+    var labelEl = document.getElementById("inline-img-label");
+    var altEl = document.getElementById("inline-img-alt");
+    var statusEl = document.getElementById("inline-upload-status");
+    if (!fileEl.files || !fileEl.files.length) {
+      statusEl.textContent = "请先选择图片文件。";
+      return;
+    }
+    if (!labelEl.value.trim() || !altEl.value.trim()) {
+      statusEl.textContent = "请填写素材名称与 Alt 替代文本。";
+      return;
+    }
+    var fd = new FormData();
+    fd.append("image_file", fileEl.files[0]);
+    fd.append("label", labelEl.value.trim());
+    fd.append("image_alt", altEl.value.trim());
+    var csrf = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    statusEl.textContent = "正在上传并校验图片...";
+    fetch("{% url 'publishing:upload_asset' site.slug %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrf,
+        "X-Requested-With": "XMLHttpRequest",
+        "Accept": "application/json"
+      },
+      body: fd
+    })
+      .then(function(r) { return r.json().then(function(d) { return { status: r.status, data: d }; }); })
+      .then(function(res) {
+        if (!res.data.ok) {
+          statusEl.textContent = "上传失败：" + (res.data.error || "未知错误");
+          return;
+        }
+        var snippet = "\n\n" + res.data.markdown + "\n\n";
+        var start = bodyInput.selectionStart || bodyInput.value.length;
+        var end = bodyInput.selectionEnd || start;
+        bodyInput.value = bodyInput.value.slice(0, start) + snippet + bodyInput.value.slice(end);
+        fileEl.value = "";
+        labelEl.value = "";
+        altEl.value = "";
+        statusEl.textContent = "已上传并插入：" + res.data.image_path;
+        renderPreview();
+      })
+      .catch(function() {
+        statusEl.textContent = "上传请求失败，请检查网络连接。";
+      });
+  };
+})();
+</script>
+{% endblock %}

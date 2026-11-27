@@ -2,15 +2,23 @@ from django.contrib import admin
 from core.admin import SiteScopedAdminMixin
 from core.models import SiteMembership
 from core.permissions import get_user_sites
-from .models import ApprovedAsset, ContentSnapshot, ManagedContact, ManagedProduct, ReleaseRecord
+from .models import (
+    ApprovedAsset,
+    ContentSnapshot,
+    ManagedContact,
+    ManagedProduct,
+    ManagedProductArticle,
+    ManagedProductVariant,
+    ReleaseRecord,
+)
 
 
 @admin.register(ApprovedAsset)
 class ApprovedAssetAdmin(SiteScopedAdminMixin, admin.ModelAdmin):
-    min_change_role = SiteMembership.ROLE_ADMIN
-    list_display = ("site", "code", "label", "image_path", "is_approved", "created_at")
+    min_change_role = SiteMembership.ROLE_EDITOR
+    list_display = ("site", "code", "label", "image_path", "width", "height", "is_approved", "created_at")
     list_filter = ("site", "is_approved")
-    search_fields = ("code", "label", "image_path")
+    search_fields = ("code", "label", "image_path", "image_alt")
 
 
 @admin.register(ManagedProduct)
@@ -25,6 +33,56 @@ class ManagedProductAdmin(SiteScopedAdminMixin, admin.ModelAdmin):
         if db_field.name == "approved_asset" and not request.user.is_superuser:
             allowed = get_user_sites(request.user, min_role=SiteMembership.ROLE_EDITOR)
             kwargs["queryset"] = ApprovedAsset.objects.filter(site__in=allowed, is_approved=True)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(ManagedProductVariant)
+class ManagedProductVariantAdmin(SiteScopedAdminMixin, admin.ModelAdmin):
+    min_change_role = SiteMembership.ROLE_EDITOR
+    list_display = (
+        "site",
+        "category_slug",
+        "display_order",
+        "variant_slug",
+        "title",
+        "craft_tag",
+        "is_published",
+        "updated_at",
+    )
+    list_filter = ("site", "category_slug", "is_published")
+    search_fields = ("variant_slug", "title", "summary")
+    readonly_fields = ("updated_by", "updated_at")
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "hero_asset" and not request.user.is_superuser:
+            allowed = get_user_sites(request.user, min_role=SiteMembership.ROLE_EDITOR)
+            kwargs["queryset"] = ApprovedAsset.objects.filter(site__in=allowed, is_approved=True)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        obj.updated_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(ManagedProductArticle)
+class ManagedProductArticleAdmin(SiteScopedAdminMixin, admin.ModelAdmin):
+    min_change_role = SiteMembership.ROLE_EDITOR
+    list_display = ("site", "variant", "article_slug", "title", "status", "published_at", "updated_at")
+    list_filter = ("site", "status", "variant__category_slug")
+    search_fields = ("article_slug", "title", "summary", "body_markdown")
+    readonly_fields = ("updated_by", "updated_at")
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if not request.user.is_superuser:
+            allowed = get_user_sites(request.user, min_role=SiteMembership.ROLE_EDITOR)
+            if db_field.name == "variant":
+                kwargs["queryset"] = ManagedProductVariant.objects.filter(site__in=allowed)
+            elif db_field.name == "cover_asset":
+                kwargs["queryset"] = ApprovedAsset.objects.filter(site__in=allowed, is_approved=True)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):

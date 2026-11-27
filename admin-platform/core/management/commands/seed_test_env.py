@@ -9,6 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from core.models import AuditLog, Domain, GatewayCredential, Site, SiteMembership
+from publishing.catalog_seed import seed_zhaohui_catalog_from_repo
 from publishing.models import ApprovedAsset, ContentSnapshot, ManagedContact, ManagedProduct
 from publishing.pipeline import build_snapshot_payload
 
@@ -230,6 +231,7 @@ class Command(BaseCommand):
                 "addresses_json": zh_contact["addresses"],
             },
         )
+        seed_zhaohui_catalog_from_repo(zhaohui_site)
 
         # 5. Seed Sim-Site independent managed content
         sim_asset_1, _ = ApprovedAsset.objects.update_or_create(

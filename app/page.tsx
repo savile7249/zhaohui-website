@@ -4,6 +4,7 @@ import Link from "next/link";
 import { productFamilies } from "@/app/products/product-data";
 import { contactInfo } from "@/components/contact-data";
 import { getCanonicalBase, managedSnapshot } from "@/lib/managed-content";
+import { getVariantTitleLookup } from "@/lib/product-catalog";
 import { BriefWorkbench } from "./brief-workbench";
 import { CredentialsExplorer } from "./credentials-explorer";
 import { HomeClient } from "./home-client";
@@ -71,6 +72,7 @@ function SectionLabel({ index, children }: { index: string; children: string }) 
 }
 
 export default function HomePage() {
+  const variantNames = getVariantTitleLookup();
   return (
     <HomeClient>
       <script
@@ -310,7 +312,7 @@ export default function HomePage() {
           </p>
         </div>
         <div className="pt-wrap">
-          <BriefWorkbench />
+          <BriefWorkbench variantNames={variantNames} />
         </div>
       </section>
 

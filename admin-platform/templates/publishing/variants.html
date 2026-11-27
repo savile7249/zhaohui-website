@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}子产品与标准化规格参数 · {{ site.name }} | 兆辉多站点管理后台{% endblock %}
+{% block content %}
+<div class="ops-topbar">
+  <div>
+    <p class="ops-label"><span>02 / 子产品目录</span>四类设备子产品详情页、标准化规格参数与关联文章入口</p>
+    <h1 class="ops-h1">{{ site.name }} · 子产品与规格参数管理</h1>
+  </div>
+  <div class="ops-filters">
+    <a class="ops-btn is-secondary" href="{% url 'publishing:assets' site.slug %}">上传图片素材 →</a>
+  </div>
+</div>
+
+{% include "publishing/_subnav.html" %}
+
+<div class="ops-panel is-accent-left" style="margin-bottom:24px;">
+  <strong>标准化参数填写说明</strong>
+  <p class="ops-kpi-sub" style="margin-top:6px;">
+    所有子产品已预录入合规的<strong>规格种类框架</strong>，具体数值默认留空（前台自动显示「按项目工况核定」）。
+    点击对应机型的「编辑参数与文案」即可逐行填写经技术负责人审核的具体参数，或批量上传 CSV / JSON 参数表；点击「管理关联文章」可上传 Markdown 文档或在线撰写技术文章。
+  </p>
+</div>
+
+{% for group in grouped_variants %}
+<section class="ops-section">
+  <div class="ops-section-head">
+    <h2 class="ops-h2">{{ group.label }}（/products/{{ group.slug }}/）</h2>
+    <p class="ops-section-note">共 {{ group.variants|length }} 款子产品</p>
+  </div>
+
+  <div class="ops-table-wrap">
+    <table class="ops-table">
+      <thead>
+        <tr>
+          <th style="width:90px;">实拍图</th>
+          <th>子产品名称与路由</th>
+          <th>工艺标签</th>
+          <th>规格填写进度</th>
+          <th>关联文章</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in group.variants %}
+        <tr>
+          <td>
+            <div class="ops-table-thumb">
+              <img src="{{ v.hero_preview_url }}" alt="{{ v.title }}" loading="lazy" />
+            </div>
+          </td>
+          <td>
+            <strong>{{ v.title }}</strong><br />
+            <span style="color:var(--on-light-muted);">{{ v.get_public_path }}</span>
+          </td>
+          <td><span class="ops-tag">{{ v.craft_tag }}</span></td>
+          <td>
+            <strong>{{ v.spec_filled }}</strong> / {{ v.spec_total }} 项已填参数<br />
+            <span style="color:var(--on-light-muted);">留空项前台显示「按项目工况核定」</span>
+          </td>
+          <td>
+            <strong>{{ v.article_published }}</strong> 篇已发布（共 {{ v.article_total }} 篇）
+          </td>
+          <td>
+            {% if v.is_published %}
+              <span class="ops-tag is-ink">已启用</span>
+            {% else %}
+              <span class="ops-tag is-muted">已停用</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="ops-inline-form">
+              <a class="ops-btn ops-btn-sm" href="{% url 'publishing:variant_edit' site.slug v.id %}">编辑参数与文案</a>
+              <a class="ops-btn ops-btn-sm is-secondary" href="{% url 'publishing:articles' site.slug v.id %}">管理关联文章（{{ v.article_total }}）</a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" style="color:var(--on-light-muted);">该设备大类下暂无子产品，可在下方表单新增。</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endfor %}
+
+<section class="ops-section">
+  <form method="post" action="{% url 'publishing:create_variant' site.slug %}" class="ops-panel">
+    {% csrf_token %}
+    <h2 class="ops-h2">新增子产品详情页</h2>
+    <p class="ops-kpi-sub" style="margin-bottom:14px;">新增后将自动复制同大类的规格种类模板（数值留空）并开放详情页与关联文章管理。</p>
+    <div class="ops-grid-3">
+      <div class="ops-field">
+        <label for="nv-cat">所属设备大类</label>
+        <select id="nv-cat" name="category_slug" class="ops-select" required>
+          {% for slug, label in category_choices %}
+          <option value="{{ slug }}">{{ label }}（{{ slug }}）</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="ops-field">
+        <label for="nv-slug">路径标识（小写英文/数字）</label>
+        <input id="nv-slug" name="variant_slug" class="ops-input" placeholder="例如：pe 或 stirred-tank" pattern="[a-z0-9][a-z0-9_-]*" required />
+      </div>
+      <div class="ops-field">
+        <label for="nv-tag">工艺/结构标签</label>
+        <input id="nv-tag" name="craft_tag" class="ops-input" placeholder="例如：板衬工艺 / 滚塑工艺" value="板衬工艺" required />
+      </div>
+    </div>
+    <div class="ops-grid-2" style="margin-top:12px;">
+      <div class="ops-field">
+        <label for="nv-title">子产品名称</label>
+        <input id="nv-title" name="title" class="ops-input" placeholder="例如：钢衬四氟搅拌罐" required />
+      </div>
+      <div class="ops-field">
+        <label for="nv-asset">已核准主图（可先到「图片素材库」上传）</label>
+        <select id="nv-asset" name="hero_asset_id" class="ops-select" required>
+          {% for a in assets %}
+          <option value="{{ a.id }}">{{ a.label }}（{{ a.image_path }}）</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="ops-field" style="margin-top:12px;">
+      <label for="nv-summary">产品概述</label>
+      <textarea id="nv-summary" name="summary" class="ops-textarea" placeholder="简洁客观描述结构、衬里工艺与适用工艺段，不写未审核参数。" required></textarea>
+    </div>
+    <div style="margin-top:14px;">
+      <button type="submit" class="ops-btn">创建子产品并进入参数编辑</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

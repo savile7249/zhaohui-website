@@ -1,0 +1,1059 @@
+{
+  "schemaVersion": "1.1",
+  "updatedAt": "2026-11-27",
+  "variants": [
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "ptfe",
+      "index": "01",
+      "craftTag": "板衬工艺",
+      "title": "钢衬四氟储罐",
+      "seoTitle": "钢衬四氟储罐 | 标准化规格种类与工况说明",
+      "seoDescription": "江苏兆辉钢衬四氟储罐（PTFE 板衬工艺），承压钢壳内壁贴合白色聚四氟乙烯衬里并完整翻边密封，查看规格项目与选型沟通条件。",
+      "summary": "承压钢壳内壁贴合白色聚四氟乙烯（PTFE）衬里，端面大口法兰与各管口密封面连续翻边，将腐蚀性介质与金属壳体完整隔离，适用于各类腐蚀性介质的储存与工艺缓冲。",
+      "heroImage": "/images/site/products/tanks-ptfe.webp",
+      "heroImageAlt": "钢衬四氟储罐实拍，可见内部白色 PTFE 衬里内腔与主法兰翻边密封面",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/tanks-ptfe.webp",
+          "alt": "钢衬四氟储罐实拍，可见内部白色 PTFE 衬里内腔与主法兰翻边密封面"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "公称容积", "value": "", "unit": "m³", "note": "明确全容积或有效容积口径" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式或卧式，按现场空间与布置选定" },
+        { "group": "基本规格", "label": "公称直径", "value": "", "unit": "mm", "note": "结合场地、吊装与运输限高核定" },
+        { "group": "基本规格", "label": "筒体高度 / 长度", "value": "", "unit": "mm", "note": "按容积与液位设计要求核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢或玻璃钢大类，牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚四氟乙烯（PTFE）板衬工艺，板材与焊接方式按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与最高波动温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "须注明常压、带压或是否涉及负压工况" },
+        { "group": "接口与支承", "label": "支承与基础形式", "value": "", "unit": "", "note": "管式支腿、耳座、裙座或卧式鞍座" },
+        { "group": "接口与支承", "label": "接管与法兰配置", "value": "", "unit": "", "note": "进出料、液位、仪表、人孔方位与法兰标准" },
+        { "group": "接口与支承", "label": "出厂检验项目", "value": "", "unit": "", "note": "检验方法与判定标准按项目技术协议执行留档" }
+      ],
+      "confirmChecklist": [
+        "容积（明确全容积或有效容积）",
+        "立式或卧式结构及开盖形式",
+        "公称直径与筒体高度 / 长度",
+        "基础承载及支承形式（支腿、耳座、裙座或鞍座）",
+        "顶部与侧向接管数量、管径、方位及法兰标准",
+        "介质名称、浓度、杂质与是否易结晶沉积",
+        "连续与最高工作温度、运行压力及是否负压",
+        "壳体材料大类与板衬工艺审核要求"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "po",
+      "index": "02",
+      "craftTag": "滚塑工艺",
+      "title": "钢衬 PO 储罐",
+      "seoTitle": "钢衬 PO 储罐 | 标准化规格种类与工况说明",
+      "seoDescription": "江苏兆辉钢衬 PO 储罐（滚塑工艺），整体滚塑成型 PO 衬里紧贴钢壳内壁，内表面连续无焊缝死角，查看规格种类与选型确认条件。",
+      "summary": "整体滚塑成型聚烯烃（PO）衬里紧贴承压钢壳内壁，内表面连续平整、过渡圆顺，适用于耐腐蚀介质的储存与工艺缓冲周转。",
+      "heroImage": "/images/site/products/tanks-po.webp",
+      "heroImageAlt": "钢衬 PO 储罐实拍，可见滚塑成型内衬层与承压钢壳筒体",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/tanks-po.webp",
+          "alt": "钢衬 PO 储罐实拍，可见滚塑成型内衬层与承压钢壳筒体"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "公称容积", "value": "", "unit": "m³", "note": "明确全容积或有效容积口径" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式或卧式，按现场空间与布置选定" },
+        { "group": "基本规格", "label": "公称直径", "value": "", "unit": "mm", "note": "结合滚塑炉尺寸与运输限高核定" },
+        { "group": "基本规格", "label": "筒体高度 / 长度", "value": "", "unit": "mm", "note": "按容积与液位设计要求核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚烯烃（PO）整体滚塑成型工艺，具体牌号与衬厚按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与最高波动温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "须注明常压、带压或是否涉及负压工况" },
+        { "group": "接口与支承", "label": "支承与基础形式", "value": "", "unit": "", "note": "管式支腿、耳座、裙座或卧式鞍座" },
+        { "group": "接口与支承", "label": "接管与法兰配置", "value": "", "unit": "", "note": "进出料、液位、人孔方位与法兰标准" },
+        { "group": "接口与支承", "label": "出厂检验项目", "value": "", "unit": "", "note": "检验方法与判定标准按项目技术协议执行留档" }
+      ],
+      "confirmChecklist": [
+        "容积（明确全容积或有效容积）",
+        "立式或卧式结构形式",
+        "直径、高度或长度及现场运输限制",
+        "基础及支承布置形式",
+        "接口数量、口径、方位与法兰标准",
+        "介质名称、浓度与杂质情况",
+        "连续与最高工作温度、运行压力",
+        "滚塑 PO 材料牌号与厚度审核要求"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "pe",
+      "index": "03",
+      "craftTag": "滚塑工艺",
+      "title": "钢衬 PE 储罐",
+      "seoTitle": "钢衬 PE 储罐 | 标准化规格种类与工况说明",
+      "seoDescription": "江苏兆辉钢衬 PE 储罐（滚塑工艺），内部聚乙烯滚塑衬里延伸至法兰密封面，兼顾钢壳结构强度与连续防腐需求。",
+      "summary": "内部聚乙烯（PE）整体滚塑衬里延伸至法兰密封面，将外部钢壳结构强度与内表面整体连续防腐需求有机结合。",
+      "heroImage": "/images/site/products/tanks-pe.webp",
+      "heroImageAlt": "钢衬 PE 储罐实拍，可见内部白色 PE 衬里与整周翻边密封面",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/tanks-pe.webp",
+          "alt": "钢衬 PE 储罐实拍，可见内部白色 PE 衬里与整周翻边密封面"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "公称容积", "value": "", "unit": "m³", "note": "明确全容积或有效容积口径" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式或卧式，按现场空间与布置选定" },
+        { "group": "基本规格", "label": "公称直径", "value": "", "unit": "mm", "note": "结合滚塑成型及现场运输条件核定" },
+        { "group": "基本规格", "label": "筒体高度 / 长度", "value": "", "unit": "mm", "note": "按容积与工艺布置要求核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚乙烯（PE）整体滚塑成型工艺，具体牌号与厚度按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与最高波动温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "须注明常压、带压或是否涉及负压工况" },
+        { "group": "接口与支承", "label": "支承与基础形式", "value": "", "unit": "", "note": "管式支腿、耳座、裙座或卧式鞍座" },
+        { "group": "接口与支承", "label": "接管与法兰配置", "value": "", "unit": "", "note": "进出料、液位、人孔方位与法兰标准" },
+        { "group": "接口与支承", "label": "出厂检验项目", "value": "", "unit": "", "note": "检验方法与判定标准按项目技术协议执行留档" }
+      ],
+      "confirmChecklist": [
+        "容积（明确全容积或有效容积）",
+        "立式或卧式结构形式",
+        "直径、高度或长度及运输限高",
+        "基础及支承形式",
+        "接口数量、管径、方位与法兰标准",
+        "介质名称、浓度与杂质情况",
+        "连续与最高工作温度、运行压力",
+        "滚塑 PE 材料牌号与衬里厚度审核要求"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "pfa",
+      "index": "04",
+      "craftTag": "板衬工艺",
+      "title": "钢衬 PFA 储罐",
+      "seoTitle": "钢衬 PFA 储罐 | 标准化规格种类与工况说明",
+      "seoDescription": "江苏兆辉钢衬 PFA 储罐（板衬工艺），按项目容积、洁净与接口要求定制立卧式结构及管口翻边密封，查看规格种类与选型确认项。",
+      "summary": "采用可熔性聚四氟乙烯（PFA）板衬工艺与承压钢壳复合制造，按项目容积、支承与接口方位定制顶部与侧向法兰接管。",
+      "heroImage": "/images/site/products/tanks-pfa.webp",
+      "heroImageAlt": "钢衬 PFA 储罐实拍，可见立式储罐外观与管式支腿结构",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/tanks-pfa.webp",
+          "alt": "钢衬 PFA 储罐实拍，可见立式储罐外观与管式支腿结构"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "公称容积", "value": "", "unit": "m³", "note": "明确全容积或有效容积口径" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式或卧式，按现场空间与布置选定" },
+        { "group": "基本规格", "label": "公称直径", "value": "", "unit": "mm", "note": "结合场地与工艺要求核定" },
+        { "group": "基本规格", "label": "筒体高度 / 长度", "value": "", "unit": "mm", "note": "按容积与液位控制要求核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "PFA 板衬工艺，板材规格、焊接与洁净要求按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与最高波动温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "须注明常压、带压或是否涉及负压工况" },
+        { "group": "接口与支承", "label": "支承与基础形式", "value": "", "unit": "", "note": "管式支腿、耳座、裙座或卧式鞍座" },
+        { "group": "接口与支承", "label": "接管与法兰配置", "value": "", "unit": "", "note": "进出料、液位、仪表、人孔方位与法兰标准" },
+        { "group": "接口与支承", "label": "出厂检验项目", "value": "", "unit": "", "note": "检验方法、洁净度与判定标准按项目技术协议执行" }
+      ],
+      "confirmChecklist": [
+        "容积（明确全容积或有效容积）",
+        "立式或卧式结构与开盖形式",
+        "直径、高度或长度",
+        "基础及支承形式",
+        "接管数量、管径、方位与法兰标准",
+        "介质名称、浓度、纯度及杂质控制要求",
+        "工作温度、压力及是否负压",
+        "PFA 板材规格、焊接与洁净验收标准"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "pvdf",
+      "index": "05",
+      "craftTag": "板衬工艺",
+      "title": "钢衬 PVDF 储罐",
+      "seoTitle": "钢衬 PVDF 储罐 | 标准化规格种类与工况说明",
+      "seoDescription": "江苏兆辉钢衬 PVDF 储罐（板衬工艺），立式或卧式筒体配顶盖主法兰与侧向接管，便于配管衔接与检修维护，查看规格种类与选型条件。",
+      "summary": "聚偏氟乙烯（PVDF）板衬与承压壳体复合结构，配顶盖主法兰与上下侧向接管，兼顾现场配管衔接与内部定期检修维护。",
+      "heroImage": "/images/site/products/tanks-pvdf.webp",
+      "heroImageAlt": "钢衬 PVDF 储罐实拍，可见立式筒体、顶部法兰与侧向接管布置",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/tanks-pvdf.webp",
+          "alt": "钢衬 PVDF 储罐实拍，可见立式筒体、顶部法兰与侧向接管布置"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "公称容积", "value": "", "unit": "m³", "note": "明确全容积或有效容积口径" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式或卧式，按现场空间与布置选定" },
+        { "group": "基本规格", "label": "公称直径", "value": "", "unit": "mm", "note": "结合场地、吊装与运输限高核定" },
+        { "group": "基本规格", "label": "筒体高度 / 长度", "value": "", "unit": "mm", "note": "按容积与液位控制要求核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢或玻璃钢大类，牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "PVDF 板衬工艺，板材厚度与焊接固定方式按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与最高波动温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "须注明常压、带压或是否涉及负压工况" },
+        { "group": "接口与支承", "label": "支承与基础形式", "value": "", "unit": "", "note": "管式支腿、耳座、裙座或卧式鞍座" },
+        { "group": "接口与支承", "label": "接管与法兰配置", "value": "", "unit": "", "note": "进出料、液位、仪表、人孔方位与法兰标准" },
+        { "group": "接口与支承", "label": "出厂检验项目", "value": "", "unit": "", "note": "检验方法与判定标准按项目技术协议执行留档" }
+      ],
+      "confirmChecklist": [
+        "容积（明确全容积或有效容积）",
+        "立式或卧式结构形式",
+        "直径、高度或长度",
+        "基础与支承布置",
+        "接口数量、口径、方位与法兰标准",
+        "介质名称、浓度与杂质情况",
+        "工作温度、压力及是否负压",
+        "PVDF 板材规格、焊接及检验标准"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "ptfe",
+      "index": "01",
+      "craftTag": "板衬工艺",
+      "title": "钢衬四氟反应釜",
+      "seoTitle": "钢衬四氟反应釜 | 标准化规格种类与选型条件",
+      "seoDescription": "江苏兆辉钢衬四氟反应釜（PTFE 板衬工艺），釜盖按工艺方位集成多组进料、仪表与检修法兰，配套搅拌与传热单元，查看规格种类与确认项。",
+      "summary": "釜盖按工艺方位集成多组进料、仪表与检修人孔法兰，外侧配刚性耳座或支腿，结合聚四氟乙烯衬里与承压釜体满足腐蚀性反应与混合工况。",
+      "heroImage": "/images/site/products/reactors-ptfe.webp",
+      "heroImageAlt": "钢衬四氟反应釜实拍，可见釜盖主法兰、多组工艺接管与耳座支承",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/reactors-ptfe.webp",
+          "alt": "钢衬四氟反应釜实拍，可见釜盖主法兰、多组工艺接管与耳座支承"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "有效容积", "value": "", "unit": "m³", "note": "按批次投料量与装料系数核定" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式反应釜、搅拌罐或非标定制结构" },
+        { "group": "基本规格", "label": "釜体尺寸（直径 × 高度）", "value": "", "unit": "mm", "note": "按工艺长径比与车间安装空间核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按设计标准核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚四氟乙烯（PTFE）板衬工艺，结合方式按温压工况审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "明确反应升温、保温与降温波动范围" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "区分釜内压力、夹套压力及是否涉及负压" },
+        { "group": "搅拌与传热", "label": "搅拌形式与转速", "value": "", "unit": "r/min", "note": "结合物料黏度、固含量与防爆要求选配" },
+        { "group": "搅拌与传热", "label": "加热 / 冷却方式", "value": "", "unit": "", "note": "夹套或盘管形式及冷热媒介质条件" },
+        { "group": "搅拌与传热", "label": "轴封与接口配置", "value": "", "unit": "", "note": "密封形式、釜盖工艺接管、视镜与放料口布置" },
+        { "group": "搅拌与传热", "label": "出厂检验项目", "value": "", "unit": "", "note": "壳体、夹套、衬里与搅拌同轴度按项目技术协议检验" }
+      ],
+      "confirmChecklist": [
+        "有效容积与装料系数",
+        "釜体结构形式及支座方式（耳座或支腿）",
+        "介质组分、浓度、黏度及反应过程变化",
+        "连续与最高工作温度、是否存在温度急变",
+        "釜内及夹套工作压力、是否涉及负压",
+        "搅拌形式、转速区间、轴封与防爆等级",
+        "加热或冷却方式及冷热媒介质条件",
+        "釜盖与釜底接管方位及防腐工艺审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "po",
+      "index": "02",
+      "craftTag": "滚塑工艺",
+      "title": "钢衬 PO 反应釜",
+      "seoTitle": "钢衬 PO 反应釜 | 标准化规格种类与选型条件",
+      "seoDescription": "江苏兆辉钢衬 PO 反应釜（滚塑工艺），配套顶部搅拌传动机架、大口径釜盖法兰与耳式支座，查看规格种类与选型确认项。",
+      "summary": "整体滚塑 PO 内衬与钢制承压釜体紧密贴合，配套顶部搅拌传动机架、大口径釜盖法兰与耳式支座，满足强腐蚀物料混合与反应需求。",
+      "heroImage": "/images/site/products/reactors-po.webp",
+      "heroImageAlt": "钢衬 PO 反应釜实拍，可见搅拌传动装置、釜盖主法兰与耳座结构",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/reactors-po.webp",
+          "alt": "钢衬 PO 反应釜实拍，可见搅拌传动装置、釜盖主法兰与耳座结构"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "有效容积", "value": "", "unit": "m³", "note": "按批次投料量与装料系数核定" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式滚塑反应釜或非标定制结构" },
+        { "group": "基本规格", "label": "釜体尺寸（直径 × 高度）", "value": "", "unit": "mm", "note": "结合滚塑炉尺寸与安装空间核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，牌号与壁厚按项目设计核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚烯烃（PO）整体滚塑工艺，具体牌号与衬厚按工况审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "明确连续与最高工作温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "明确釜内与夹套工作压力及是否负压" },
+        { "group": "搅拌与传热", "label": "搅拌形式与转速", "value": "", "unit": "r/min", "note": "按物料特性与防爆要求配套传动与搅拌器" },
+        { "group": "搅拌与传热", "label": "加热 / 冷却方式", "value": "", "unit": "", "note": "按工艺温控要求评估传热结构" },
+        { "group": "搅拌与传热", "label": "轴封与接口配置", "value": "", "unit": "", "note": "密封形式、工艺接管、人孔与放料阀衔接" },
+        { "group": "搅拌与传热", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议逐台检验并留存记录" }
+      ],
+      "confirmChecklist": [
+        "有效容积与釜体外形尺寸",
+        "介质组分、浓度与固含量",
+        "工作温度与压力（注明是否负压）",
+        "搅拌形式、转速与轴封要求",
+        "加热或冷却方式",
+        "釜盖接口与底侧放料口方位",
+        "防爆等级与支承形式",
+        "滚塑 PO 材料牌号与厚度审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "pe",
+      "index": "03",
+      "craftTag": "滚塑工艺",
+      "title": "钢衬 PE 反应釜",
+      "seoTitle": "钢衬 PE 反应釜 | 标准化规格种类与选型条件",
+      "seoDescription": "江苏兆辉钢衬 PE 反应釜（滚塑工艺），钢壳内壁整体滚塑聚乙烯衬里，配套釜盖接口、搅拌机架与底侧放料口，查看规格种类与选型条件。",
+      "summary": "承压钢壳内壁经整体滚塑成型聚乙烯（PE）衬里，无缝贴合至法兰密封面，按工艺工况配套顶部搅拌、测温接管与放料结构。",
+      "heroImage": "/images/site/product-reactors.webp",
+      "heroImageAlt": "钢衬防腐反应釜厂区参考实拍，可见釜体、多组顶部法兰接管与人孔结构（具体 PE 滚塑反应釜按项目定制）",
+      "galleryImages": [
+        {
+          "src": "/images/site/product-reactors.webp",
+          "alt": "钢衬防腐反应釜厂区参考实拍，可见釜体、多组顶部法兰接管与人孔结构（具体 PE 滚塑反应釜按项目定制）"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "有效容积", "value": "", "unit": "m³", "note": "按批次投料量与装料系数核定" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式滚塑反应釜，按安装空间确定开盖与支承" },
+        { "group": "基本规格", "label": "釜体尺寸（直径 × 高度）", "value": "", "unit": "mm", "note": "结合滚塑成型尺寸与车间吊装限高核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚乙烯（PE）整体滚塑工艺，具体牌号与衬厚按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "明确连续工作温度、反应峰值与清洗温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "注明常压、微正压或是否涉及负压工况" },
+        { "group": "搅拌与传热", "label": "搅拌形式与转速", "value": "", "unit": "r/min", "note": "按物料黏度、固含量与防爆要求配套搅拌" },
+        { "group": "搅拌与传热", "label": "加热 / 冷却方式", "value": "", "unit": "", "note": "结合介质温控曲线评估传热方案" },
+        { "group": "搅拌与传热", "label": "轴封与接口配置", "value": "", "unit": "", "note": "轴封形式、投料口、测温套管与底放料阀衔接" },
+        { "group": "搅拌与传热", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议核验衬里连续性、尺寸与传动装配" }
+      ],
+      "confirmChecklist": [
+        "有效容积与装料系数",
+        "釜体尺寸、支承形式及车间吊装高度",
+        "介质组分、浓度与固相颗粒情况",
+        "连续工作温度与最高反应温度",
+        "操作压力及是否涉及负压抽料",
+        "搅拌形式、转速区间与轴封配置",
+        "加热或冷却需求及冷热媒条件",
+        "滚塑 PE 材料牌号与厚度审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "pfa",
+      "index": "04",
+      "craftTag": "板衬工艺",
+      "title": "钢衬 PFA 反应釜",
+      "seoTitle": "钢衬 PFA 反应釜 | 标准化规格种类与选型条件",
+      "seoDescription": "江苏兆辉钢衬 PFA 反应釜（板衬工艺），外筒配套顶置搅拌传动与大口径翻边观察口，内壁衬里延伸至法兰端面，查看规格种类与选型条件。",
+      "summary": "外筒配套顶置搅拌传动与大口径翻边观察口，内壁 PFA 衬里延伸至各法兰端面并配立式支腿底板，按项目工艺与洁净要求定制。",
+      "heroImage": "/images/site/products/reactors-pfa.webp",
+      "heroImageAlt": "钢衬 PFA 反应釜实拍，可见不锈钢外筒、顶置搅拌传动与大口径衬里翻边法兰口",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/reactors-pfa.webp",
+          "alt": "钢衬 PFA 反应釜实拍，可见不锈钢外筒、顶置搅拌传动与大口径衬里翻边法兰口"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "有效容积", "value": "", "unit": "m³", "note": "按批次投料量与装料系数核定" },
+        { "group": "基本规格", "label": "结构形式", "value": "", "unit": "", "note": "立式结构或按项目定制" },
+        { "group": "基本规格", "label": "釜体尺寸（直径 × 高度）", "value": "", "unit": "mm", "note": "结合车间高度与接口布局核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢或不锈钢大类，具体牌号按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "PFA 板衬工艺，板材规格、焊接与洁净要求按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "明确反应温度波动范围" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "明确釜内与夹套压力及是否负压" },
+        { "group": "搅拌与传热", "label": "搅拌形式与转速", "value": "", "unit": "r/min", "note": "结合物料黏度、洁净度与密封要求选配" },
+        { "group": "搅拌与传热", "label": "加热 / 冷却方式", "value": "", "unit": "", "note": "夹套或盘管传热配置及冷热媒条件" },
+        { "group": "搅拌与传热", "label": "轴封与接口配置", "value": "", "unit": "", "note": "密封形式、大口径观察口与工艺接管方位" },
+        { "group": "搅拌与传热", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议执行出厂检验与洁净验收" }
+      ],
+      "confirmChecklist": [
+        "有效容积与釜体外形尺寸",
+        "介质组分、浓度、纯度与析出控制要求",
+        "工作温度、压力与负压边界",
+        "搅拌形式、转速、轴封与防爆要求",
+        "加热或冷却传热方式",
+        "釜盖接管、观察口及放料阀配置",
+        "支承形式与现场安装条件",
+        "PFA 衬里焊接及洁净度验收口径"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "stirred-tank",
+      "index": "05",
+      "craftTag": "板衬工艺",
+      "title": "钢衬四氟搅拌罐",
+      "seoTitle": "钢衬四氟搅拌罐 | 标准化规格种类与选型条件",
+      "seoDescription": "江苏兆辉钢衬四氟搅拌罐（PTFE 板衬工艺），面向腐蚀性物料配制、中和、均质与缓冲搅拌工况，配套耐蚀桨叶、挡板与法兰接口。",
+      "summary": "钢壳内衬聚四氟乙烯（PTFE）并配套耐蚀搅拌装置、挡板与顶盖工艺接口，面向腐蚀性介质的混合配制、酸碱中和与工艺缓冲搅拌。",
+      "heroImage": "/images/site/product-reactors.webp",
+      "heroImageAlt": "立式钢衬四氟釜罐类设备厂区参考实拍，可见顶部搅拌口、多组法兰接管与衬氟人孔（具体搅拌罐结构按项目定制）",
+      "galleryImages": [
+        {
+          "src": "/images/site/product-reactors.webp",
+          "alt": "立式钢衬四氟釜罐类设备厂区参考实拍，可见顶部搅拌口、多组法兰接管与衬氟人孔（具体搅拌罐结构按项目定制）"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "有效容积", "value": "", "unit": "m³", "note": "明确批次配制量与液位上限" },
+        { "group": "基本规格", "label": "罐体结构形式", "value": "", "unit": "", "note": "立式平底、锥底或椭圆封头，按排料洁净度选定" },
+        { "group": "基本规格", "label": "罐体尺寸（直径 × 高度）", "value": "", "unit": "mm", "note": "结合车间净空与搅拌轴长度核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚四氟乙烯（PTFE）板衬工艺，各管口完整翻边" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "明确配料、中和放热或清洗阶段温度波动" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "注明常压、微正压或是否涉及抽吸负压" },
+        { "group": "搅拌与接口", "label": "搅拌器与挡板形式", "value": "", "unit": "r/min", "note": "衬氟桨叶形式、转速、挡板配置及防爆等级" },
+        { "group": "搅拌与接口", "label": "温控辅助配置", "value": "", "unit": "", "note": "如需保温、微加热或降温，注明夹套或盘管要求" },
+        { "group": "搅拌与接口", "label": "接管与放料布置", "value": "", "unit": "", "note": "投料、液位、pH/测温接口与底部放料阀法兰" },
+        { "group": "搅拌与接口", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议核验衬里贴合度与搅拌空载试车" }
+      ],
+      "confirmChecklist": [
+        "有效容积与罐底结构（平底、锥底或封头）",
+        "介质名称、浓度、黏度与是否含悬浮固相",
+        "混合工艺目的（配制、中和、悬浮或均质）",
+        "连续工作温度与放热峰值温度",
+        "操作压力及是否存在负压抽吸",
+        "搅拌桨叶形式、转速、轴封与防爆要求",
+        "顶部与底部接管方位及支承方式",
+        "PTFE 衬里与搅拌防腐包覆工艺审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "double-cone",
+      "index": "06",
+      "craftTag": "定制工艺",
+      "title": "双锥反应釜",
+      "seoTitle": "双锥反应釜 | 标准化规格种类与非标定制条件",
+      "seoDescription": "江苏兆辉非标定制双锥反应釜，面向高固含、易结晶或对彻底排料有要求的腐蚀性反应与混合工况，查看规格种类与选型沟通要点。",
+      "summary": "针对含固相、易结晶或要求低残留排料的腐蚀性工艺单元非标定制双锥腔体结构，按项目介质、温压与传动条件核定衬里及接管方案。",
+      "heroImage": "/images/site/product-reactors.webp",
+      "heroImageAlt": "立式防腐反应釜厂区参考实拍（双锥反应釜为非标定制设备，具体结构按项目图纸制造）",
+      "galleryImages": [
+        {
+          "src": "/images/site/product-reactors.webp",
+          "alt": "立式防腐反应釜厂区参考实拍（双锥反应釜为非标定制设备，具体结构按项目图纸制造）"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "有效容积与装料系数", "value": "", "unit": "m³", "note": "按双锥有效工作容积与固液比核定" },
+        { "group": "基本规格", "label": "锥体结构与半锥角", "value": "", "unit": "", "note": "按物料安息角与排料顺畅度定制上下锥结构" },
+        { "group": "基本规格", "label": "外形与安装空间", "value": "", "unit": "mm", "note": "结合楼层净高、放料阀净距与检修通道核定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "按介质与双锥内腔结构由技术团队专项审核衬里路线" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "明确反应、干燥或保温冷却阶段温度范围" },
+        { "group": "壳体与衬里", "label": "工作压力与真空边界", "value": "", "unit": "MPa", "note": "明确常压、带压或负压抽真空工况条件" },
+        { "group": "传动与传热", "label": "搅拌 / 驱动方式", "value": "", "unit": "r/min", "note": "结合物料流动性、黏度与防爆等级定制传动结构" },
+        { "group": "传动与传热", "label": "加热 / 冷却配置", "value": "", "unit": "", "note": "夹套传热覆盖区域及冷热媒介质条件" },
+        { "group": "传动与传热", "label": "进出料与密封接口", "value": "", "unit": "", "note": "上锥进料/抽气口、下锥大口径放料阀及轴封配置" },
+        { "group": "传动与传热", "label": "出厂检验项目", "value": "", "unit": "", "note": "按非标项目技术协议执行尺寸、衬里及试车检验" }
+      ],
+      "confirmChecklist": [
+        "有效容积、装料系数与固液比",
+        "物料流动性、颗粒特性与放料残留要求",
+        "介质完整组分、浓度与腐蚀特性",
+        "连续与最高工作温度、是否涉及温度骤变",
+        "操作压力及是否涉及负压或真空工艺",
+        "搅拌或传动方式、防爆等级与轴封要求",
+        "夹套加热冷却冷热媒参数及支承安装空间",
+        "非标双锥内衬结构工艺审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "ptfe",
+      "index": "01",
+      "craftTag": "板衬工艺",
+      "title": "钢衬四氟塔器",
+      "seoTitle": "钢衬四氟塔器 | 标准化规格种类与塔器选型条件",
+      "seoDescription": "江苏兆辉钢衬四氟塔器（PTFE 板衬工艺），分段塔节内壁连续衬氟并完整翻边，配套除雾、喷淋分布与填料支承结构，查看规格种类与选型条件。",
+      "summary": "分段承压钢壳内壁连续贴合聚四氟乙烯（PTFE）衬里并在端面法兰完整翻边，按工艺段配套除雾、喷淋分布与填料支承栅板，面向吸收、洗涤、脱硫与精馏单元。",
+      "heroImage": "/images/site/products/towers-exterior.webp",
+      "heroImageAlt": "钢衬四氟塔器整塔外观实拍，可见多组检修人孔、侧向法兰接管与整塔壳体",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/towers-exterior.webp",
+          "alt": "钢衬四氟塔器整塔外观实拍，可见多组检修人孔、侧向法兰接管与整塔壳体"
+        },
+        {
+          "src": "/images/site/products/towers-spray.webp",
+          "alt": "钢衬四氟塔器内部喷淋视角实拍，可见白色 PTFE 衬里、法兰翻边与内部喷淋分布管"
+        },
+        {
+          "src": "/images/site/products/towers-grid.webp",
+          "alt": "钢衬四氟塔器内部栅板视角实拍，可见塔节端面格栅支承结构与筒体侧接管"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "塔器类型与工艺段", "value": "", "unit": "", "note": "废气处理塔器及吸收、洗涤、脱硫、精馏等工艺配套" },
+        { "group": "基本规格", "label": "公称塔径", "value": "", "unit": "mm", "note": "结合处理风量、空塔气速与压降要求核定" },
+        { "group": "基本规格", "label": "塔体总高", "value": "", "unit": "mm", "note": "按传质段、储液段及安装空间核定" },
+        { "group": "基本规格", "label": "分段塔节数量", "value": "", "unit": "节", "note": "按衬里成型、运输限高与现场吊装条件分段" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢或玻璃钢大类，牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚四氟乙烯（PTFE）板衬工艺，各塔节端面法兰连续翻边" },
+        { "group": "壳体与衬里", "label": "工作温度与压力", "value": "", "unit": "°C / MPa", "note": "明确气液相温度、湿度及正负压条件" },
+        { "group": "内件与工况", "label": "处理量 / 气体风量", "value": "", "unit": "m³/h", "note": "明确气相处理风量与循环液量口径" },
+        { "group": "内件与工况", "label": "填料与塔内件配置", "value": "", "unit": "", "note": "除雾器、喷淋分布器、填料支承格栅与压板" },
+        { "group": "内件与工况", "label": "基础与人孔接管", "value": "", "unit": "", "note": "平底基础环或裙座、检修人孔与在线仪表口方位" },
+        { "group": "内件与工况", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议逐节核验尺寸、衬里与翻边密封面" }
+      ],
+      "confirmChecklist": [
+        "塔器用途与具体工艺段说明",
+        "公称塔径、塔体总高与分段塔节要求",
+        "废气或介质组分、浓度、湿度与处理量",
+        "气液相工作温度、压力与是否涉及负压",
+        "填料类型、层高及除雾/喷淋塔内件配置",
+        "进出气口、循环液口、人孔及仪表方位",
+        "基础承载、运输限高与现场吊装条件",
+        "壳体类别与 PTFE 衬里工艺审核要求"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "pe",
+      "index": "02",
+      "craftTag": "滚塑工艺",
+      "title": "钢衬 PE 塔",
+      "seoTitle": "钢衬 PE 塔 | 标准化规格种类与塔器选型条件",
+      "seoDescription": "江苏兆辉钢衬 PE 塔（滚塑工艺），钢制分段塔节内壁整体滚塑聚乙烯衬里，配套填料支承、喷淋分布与检修人孔，查看规格种类与选型条件。",
+      "summary": "承压钢壳分段内壁经整体滚塑成型聚乙烯（PE）衬里并延伸至法兰密封面，兼顾塔体结构刚度与连续防腐隔离，面向尾气洗涤与吸收工况。",
+      "heroImage": "/images/site/product-towers.webp",
+      "heroImageAlt": "分段式钢衬防腐塔器厂区参考实拍，可见内部白色衬里与塔内喷淋分布结构（钢衬 PE 塔按项目定制）",
+      "galleryImages": [
+        {
+          "src": "/images/site/product-towers.webp",
+          "alt": "分段式钢衬防腐塔器厂区参考实拍，可见内部白色衬里与塔内喷淋分布结构（钢衬 PE 塔按项目定制）"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "塔器类型与工艺段", "value": "", "unit": "", "note": "酸碱尾气洗涤塔、吸收塔等净化工艺单元" },
+        { "group": "基本规格", "label": "公称塔径", "value": "", "unit": "mm", "note": "结合处理风量与滚塑成型尺寸范围核定" },
+        { "group": "基本规格", "label": "塔体总高", "value": "", "unit": "mm", "note": "按填料层高、除雾段与底部循环液槽核定" },
+        { "group": "基本规格", "label": "分段塔节数量", "value": "", "unit": "节", "note": "结合滚塑单节高度与现场吊装条件确定" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚乙烯（PE）整体滚塑工艺，具体牌号与衬厚按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度与压力", "value": "", "unit": "°C / MPa", "note": "明确气液相工作温度、湿度及风机负压/正压条件" },
+        { "group": "内件与工况", "label": "处理量 / 气体风量", "value": "", "unit": "m³/h", "note": "明确废气风量、吸收液循环量及允许压降" },
+        { "group": "内件与工况", "label": "填料与塔内件配置", "value": "", "unit": "", "note": "填料种类、喷淋分布管路、支承栅板与除雾器" },
+        { "group": "内件与工况", "label": "基础与人孔接管", "value": "", "unit": "", "note": "底环基础、侧向进出气口、人孔与视镜方位" },
+        { "group": "内件与工况", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议逐节检查滚塑内衬与法兰密封面" }
+      ],
+      "confirmChecklist": [
+        "塔器用途及工艺净化目标",
+        "公称塔径、塔体总高与分段高度要求",
+        "废气组成、浓度、湿度与处理风量",
+        "气液相工作温度与正负压条件",
+        "填料层数、喷淋循环液量及除雾器配置",
+        "进出气口、液位仪表与检修人孔方位",
+        "基础承载、运输限高与现场吊装条件",
+        "滚塑 PE 衬里牌号与厚度审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "pfa",
+      "index": "03",
+      "craftTag": "板衬工艺",
+      "title": "钢衬 PFA 塔",
+      "seoTitle": "钢衬 PFA 塔 | 标准化规格种类与塔器选型条件",
+      "seoDescription": "江苏兆辉钢衬 PFA 塔（板衬工艺），分段钢壳内衬可熔性聚四氟乙烯（PFA）并连续翻边，适用于精馏、高纯吸收等苛刻传质工艺段。",
+      "summary": "采用可熔性聚四氟乙烯（PFA）板衬工艺与承压塔壳复合制造，各分段塔节端面与管口连续翻边，面向精馏与洁净吸收等高要求传质工艺段。",
+      "heroImage": "/images/site/product-towers.webp",
+      "heroImageAlt": "分段式钢衬防腐塔器厂区参考实拍（钢衬 PFA 塔按项目介质与洁净标准定制）",
+      "galleryImages": [
+        {
+          "src": "/images/site/product-towers.webp",
+          "alt": "分段式钢衬防腐塔器厂区参考实拍（钢衬 PFA 塔按项目介质与洁净标准定制）"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "塔器类型与工艺段", "value": "", "unit": "", "note": "精馏、提纯吸收、高洁净洗涤等传质工艺段" },
+        { "group": "基本规格", "label": "公称塔径", "value": "", "unit": "mm", "note": "按传质计算截面与气液通量核定" },
+        { "group": "基本规格", "label": "塔体总高", "value": "", "unit": "mm", "note": "按理论板数对应填料段高与塔釜空间核定" },
+        { "group": "基本规格", "label": "分段塔节数量", "value": "", "unit": "节", "note": "结合板衬焊接作业、内件拆装与运输条件分段" },
+        { "group": "壳体与衬里", "label": "承压壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "PFA 板衬工艺，焊缝质量与洁净控制按项目审核" },
+        { "group": "壳体与衬里", "label": "工作温度与压力", "value": "", "unit": "°C / MPa", "note": "明确塔顶塔釜温差、操作压力及是否负压精馏" },
+        { "group": "内件与工况", "label": "处理量 / 气液负荷", "value": "", "unit": "m³/h", "note": "明确气液相流量、回流比及允许压降" },
+        { "group": "内件与工况", "label": "填料与分布内件", "value": "", "unit": "", "note": "液体分布器、再分布器、填料支承及除雾器配置" },
+        { "group": "内件与工况", "label": "接口与测点布置", "value": "", "unit": "", "note": "进料、回流、测温、测压、人孔及法兰标准" },
+        { "group": "内件与工况", "label": "出厂检验项目", "value": "", "unit": "", "note": "按技术协议执行衬里检验、洁净度核查与试装留档" }
+      ],
+      "confirmChecklist": [
+        "工艺段用途（精馏、吸收或高纯洗涤）",
+        "公称塔径、总高与分段塔节要求",
+        "介质组分、浓度、纯度及杂质析出控制要求",
+        "塔顶与塔釜工作温度、压力与负压边界",
+        "填料规格、分布器及塔内件材质匹配要求",
+        "接管、测温测压点与检修人孔方位",
+        "运输限高、基础承载及现场吊装条件",
+        "PFA 板材规格、焊接及洁净度验收协议"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "section",
+      "index": "04",
+      "craftTag": "塔器部件",
+      "title": "衬四氟塔节",
+      "seoTitle": "衬四氟塔节 | 标准化规格种类与分段配套说明",
+      "seoDescription": "江苏兆辉衬四氟塔节（PTFE 衬里塔段），可按整塔分段或旧塔改造尺寸定制端面法兰、内部喷淋分布与填料支承栅板，查看规格种类与选型条件。",
+      "summary": "独立分段制造的钢衬四氟塔节单元，两端面配承压法兰与连续四氟翻边，可按喷淋段、填料支承段或检修段定制，支持新塔组对与既有塔器局部更换。",
+      "heroImage": "/images/site/products/towers-grid.webp",
+      "heroImageAlt": "衬四氟塔节内部栅板实拍，可见大口径塔节端面翻边、格栅支承结构与侧向接管",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/towers-grid.webp",
+          "alt": "衬四氟塔节内部栅板实拍，可见大口径塔节端面翻边、格栅支承结构与侧向接管"
+        },
+        {
+          "src": "/images/site/products/towers-spray.webp",
+          "alt": "衬四氟塔节内部喷淋实拍，可见白色 PTFE 衬里内壁、端面翻边与喷淋分布管路"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "塔节功能段类别", "value": "", "unit": "", "note": "填料段、喷淋分布段、除雾段、过渡段或釜底段" },
+        { "group": "基本规格", "label": "适配公称塔径", "value": "", "unit": "mm", "note": "按整塔或旧塔实测内径与支承圈尺寸核定" },
+        { "group": "基本规格", "label": "单节塔节高度", "value": "", "unit": "mm", "note": "明确两法兰密封面之间的精确安装高度" },
+        { "group": "壳体与衬里", "label": "塔节壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚四氟乙烯（PTFE）衬里并延伸至上下端面与管口翻边" },
+        { "group": "壳体与衬里", "label": "工作温度与压力", "value": "", "unit": "°C / MPa", "note": "注明该工艺段的气液温压及正负压边界" },
+        { "group": "配合与内件", "label": "端面法兰匹配标准", "value": "", "unit": "", "note": "外径、螺栓中心圆直径、孔数孔径与跨中方位" },
+        { "group": "配合与内件", "label": "内置支承 / 喷淋配置", "value": "", "unit": "", "note": "填料支承栅板、压板、支承圈或喷淋分布管接口" },
+        { "group": "配合与内件", "label": "侧向接管与人孔", "value": "", "unit": "", "note": "循环液口、填料装卸口、检修人孔及仪表口标高方位" },
+        { "group": "配合与内件", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目协议核验法兰螺孔对中、端面翻边平整度与内件配合" }
+      ],
+      "confirmChecklist": [
+        "塔节所在功能段（填料段、喷淋段、除雾段或改造替换段）",
+        "公称塔径及上下法兰密封面间距",
+        "上下端面法兰标准、螺栓孔中心圆与跨中方位",
+        "介质成分、浓度、气液相温压及是否负压",
+        "内置填料支承栅板、支承圈或喷淋管标高要求",
+        "侧向人孔、装卸口及接管口径与角度方位",
+        "现场吊装空间与旧塔接口实测校核资料",
+        "PTFE 衬里与内件材质技术审核要求"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "piping",
+      "variantSlug": "ptfe",
+      "index": "01",
+      "craftTag": "钢衬四氟",
+      "title": "钢衬四氟管道",
+      "seoTitle": "钢衬四氟管道 | 标准化规格种类与定长预制条件",
+      "seoDescription": "江苏兆辉钢衬四氟管道（PTFE 内衬直管段），按装置轴测图定长预制并在法兰端面连续翻边密封，到场螺栓直连，查看规格种类与选型条件。",
+      "summary": "承压外管内壁复合白色聚四氟乙烯（PTFE）衬管，两端面法兰连续翻边密封，按装置轴测图定长预制直管段与短节，到场直接螺栓紧固衔接。",
+      "heroImage": "/images/site/products/piping-ptfe.webp",
+      "heroImageAlt": "钢衬四氟管道批量实拍，可见定长直管段、短节及端面白色四氟翻边密封面",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/piping-ptfe.webp",
+          "alt": "钢衬四氟管道批量实拍，可见定长直管段、短节及端面白色四氟翻边密封面"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "公称直径 DN", "value": "", "unit": "mm", "note": "按装置轴测图与设计流速核定主管与支管口径" },
+        { "group": "基本规格", "label": "单段管长", "value": "", "unit": "m", "note": "按现场管廊轴测图定长预制，避免现场切割改制" },
+        { "group": "基本规格", "label": "直管与短节配置", "value": "", "unit": "", "note": "含标准直管段、调整短节及配对法兰组合" },
+        { "group": "壳体与衬里", "label": "外管壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚四氟乙烯（PTFE）衬管并在法兰端面连续翻边" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与波动极值" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "注明运行压力及是否涉及负压抽吸工况" },
+        { "group": "连接与检验", "label": "法兰与连接方式", "value": "", "unit": "", "note": "法兰标准、压力等级及活套/固定法兰形式" },
+        { "group": "连接与检验", "label": "介质流量与冲刷条件", "value": "", "unit": "m³/h", "note": "注明流量及是否含固相颗粒或易结晶物" },
+        { "group": "连接与检验", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议逐段核验长度、贴合度与翻边平整度" }
+      ],
+      "confirmChecklist": [
+        "公称直径 DN（含主管与支管口径）",
+        "单段管长、调整短节及装置轴测图清单",
+        "介质名称、浓度、杂质与固含量",
+        "连续工作温度与最高波动温度",
+        "运行压力及是否存在负压抽吸",
+        "介质流量、连接方式与法兰标准",
+        "活套法兰与固定法兰配置要求",
+        "外管壳体材料大类与衬里工艺审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "piping",
+      "variantSlug": "po",
+      "index": "02",
+      "craftTag": "钢衬 PO",
+      "title": "钢衬 PO 管道",
+      "seoTitle": "钢衬 PO 管道 | 标准化规格种类与定长预制条件",
+      "seoDescription": "江苏兆辉钢衬 PO 管道（滚塑工艺），聚烯烃衬里在直管内壁与法兰密封面整体连续成型，兼顾耐蚀输送与管廊预制安装，查看规格种类与选型条件。",
+      "summary": "整体滚塑成型聚烯烃（PO）内衬与承压钢管紧密结合并在法兰端面连续过渡，适用于腐蚀性介质输送管路与装置区定长预制衔接。",
+      "heroImage": "/images/site/products/piping-po.webp",
+      "heroImageAlt": "钢衬 PO 管道与三通近景实拍，可见连续滚塑内衬与法兰端面翻边",
+      "galleryImages": [
+        {
+          "src": "/images/site/products/piping-po.webp",
+          "alt": "钢衬 PO 管道与三通近景实拍，可见连续滚塑内衬与法兰端面翻边"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "公称直径 DN", "value": "", "unit": "mm", "note": "按装置配管口径核定主管与支管尺寸" },
+        { "group": "基本规格", "label": "单段管长", "value": "", "unit": "m", "note": "结合滚塑成型长度与现场安装条件定长预制" },
+        { "group": "基本规格", "label": "管段与短节配置", "value": "", "unit": "", "note": "直管段、调节短节及与设备口对接管段" },
+        { "group": "壳体与衬里", "label": "外管壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "聚烯烃（PO）整体滚塑内衬，端面连续翻边" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与最高波动温度" },
+        { "group": "壳体与衬里", "label": "工作压力范围", "value": "", "unit": "MPa", "note": "注明设计/工作压力及是否涉及负压" },
+        { "group": "连接与检验", "label": "法兰与连接方式", "value": "", "unit": "", "note": "法兰标准、压力等级与端面密封形式" },
+        { "group": "连接与检验", "label": "介质流量与冲刷条件", "value": "", "unit": "m³/h", "note": "注明流量、流速及固相颗粒情况" },
+        { "group": "连接与检验", "label": "出厂检验项目", "value": "", "unit": "", "note": "按项目技术协议逐段核验贴合度、尺寸与翻边端面" }
+      ],
+      "confirmChecklist": [
+        "公称直径 DN 与主管/支管尺寸",
+        "单段管长及装置轴测图清单",
+        "介质名称、浓度与杂质情况",
+        "工作温度、压力与是否涉及负压",
+        "介质流量与是否含磨蚀性固相",
+        "法兰标准与连接方式",
+        "外管壳体大类与滚塑 PO 衬里厚度审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    },
+    {
+      "categorySlug": "piping",
+      "variantSlug": "fittings",
+      "index": "03",
+      "craftTag": "非标管件",
+      "title": "衬氟管件",
+      "seoTitle": "衬氟管件 | 弯头、三通与异径管规格种类及预制条件",
+      "seoDescription": "江苏兆辉衬氟管件，涵盖钢衬四氟弯头、等径/异径三通、四通与同心/偏心异径管，支管交汇处与法兰端面连续衬里翻边，查看规格种类与预制条件。",
+      "summary": "面向装置管路转向、分流与变径节点，配套预制钢衬四氟弯头、等径与异径三通、四通及异径管，流道内壁与各法兰密封面连续衬里翻边。",
+      "heroImage": "/images/site/product-piping.webp",
+      "heroImageAlt": "钢衬防腐管道、三通与弯头厂区实拍，可见各管件端面白色衬里翻边密封面",
+      "galleryImages": [
+        {
+          "src": "/images/site/product-piping.webp",
+          "alt": "钢衬防腐管道、三通与弯头厂区实拍，可见各管件端面白色衬里翻边密封面"
+        }
+      ],
+      "standardSpecs": [
+        { "group": "基本规格", "label": "管件结构类型", "value": "", "unit": "", "note": "弯头、等径/异径三通、四通、同心或偏心异径管等" },
+        { "group": "基本规格", "label": "主管与支管公称直径 DN", "value": "", "unit": "mm", "note": "变径与支管件须同时标注大端、小端或支管口径" },
+        { "group": "基本规格", "label": "结构长度与转弯角度", "value": "", "unit": "mm", "note": "明确端面至中心距、弯曲半径及非标角度要求" },
+        { "group": "壳体与衬里", "label": "外体壳体类别", "value": "", "unit": "", "note": "碳钢、不锈钢等大类，具体牌号与壁厚按工况核定" },
+        { "group": "壳体与衬里", "label": "防腐衬里工艺", "value": "", "unit": "", "note": "内腔与支管交汇处连续衬氟并在各端面完整翻边" },
+        { "group": "壳体与衬里", "label": "工作温度范围", "value": "", "unit": "°C", "note": "区分连续工作温度与波动极值" },
+        { "group": "壳体与衬里", "label": "工作压力与负压边界", "value": "", "unit": "MPa", "note": "明确运行压力及转向/缩径处是否承受负压抽吸" },
+        { "group": "连接与检验", "label": "法兰标准与螺孔跨中", "value": "", "unit": "", "note": "注明法兰标准、压力等级及活套/固定法兰组合" },
+        { "group": "连接与检验", "label": "介质与冲刷条件", "value": "", "unit": "", "note": "说明流速、固相颗粒含量及转向冲刷情况" },
+        { "group": "连接与检验", "label": "出厂检验项目", "value": "", "unit": "", "note": "按技术协议逐件核查交汇内腔、端面尺寸与翻边平整度" }
+      ],
+      "confirmChecklist": [
+        "管件种类（弯头、三通、四通或异径管）与数量清单",
+        "主管、支管及变径两端公称直径 DN",
+        "结构长度、弯曲半径、角度与偏心方向",
+        "配套法兰标准、压力等级及活套/固定形式",
+        "介质名称、浓度、流速与是否含固相颗粒",
+        "连续工作温度、最高波动温度与运行压力",
+        "是否存在负压抽吸或压差波动",
+        "外体壳体大类与衬氟成型工艺审核"
+      ],
+      "isPublished": true,
+      "updatedAt": "2026-11-27"
+    }
+  ],
+  "articles": [
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "ptfe",
+      "articleSlug": "article_ptfe-tank-selection-conditions",
+      "title": "定制钢衬四氟储罐前，为什么不能只按容积报价？",
+      "summary": "同一容积的防腐储罐，因介质组分、温压边界、立卧式结构与接管翻边数量不同，选型方案与制造成本差异显著。本文整理前期沟通必须核清的四类工程条件。",
+      "seoTitle": "定制钢衬四氟储罐前，为什么不能只按容积报价？",
+      "seoDescription": "拆解钢衬四氟储罐询价前必须确认的介质浓度、工作温压、负压条件、立卧式结构与接口翻边要点，避免仅按容积误判选型。",
+      "coverImage": "/images/site/products/tanks-ptfe.webp",
+      "coverImageAlt": "钢衬四氟储罐实拍，可见内部白色 PTFE 衬里内腔与主法兰翻边密封面",
+      "bodyMarkdown": "## 为什么只报“容积”无法确定方案\n\n在日常项目沟通中，很多采购或工艺工程师会先给出一个容积目标，询问钢衬四氟储罐的价格与交期。但在化工防腐设备制造中，**容积只是外廓尺寸的起点**，并不直接决定壳体壁厚、衬里结合方式与接管工艺。\n\n如果不先核清介质、温度、压力与接口结构，同一容积的储罐在工艺路线和制造难度上可能存在本质差别。\n\n## 一、介质名称、浓度与杂质决定审核边界\n\n不能仅凭“强酸”“强碱”或“有机溶剂”这类笼统说法选择衬里路线，前期至少需要明确：\n\n- **介质准确名称与浓度区间**：不同浓度的同一种介质对渗透和腐蚀行为影响不同。\n- **杂质与伴生成分**：是否含游离氯、固相颗粒、易结晶组分或微量有机溶剂。\n- **高危介质专项审核**：涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危工况时，统一由技术负责人开展专项审核，沟通时需随附完整组分与 SDS 安全技术说明书。\n\n## 二、工作温度与压力（尤其是否涉及负压）\n\n承压钢壳提供结构强度，防腐衬里负责隔离介质，而**衬里与钢壳的结合稳定性**高度受温度波动和负压条件影响：\n\n1. 需分别提供连续工作温度、最高波动温度及清洗/吹扫阶段温度。\n2. 需明确设计压力、操作压力，以及放料抽吸或冷却凝结过程是否存在负压风险。\n3. 负压和温度骤变工况需要单独核算衬里固定与结合结构，不能套用常压常温储罐配置。\n\n## 三、结构形式、支承与接管翻边工作量\n\n| 核对维度 | 需要明确的工程信息 | 对制造与检验的影响 |\n| --- | --- | --- |\n| 容积口径 | 全容积还是有效容积，以及长径比限制 | 决定筒体直径、高度与运输限高 |\n| 结构与支承 | 立式或卧式，管式支腿、耳座、裙座或鞍座 | 影响底封头受力与现场基础锚固 |\n| 接管与人孔 | 顶盖与侧向接口数量、口径、方位及法兰标准 | 每个管口均需独立完成衬里翻边与密封面检查 |\n| 壳体大类 | 碳钢、不锈钢或玻璃钢等壳体类别 | 具体牌号、板厚与设计标准按项目工况核定 |\n\n## 四、询价前建议准备的基础清单\n\n> 正式选材、壁厚计算、出厂检验项目与判定标准均以项目技术协议和技术负责人审核结论为准。\n\n在联系技术团队前，建议先整理：容积与立卧式要求、介质名称与浓度、温度与压力（含是否负压）、接口清单或工艺简图。若部分条件尚未定型，也可先在首页「询价准备」中生成工况简报，由工程师逐项协助核对。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "po",
+      "articleSlug": "article_po-tank-rotomolding-guide",
+      "title": "钢衬 PO 储罐的整体滚塑工艺，选型前重点核对哪些条件？",
+      "summary": "钢衬 PO 储罐采用整体滚塑一次成型内衬，内腔连续平整且无拼接焊缝。本文整理前期沟通过程中需重点核清的尺寸限制、接管过渡与温压边界。",
+      "seoTitle": "钢衬 PO 储罐的整体滚塑工艺，选型前重点核对哪些条件？",
+      "seoDescription": "解析钢衬 PO 储罐整体滚塑工艺的结构特点，以及选型前必须核对的直径高度限制、接管法兰过渡、介质浓度与温压审核边界。",
+      "coverImage": "/images/site/products/tanks-po.webp",
+      "coverImageAlt": "钢衬 PO 储罐实拍，可见滚塑成型内衬层与承压钢壳筒体",
+      "bodyMarkdown": "## 整体滚塑成型的结构特征\n\n钢衬 PO 储罐是在预制完成的钢制壳体内壁，通过整体加热旋转滚塑使聚烯烃（PO）材料熔融附着并形成连续内衬层。与板衬焊接路线不同，整体滚塑内表面连续圆顺，接管与罐壁转角处整体过渡。\n\n这一制造特性也意味着，前期选型沟通时除了常规容积和介质，还必须同步核对尺寸范围与接口结构。\n\n## 一、外形尺寸与滚塑成型条件匹配\n\n- **公称直径与筒体长度**：单台储罐的直径、总高及外伸接管长度，需与滚塑炉工作尺寸以及道路运输限高一并校核。\n- **立式或卧式布置**：卧式储罐与立式储罐在鞍座、支腿和顶部人孔方位上受力不同，应在出图前定型。\n- **全容积与有效容积**：订货前须明确液位上限与气相缓冲空间，避免按全容积下单导致实际装料余量不足。\n\n## 二、接口结构与法兰密封面过渡\n\n| 核对节点 | 前期需明确的细节 | 工程关注点 |\n| --- | --- | --- |\n| 管口数量与口径 | 进料、出料、液位计、呼吸口与人孔方位 | 过长或过细的侧接管需评估滚塑成型均匀性 |\n| 底部排料方式 | 平底侧排、斜底排料或锥底中心排料 | 兼顾排净率与内部清洗可达性 |\n| 法兰标准匹配 | 配对阀门、管路法兰标准与螺栓孔位 | 保证端面翻边贴合平整，避免现场二次修整 |\n\n## 三、介质、温度与负压工况边界\n\n1. 明确存储介质准确名称、浓度范围以及是否含有机溶剂、氧化性组分或固相杂质。\n2. 区分常温储存、进料温差及蒸汽或热水清洗时的峰值温度，不可只按环境温度填报。\n3. 泵送抽料、高位虹吸或密闭降温可能诱发负压，须在前期明确压力边界并交由技术团队审核。\n\n> 涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质时，统一进入技术负责人专项审核；PO 材料牌号、衬里厚度及出厂检验标准均以项目技术协议为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "pe",
+      "articleSlug": "article_pe-tank-lining-checklist",
+      "title": "钢衬 PE 储罐立式与卧式结构怎么配合现场条件选定？",
+      "summary": "钢衬 PE 储罐兼顾承压钢壳结构强度与滚塑聚乙烯连续内衬。本文从场地空间、支承基础、接管布局与工况边界四个维度，梳理立卧式选定与沟通要点。",
+      "seoTitle": "钢衬 PE 储罐立式与卧式结构怎么配合现场条件选定？",
+      "seoDescription": "梳理钢衬 PE 储罐在立式与卧式方案选择时需核对的占地空间、支承基础、接口方位、温度压力与滚塑工艺核查要点。",
+      "coverImage": "/images/site/products/tanks-pe.webp",
+      "coverImageAlt": "钢衬 PE 储罐实拍，可见内部白色 PE 衬里与整周翻边密封面",
+      "bodyMarkdown": "## 选型第一步：先看场地、基础与运输条件\n\n钢衬 PE 储罐由外部钢制承压壳体与内部滚塑聚乙烯（PE）衬里复合而成，常见形式分为立式与卧式两类。很多项目在前期容易只关注容积大小，忽略车间净高、楼板荷载与运输路线，导致方案进入细化阶段后反复修改。\n\n## 一、立式与卧式布置的工程权衡\n\n| 比较维度 | 立式钢衬 PE 储罐 | 卧式钢衬 PE 储罐 |\n| --- | --- | --- |\n| 占地与高度 | 占地面积小，需校核车间净高与顶部检修空间 | 整体高度低，适合限高厂房或室外管架旁布置 |\n| 基础与支承 | 常见管式支腿、耳座、裙座或平底基础 | 常见双鞍座支承，需核对鞍座间距与地脚螺栓 |\n| 排料与液位 | 锥底或椭圆底便于集中排空，液位变化直观 | 需合理规划底部排污口坡度与顶部多组接管方位 |\n\n## 二、滚塑 PE 衬里与接口的协同设计\n\n- **法兰翻边连续性**：顶部主法兰与侧向各工艺管口均由内衬延伸翻边至密封面，避免金属端面裸露接触介质。\n- **接管方位一次定型**：滚塑成型完成后严禁在壳体上随意开孔补焊（动火会直接烧损内部 PE 衬里），因此进出料、液位、温度计与人孔位置须在下单前完整确认。\n- **检修与清洗空间**：若介质易沉积结晶，建议提前预留足够口径的人孔或顶部可拆大口法兰。\n\n## 三、工况核对与技术审核边界\n\n1. 提供介质完整名称、浓度区间及是否混入有机溶剂或强氧化性杂质。\n2. 明确连续运行温度、季节环境温度以及清洗阶段可能出现的最高温度。\n3. 注明常压、带压或泵抽负压风险，并明确外置钢壳材料大类与防腐涂装要求。\n\n> 涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危工况时，统一由技术负责人开展专项审核；具体 PE 牌号、壳体壁厚与出厂检验项目均以项目技术协议为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "pfa",
+      "articleSlug": "article_pfa-tank-cleanliness-review",
+      "title": "面向高纯与精细化工的钢衬 PFA 储罐，技术协议应明确哪些边界？",
+      "summary": "钢衬 PFA 储罐常用于对介质纯度与耐蚀稳定性要求较高的精细化工及电子化学品环节。本文梳理技术协议签订前须对齐的板材、焊接、接口与洁净验收要点。",
+      "seoTitle": "面向高纯与精细化工的钢衬 PFA 储罐，技术协议应明确哪些边界？",
+      "seoDescription": "整理定制钢衬 PFA 储罐在技术协议阶段必须明确的介质纯度要求、板衬焊缝控制、管口翻边与洁净度出厂验收口径。",
+      "coverImage": "/images/site/products/tanks-pfa.webp",
+      "coverImageAlt": "钢衬 PFA 储罐实拍，可见立式储罐外观与管式支腿结构",
+      "bodyMarkdown": "## 为什么 PFA 储罐要在协议阶段细化验收口径\n\n相比常规工业储罐，选用钢衬 PFA 储罐的项目往往不仅关注防腐隔离本身，还对**内表面平滑度、焊缝致密性与介质洁净度保持**提出更高要求。如果在签订技术协议前只写“按标准执行”，后期很容易在检验方法、清洗方式或管口细节上产生理解偏差。\n\n## 一、介质纯度与工况边界澄清\n\n- **介质信息完整披露**：说明介质名称、浓度、纯度等级，以及是否对金属离子析出或颗粒物敏感。\n- **温压与负压边界**：区分连续储存温度、充氮微正压条件、抽料负压边界及清洗消毒温度。\n- **高危介质专项审核**：涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危或强氧化介质时，必须提供完整组分与安全数据表，由技术负责人专项审核。\n\n## 二、内衬制造与接口细节核对\n\n| 协议核对项 | 建议明确的内容 | 工程作用 |\n| --- | --- | --- |\n| 壳体与外表面 | 碳钢或不锈钢壳体大类及外部洁净/涂装要求 | 适配洁净车间或户外罐区环境 |\n| 衬里焊接与翻边 | PFA 板材贴合、焊缝修整及管口法兰翻边要求 | 减少死角滞留，保障端面密封可靠性 |\n| 支承与排净结构 | 立式支腿底板、底封头坡度与底部排料口配置 | 便于彻底排空、冲洗与地面清洁维护 |\n| 仪表与采样接口 | 液位计、氮封、呼吸阀与在线采样口法兰标准 | 避免现场改制导致二次污染 |\n\n## 三、出厂检验与包装发运留档\n\n1. 在技术协议中写明约定的无损检测、衬里连续性检验与试压口径，并明确判定依据。\n2. 若项目有内腔清洗、封口保护与充氮或盲板封堵发运要求，须在排产前同步确认。\n3. 逐台留存出厂检验记录与接口竣工尺寸，便于现场一次对接投用。\n\n> 所有板材规格、壳体牌号、耐温耐压边界及洁净验收指标均以双方签认的项目技术协议为准，不以经验数值替代工程审核。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "tanks",
+      "variantSlug": "pvdf",
+      "articleSlug": "article_pvdf-tank-structure-maintenance",
+      "title": "钢衬 PVDF 储罐的接口布置与定期检修设计要点",
+      "summary": "钢衬 PVDF 储罐结合外部承压钢壳与内部 PVDF 板衬结构。本文从顶盖法兰、侧向接管、热膨胀适应性与检修可达性出发，说明前期结构沟通的关键项。",
+      "seoTitle": "钢衬 PVDF 储罐的接口布置与定期检修设计要点",
+      "seoDescription": "解析钢衬 PVDF 储罐在顶盖主法兰、侧向接管定位、温压波动核查与内部检修维护设计上需要提前确认的工程条件。",
+      "coverImage": "/images/site/products/tanks-pvdf.webp",
+      "coverImageAlt": "钢衬 PVDF 储罐实拍，可见立式筒体、顶部法兰与侧向接管布置",
+      "bodyMarkdown": "## 储罐耐用与否，一半看材料，一半看结构细节\n\n钢衬 PVDF 储罐采用聚偏氟乙烯（PVDF）板衬与外部承压壳体复合制造，常见于立式带顶盖法兰与上下侧向接管的储罐配置。实际投运经验表明，许多后期维护难题并不源自大面积筒体，而是源于**接口方位冲突、排净不便或缺乏检修通道**。\n\n## 一、顶盖法兰与侧向接管的合理规划\n\n- **顶部接口分区布置**：将进料口、放空口、液位仪表口与人孔合理拉开间距，保证配对法兰螺栓拆装扳手空间。\n- **侧向接管与内部排料协同**：低位出料口与排污口标高应配合现场泵入口高度，同时避免与支腿或地脚螺栓发生干涉。\n- **法兰翻边与垫片匹配**：各接管端面均需形成平整的 PVDF 翻边密封面，对接管路应选用相容的耐蚀垫片与规范螺栓紧固顺序。\n\n## 二、工况波动与板衬固定审核\n\n| 工况要素 | 前期需核清的问题 | 审核重点 |\n| --- | --- | --- |\n| 介质特性 | 准确介质名称、浓度及是否含强碱、酮类或有机溶剂 | 确认 PVDF 材料体系的适用边界 |\n| 温度变化 | 连续储存温度、最高波动温度与季节环境温差 | 评估钢壳与衬里热胀差异对焊缝的影响 |\n| 压力与负压 | 是否存在带压送料、负压抽吸或快速降温冷凝 | 核定衬里固定结构与壳体承压等级 |\n| 固相与结晶 | 是否易结垢、沉淀或需要定期入罐冲洗 | 决定人孔尺寸、顶盖可拆形式及内部结构 |\n\n## 三、便于长期运维的出厂核对建议\n\n1. 在制造前确认人孔朝向、爬梯或平台衔接位置，确保后期停产巡检能够顺利观察内壁与焊缝状态。\n2. 对有排空、置换或清洗需求的装置，提前将清洗喷球接口或排污盲板纳入接管表。\n3. 出厂前按项目技术协议完成衬里连续性、翻边端面与外形接口复核并归档。\n\n> 涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质的工况，统一由技术负责人专项审核；具体板材规格、壳体牌号与检验指标均以项目技术协议为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "ptfe",
+      "articleSlug": "article_reactor-inquiry-checklist",
+      "title": "定制钢衬四氟反应釜前需要确认哪些工艺条件？",
+      "summary": "反应釜同时承担防腐隔离、搅拌混合与加热冷却传热三项任务。本文梳理定制钢衬四氟反应釜前期必须核对的容积、温压、搅拌、传热与密封条件。",
+      "seoTitle": "定制钢衬四氟反应釜前需要确认哪些工艺条件？",
+      "seoDescription": "梳理定制钢衬四氟反应釜前需要确认的有效容积、介质反应变化、温压与负压边界、搅拌轴封及传热夹套沟通要点。",
+      "coverImage": "/images/site/products/reactors-ptfe.webp",
+      "coverImageAlt": "钢衬四氟反应釜实拍，可见釜盖主法兰、多组工艺接管与耳座支承",
+      "bodyMarkdown": "## 反应釜与普通储罐的工况差异\n\n与静态储存介质的储罐不同，钢衬四氟反应釜需要在同一密闭腔体内协同完成**腐蚀隔离、动态搅拌与热量交换**。因此前期需求澄清阶段，除了基本容积和介质信息，还必须同步核清机械传动与传热边界。\n\n## 一、反应介质与过程变化\n\n- 明确初始原料、中间产物、最终产物及各自浓度区间。\n- 说明反应过程是否伴随放热、吸热、气相生成、结晶或固相悬浮。\n- 若工艺涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质，必须提供完整配方与 SDS，进入技术专项审核。\n\n## 二、温度波动与正负压边界\n\n1. **釜内温压**：同时提供常温、反应温度、最高波动温度以及工作压力范围。\n2. **负压条件**：真空抽料、减压蒸馏或快速降温冷凝过程是否产生负压，须在初期明确标注。\n3. **夹套或盘管工况**：注明冷热媒介质种类、进出口温度与压力条件，确保承压外壳与传热通道按设计标准核算。\n\n## 三、搅拌、轴封与釜盖接管配置\n\n| 配置单元 | 前期需确认的条件 | 工程关注点 |\n| --- | --- | --- |\n| 搅拌系统 | 桨叶形式、转速区间、物料黏度及固含量 | 防腐搅拌轴与桨叶选型、釜内同轴度控制 |\n| 传动与防爆 | 现场供电条件、车间防爆区域等级 | 电机减速机机架选配与安全合规 |\n| 轴封方案 | 工况密封等级与允许泄漏控制要求 | 兼顾耐蚀隔离与长周期运行维护 |\n| 釜盖与釜底 | 进料、测温套管、视镜、人孔及底侧放料口方位 | 每一处开孔与法兰端面均需保证连续翻边密封 |\n\n## 四、技术协议与出厂检验口径\n\n> 反应釜的转速、承压壁厚、传热面积、衬里厚度与出厂检验项目均以项目技术协议与技术审核为准，页面不提供自动选材或报价结论。\n\n建议在询价时附带工艺条件表或初步管口方位图，或通过首页「询价准备」快速整理已知参数，缩短方案出图与技术评审周期。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "po",
+      "articleSlug": "article_po-reactor-agitation-review",
+      "title": "钢衬 PO 反应釜在带搅拌工况下的结构与温压核对要点",
+      "summary": "钢衬 PO 反应釜通过整体滚塑内衬与顶部搅拌传动机架协同运行。本文说明带搅拌反应工况下，传动同轴度、轴封隔离、物料冲刷与温压边界的前期核对重点。",
+      "seoTitle": "钢衬 PO 反应釜在带搅拌工况下的结构与温压核对要点",
+      "seoDescription": "详解钢衬 PO 反应釜在带搅拌工况下的传动同轴度、耐蚀轴封、釜盖接口、物料固含量及温压边界核对要点。",
+      "coverImage": "/images/site/products/reactors-po.webp",
+      "coverImageAlt": "钢衬 PO 反应釜实拍，可见搅拌传动装置、釜盖主法兰与耳座结构",
+      "bodyMarkdown": "## 动态搅拌对滚塑内衬反应釜提出了更高配合要求\n\n钢衬 PO 反应釜在承压钢壳内壁通过整体滚塑形成连续聚烯烃（PO）衬里，并配套大口径釜盖法兰、耳座或支腿及顶部搅拌传动装置。在物料持续搅动与温压变化的反应过程中，**衬里完整性与搅拌机械精度必须统筹校核**。\n\n## 一、搅拌传动、轴封与釜盖同轴度\n\n- **机架与主法兰刚度**：顶部电机减速机架直接固定在釜盖接口上方，釜盖与主法兰平面度直接影响搅拌轴运转平稳度。\n- **桨叶与内壁安全间隙**：需明确物料黏度、密度与固相颗粒粒径，合理设定搅拌桨叶直径、转速及与釜壁、挡板、测温套管的间隙。\n- **轴封耐蚀匹配**：按反应介质挥发性与密封等级要求，配套适配腐蚀性工况的轴封与冲洗保护方案。\n\n## 二、物料特性与温压工况边界\n\n| 核对维度 | 需向技术团队说明的条件 | 对方案设计的影响 |\n| --- | --- | --- |\n| 反应介质 | 原料、中间态、产物名称及浓度范围 | 界定滚塑 PO 衬里的化学适用性 |\n| 固相与磨蚀 | 固含量、颗粒硬度及是否结块沉积 | 影响搅拌桨叶包覆方式与釜底放料阀选型 |\n| 温度曲线 | 反应起始、放热峰值及清洗阶段温度 | 核定 PO 衬里温区边界与传热配置 |\n| 压力与负压 | 釜内操作压力、夹套压力及是否负压抽料 | 决定承压壳体设计标准与衬里结合评审 |\n\n## 三、底放料口与车间安装协同\n\n1. 明确耳座安装标高或支腿高度，为底部放料阀启闭与下游接管留足检修净空。\n2. 提前核对车间防爆区域等级与供电制式，避免传动电机与现场电气规范冲突。\n3. 滚塑成型后的釜体与釜盖均不可现场动火改孔，所有工艺接管、人孔与视镜须在排产前确认。\n\n> 若反应体系涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质，统一由技术负责人开展专项审核；具体材料牌号、壁厚与检验标准均以项目技术协议为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "pe",
+      "articleSlug": "article_pe-reactor-process-boundaries",
+      "title": "钢衬 PE 反应釜适用于哪些反应混合条件？前期需核清四类输入",
+      "summary": "钢衬 PE 反应釜采用钢壳整体滚塑聚乙烯衬里，用于腐蚀性物料的混合与反应单元。本文整理前期评估钢衬 PE 反应釜可行性必须核清的四类输入条件。",
+      "seoTitle": "钢衬 PE 反应釜适用于哪些反应混合条件？前期需核清四类输入",
+      "seoDescription": "梳理钢衬 PE 反应釜选型前必须核清的反应介质组分、温度峰值、搅拌传热与壳体接口四类工程输入，辅助合理匹配衬里工艺。",
+      "coverImage": "/images/site/product-reactors.webp",
+      "coverImageAlt": "钢衬防腐反应釜厂区参考实拍，可见釜体、多组顶部法兰接管与人孔结构（具体 PE 滚塑反应釜按项目定制）",
+      "bodyMarkdown": "## 选对衬里路线，先从理清四类输入开始\n\n在反应釜选型阶段，工艺团队常在钢衬 PE、PO、四氟与 PFA 之间比较。钢衬 PE 反应釜以钢制壳体承压、以整体滚塑聚乙烯（PE）内衬隔绝腐蚀性物料，具有内表面连续平滑的特点；但其是否契合具体反应工序，必须依据以下四类条件综合判断。\n\n## 一、介质全组分与副反应产物\n\n- 除主原料外，须列出酸碱浓度、溶剂种类、微量助剂及反应中可能生成的副产物。\n- 说明物料中是否含溶胀性有机溶剂或强氧化性成分，避免因忽略少量组分导致衬里溶胀或老化。\n- 涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危工况时，统一交由技术负责人专项审核。\n\n## 二、温度峰值与传热方式\n\n1. **反应热效应**：若反应存在明显放热峰，须按局部与瞬时最高温度申报，而非仅报平均操作温度。\n2. **温控手段**：明确是否需要夹套或盘管传热，以及冷热媒种类与进出口温度条件。\n3. **压力边界**：明确釜内常压、微正压或负压抽吸状态，滚塑衬里在负压与较高温度叠加时须专项核算。\n\n## 三、搅拌形式与釜内附件\n\n| 配置项 | 前期需明确的要点 | 设计协同目的 |\n| --- | --- | --- |\n| 有效容积与装料比 | 批次投料量、起泡情况及液位波动 | 确定釜体直径高度与防溢出余量 |\n| 搅拌器与挡板 | 黏度变化区间、固相悬浮需求及转速 | 配套防腐桨叶与挡板，兼顾混合效率与运行平稳 |\n| 釜盖与放料接口 | 进料、测温套管、pH 探头、人孔与底阀 | 一次规划接口方位，避免成型后返工 |\n\n## 四、制造尺寸与出厂验收对接\n\n钢衬 PE 反应釜的筒体直径与总高需同时满足滚塑工艺尺寸、车间吊装高度与运输限制。建议在询价阶段附带工艺条件表，由技术团队协助核定最适配的衬里路线与出厂检验项目。\n\n> 具体 PE 牌号、衬里厚度、耐温耐压上限及出厂检验判定标准，均以技术审核与项目技术协议为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "pfa",
+      "articleSlug": "article_pfa-reactor-purity-control",
+      "title": "钢衬 PFA 反应釜的视镜、接管翻边与洁净验收关注点",
+      "summary": "钢衬 PFA 反应釜面向对耐蚀性与洁净纯度并重的反应单元。本文聚焦大口径翻边观察口、釜盖管口密封、传热结构与洁净度出厂验收的实务要点。",
+      "seoTitle": "钢衬 PFA 反应釜的视镜、接管翻边与洁净验收关注点",
+      "seoDescription": "解析钢衬 PFA 反应釜在翻边观察口、多组釜盖接管、搅拌轴封隔离与洁净度出厂检验环节的关键质控与技术澄清要点。",
+      "coverImage": "/images/site/products/reactors-pfa.webp",
+      "coverImageAlt": "钢衬 PFA 反应釜实拍，可见不锈钢外筒、顶置搅拌传动与大口径衬里翻边法兰口",
+      "bodyMarkdown": "## 精细反应工况更关注“接口细节”与“洁净一致性”\n\n在电子化学品、高纯试剂及精细合成单元中，钢衬 PFA 反应釜除了提供承压与防腐隔离外，还经常需要在釜盖设置大口径翻边观察口、多组计量投料口与在线检测口。任何一处管口翻边或焊缝处理不到位，都可能成为杂质滞留点或渗漏隐患。\n\n## 一、大口径观察口与多组接管的翻边质控\n\n- **连续延伸翻边**：釜内 PFA 衬里需连续延伸至主法兰、视镜观察口与各仪表接管密封面，保证介质不与外部壳体法兰直接接触。\n- **内表面平滑过渡**：焊缝与接管根部注重平滑修整，减少物料挂壁、交叉污染及批次清洗死角。\n- **釜底排料协同**：配合耐蚀底放料阀与支腿底板高度，确保反应后物料充分排净与便捷冲洗。\n\n## 二、搅拌、传热与温压波动核算\n\n| 核对单元 | 前期需澄清的条件 | 工程关注点 |\n| --- | --- | --- |\n| 搅拌与轴封 | 转速、黏度、允许泄漏等级及防污染要求 | 防止轴封磨屑或润滑介质污染釜内物料 |\n| 传热配置 | 夹套或盘管形式及冷热媒温压波动 | 评估升降温速率对 PFA 衬里与壳体结合的影响 |\n| 负压与真空 | 减压蒸馏、真空脱气或氮气置换循环 | 须单独核算负压条件下的衬里稳定方案 |\n| 壳体外观 | 碳钢或不锈钢外筒类别及车间洁净等级 | 匹配洁净区卫生维护与防腐要求 |\n\n## 三、协议约定与出厂洁净验收\n\n1. 在技术协议中明确 PFA 衬里焊缝检验方式、试压口径以及内腔清洗和洁净度确认流程。\n2. 出厂前对所有法兰口采用洁净封板保护，防止运输与现场安装前的粉尘侵入。\n3. 若涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危工况，须提前提供完整组分与 SDS，经技术负责人专项审核后再行投产。\n\n> 反应釜的板材规格、承压壁厚、传热面积及洁净验收指标均以项目技术协议与技术审核结论为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "stirred-tank",
+      "articleSlug": "article_ptfe-stirred-tank-selection",
+      "title": "钢衬四氟搅拌罐与标准反应釜在选型沟通上有什么不同？",
+      "summary": "不少项目在配制、酸碱中和与均质缓冲工段容易将搅拌罐与反应釜混为一谈。本文对比两类设备在传热、承压、搅拌与接口上的差异，帮助精准准备选型资料。",
+      "seoTitle": "钢衬四氟搅拌罐与标准反应釜在选型沟通上有什么不同？",
+      "seoDescription": "对比钢衬四氟搅拌罐与标准反应釜在工艺目的、承压传热、搅拌挡板及罐体结构上的差异，梳理搅拌罐选型沟通要点。",
+      "coverImage": "/images/site/product-reactors.webp",
+      "coverImageAlt": "立式钢衬四氟釜罐类设备厂区参考实拍，可见顶部搅拌口、多组法兰接管与衬氟人孔（具体搅拌罐结构按项目定制）",
+      "bodyMarkdown": "## 先分清工艺定位：混合缓冲还是带压传热反应？\n\n在化工装置的配料、稀释、中和调质、药剂溶解及缓冲均质环节，设备的核心职责往往是**防腐蚀隔离与稳定混合**，不一定需要复杂的带压反应夹套与高压机械密封。此时选用钢衬四氟搅拌罐，能够让结构配置更贴合实际工况。\n\n## 一、钢衬四氟搅拌罐与反应釜的选型差异\n\n| 对比维度 | 钢衬四氟搅拌罐 | 标准钢衬四氟反应釜 |\n| --- | --- | --- |\n| 核心用途 | 介质配制、中和调质、防沉淀悬浮、缓冲均质 | 伴随化学反应、明显升降温或带压/真空工况 |\n| 温压边界 | 多数偏向常压或微正压，温控以保温或缓和散热为主 | 常涉及带压、负压及频繁升降温循环 |\n| 传热结构 | 可按需不设夹套，或配置简化传热辅助结构 | 通常配套承压夹套或盘管并核算传热面积 |\n| 轴封与釜盖 | 按气味挥发与防护等级匹配合理密封，便于检修 | 对高密封等级、轴封冷却及防爆联动要求更严 |\n\n## 二、定制搅拌罐时不可遗漏的四项细节\n\n1. **中和或稀释放热**：酸碱中和、浓酸稀释虽在常压搅拌罐内进行，但瞬时放热可能显著抬升局部温度，前期必须如实说明最高波动温度。\n2. **桨叶与挡板组合**：低黏度均质、固相防沉降和高黏度混合所需的桨叶形式、转速与挡板数量完全不同，应明确物料黏度、比重与固含量。\n3. **罐底结构与排净**：易沉淀物料建议核对锥底或椭圆封头配底部放料阀，减少罐底积料。\n4. **在线仪表接口**：pH 计、电导率仪、液位计、加药口与排气吸收口方位需避开搅拌涡流与桨叶扫掠范围。\n\n## 三、高危工况与技术审核口径\n\n> 即使采用搅拌罐结构，只要涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质，或存在负压抽吸与剧烈温度变化，同样必须进入技术负责人专项审核。\n\n建议在联系技术团队前整理好有效容积、介质配方与温度波动、搅拌工艺目标及接口清单，以便一次确定合理方案。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "reactors",
+      "variantSlug": "double-cone",
+      "articleSlug": "article_double-cone-reactor-customization",
+      "title": "非标双锥反应釜定制前，为什么必须先明确物料流动与放料工艺？",
+      "summary": "双锥反应釜属于典型非标定制防腐设备，多用于含固相、易结晶或要求低残留排料的工艺。本文整理定制前必须对齐的锥角、放料、真空温压与衬里审核要点。",
+      "seoTitle": "非标双锥反应釜定制前，为什么必须先明确物料流动与放料工艺？",
+      "seoDescription": "解析非标双锥反应釜在物料流动性、锥体角度、排料阀净空、负压与传热夹套及内衬工艺审核方面的前期沟通要点。",
+      "coverImage": "/images/site/product-reactors.webp",
+      "coverImageAlt": "立式防腐反应釜厂区参考实拍（双锥反应釜为非标定制设备，具体结构按项目图纸制造）",
+      "bodyMarkdown": "## 为什么有的工艺会专门选用双锥结构\n\n相比常规圆柱筒体加椭圆封头的立式釜，双锥反应釜采用上下锥形腔体过渡结构，在**高固含量浆料混合、易结晶析出物料处理以及要求低残留彻底排料**的工艺段中具有独特优势。但也正因为其几何形状非标、内腔转角与锥口受力集中，前期工艺澄清比常规釜更为关键。\n\n## 一、物料流动与排料特性决定几何参数\n\n- **固液比与安息角**：物料是否易架桥、黏壁或结块，直接关系到下锥半锥角与底部放料口径的确定。\n- **装料系数与有效容积**：双锥腔体的有效工作容积受混合流态与气相空间制约，须区分全容积与实际单批投料量。\n- **放料阀净距**：提前核清车间楼层净高、支承耳座/支架标高以及下锥出口与下游过滤、包装设备的衔接高度。\n\n## 二、防腐衬里、传动与温压边界协同审核\n\n| 审核维度 | 必须明确的工艺输入 | 工程关注点 |\n| --- | --- | --- |\n| 防腐衬里路线 | 介质全组分、浓度及是否含磨蚀性结晶颗粒 | 结合双锥内腔与大小端法兰结构评估最适配的衬里工艺 |\n| 负压与真空边界 | 是否涉及减压反应、抽滤或真空干燥阶段 | 负压和温度波动叠加工况必须专项核算衬里结合方式 |\n| 传动与轴封 | 搅拌或驱动形式、转速、扭矩估算及防爆等级 | 兼顾动静密封可靠性与腐蚀隔离 |\n| 传热配置 | 上下锥或中段夹套覆盖需求及冷热媒温压 | 核算传热面积与壳体承压设计标准 |\n\n## 三、非标设备沟通与验收流程建议\n\n1. 前期沟通建议提供工艺流程简图、物料特性说明、温压曲线与现场安装空间限制，由双方共同确认总图方案后再排产。\n2. 若工艺涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质，须随附完整配方与 SDS，由技术负责人专项审核。\n3. 非标双锥反应釜的壳体牌号、壁厚、衬里工艺及出厂试车检验项目，均以双方签署的项目技术协议为准。\n\n> 双锥结构无通用现货模板，越早对齐物料流动特性与温压边界，方案出图与制造交付越顺畅。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "ptfe",
+      "articleSlug": "article_lined-tower-section-inspection",
+      "title": "分段式钢衬四氟塔器出厂前重点核查哪些结构节点？",
+      "summary": "分段式钢衬四氟塔器由多节钢衬塔节与内部除雾、喷淋、填料支承件组对而成。本文梳理出厂前重点核查的端面翻边、塔内件配合与接口细节。",
+      "seoTitle": "分段式钢衬四氟塔器出厂前重点核查哪些结构节点？",
+      "seoDescription": "解析分段式钢衬四氟塔器在端面法兰翻边、内部喷淋分布、填料支承栅板、侧向接管及整塔试装环节的重点质控与核查口径。",
+      "coverImage": "/images/site/products/towers-exterior.webp",
+      "coverImageAlt": "钢衬四氟塔器整塔外观实拍，可见多组检修人孔、侧向法兰接管与整塔壳体",
+      "bodyMarkdown": "## 为什么分段制造的塔器要逐节核查\n\n化工吸收、洗涤、脱硫与废气处理塔器往往塔径较大、总高较高。受限于衬里成型工艺、道路运输限高与现场吊装条件，通常按工艺段拆分为多节钢衬塔节制造，并在现场通过周向螺栓法兰对中紧固。\n\n因此，**每一段塔节的端面衔接与内部件配合**，都直接关系到整塔投运后的密封性与传质稳定性。\n\n## 一、塔节端面法兰与衬里翻边\n\n- 核查塔节内壁防腐衬里是否连续贴合，转角与焊缝过渡是否平顺。\n- 重点检查端面主法兰及侧向大口径进气口、检修人孔的翻边密封面平整度，防止介质从法兰间隙渗入外部钢壳。\n- 核对各段法兰螺栓孔方位与对中标记，减少现场高空吊装时的返工。\n\n## 二、塔内件与填料支承结构配合\n\n1. **喷淋分布段**：检查主管、支管与塔壁接口的对中情况，核对喷淋层高度与检修人孔操作空间。\n2. **填料支承栅板与压板**：确认支承圈与格栅贴合稳固，防止气液冲击引起填料移位或偏流。\n3. **顶部除雾段**：核对除雾器支撑格栅与气相出口弯管方位，确保顶部接口衬里连续完整。\n\n## 三、前期技术澄清与项目协议留档\n\n| 核查阶段 | 重点核对项目 | 执行依据 |\n| --- | --- | --- |\n| 方案评审 | 塔径、总高、分段数量、处理风量及废气成分 | 客户工艺条件表与技术审核记录 |\n| 制造过程 | 壳体组对、衬里成型、管口与人孔翻边处理 | 对应工艺路线作业规范 |\n| 出厂验收 | 外形接口方位、内件试装与约定检测项目 | 项目技术协议及逐台检验留档 |\n\n> 涉及氢氟酸、高氯酸、混酸等高危气液工况的塔器项目，须在设计前完成技术专项审核；具体检测方法与判定值按项目技术协议执行。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "pe",
+      "articleSlug": "article_pe-tower-scrubbing-conditions",
+      "title": "用于尾气洗涤与吸收的钢衬 PE 塔，风量与分段条件怎么核定？",
+      "summary": "钢衬 PE 塔以钢制壳体承担载荷、以整体滚塑聚乙烯内衬抵御尾气与吸收液腐蚀。本文梳理尾气洗涤吸收工况下风量、分段高度、内件与风机压差的前期核定要点。",
+      "seoTitle": "用于尾气洗涤与吸收的钢衬 PE 塔，风量与分段条件怎么核定？",
+      "seoDescription": "详解钢衬 PE 塔在尾气洗涤与吸收项目中的处理风量、废气湿度成分、滚塑分段高度、塔内件配置及负压抽吸审核条件。",
+      "coverImage": "/images/site/product-towers.webp",
+      "coverImageAlt": "分段式钢衬防腐塔器厂区参考实拍，可见内部白色衬里与塔内喷淋分布结构（钢衬 PE 塔按项目定制）",
+      "bodyMarkdown": "## 尾气净化塔选型，先看气液工况再定塔体分段\n\n钢衬 PE 塔常用于化工、电镀、冶金及环保配套的酸碱尾气洗涤与吸收工序。外部承压钢壳能够满足室外抗风、地震及较高塔体的结构刚度要求，内部整体滚塑聚乙烯（PE）衬里则实现连续无缝的防腐隔离。\n\n在方案评审阶段，把风量、介质与分段条件一次性核清，能够有效避免塔径偏小导致压降过高或单节超限影响滚塑成型。\n\n## 一、废气工况与吸收液条件\n\n- **处理风量与波动范围**：提供正常风量与最大设计风量，结合允许空塔气速与压降确定公称塔径。\n- **废气成分、浓度与湿度**：说明含酸碱气体种类、进口浓度、含尘含雾情况以及是否夹带微量有机组分。\n- **循环吸收液特性**：明确吸收液种类、喷淋循环量、温度以及是否容易析盐结垢堵塞填料与喷嘴。\n\n## 二、滚塑分段制造与塔内件布局\n\n| 分段与构造节点 | 需提前对齐的细节 | 工程作用 |\n| --- | --- | --- |\n| 单节高度与总高 | 结合滚塑炉尺寸、填料层高与吊装条件分段 | 保证滚塑内衬均匀贴合且便于现场高空对接 |\n| 填料与支承栅板 | 填料种类、装填层高及装卸人孔标高 | 兼顾传质效率、通流截面与后期换料检修 |\n| 喷淋与除雾段 | 喷淋层数、分布管接口与顶部除雾器高度 | 减少夹带雾沫并预留喷嘴拆洗人孔 |\n| 塔底循环储液段 | 液位控制、补水加药、排污与循环泵吸口方位 | 保证系统连续稳定运行与清淤可达性 |\n\n## 三、正负压抽吸与专项审核边界\n\n1. 若引风机布置在塔器后端，塔体内部将处于负压状态，须明确最大负压条件（含填料堵塞极端情况），由技术团队核算壳体加强圈与滚塑衬里结合方案。\n2. 明确进气温度与吸收放热后的最高温度，确保处于 PE 衬里适配温区范围内。\n3. 涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危气液介质时，统一进入技术负责人专项审核。\n\n> 钢衬 PE 塔的壳体牌号、PE 材料牌号、衬里厚度及出厂检验标准均以技术审核与项目技术协议为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "pfa",
+      "articleSlug": "article_pfa-tower-demanding-process",
+      "title": "钢衬 PFA 塔在精馏与高要求吸收工艺段的前期核对清单",
+      "summary": "面向精馏、提纯与高洁净吸收工艺段的钢衬 PFA 塔，需要兼顾温差循环、段间密封与洁净控制。本文整理技术澄清阶段必须核清的工况与结构清单。",
+      "seoTitle": "钢衬 PFA 塔在精馏与高要求吸收工艺段的前期核对清单",
+      "seoDescription": "梳理钢衬 PFA 塔在精馏与高纯吸收工艺中的塔顶塔釜温差、负压精馏边界、PFA 衬里焊接质量、液体分布内件与洁净验收要点。",
+      "coverImage": "/images/site/product-towers.webp",
+      "coverImageAlt": "分段式钢衬防腐塔器厂区参考实拍（钢衬 PFA 塔按项目介质与洁净标准定制）",
+      "bodyMarkdown": "## 高要求传质塔器的关键：连续耐蚀与段间零渗漏\n\n当工艺进入精馏提纯、高纯酸气吸收或对介质纯度与耐温波动都有较高要求的传质阶段，钢衬 PFA 塔往往成为重点评估路线。与普通废气洗涤塔相比，这类塔器在**塔顶塔釜温差、回流分布精度以及洁净验收口径**上都需要更细致的前期确认。\n\n## 一、精馏与吸收工艺条件核对\n\n- **气液相介质与纯度要求**：提供进料、塔顶馏分、塔釜残液的完整组分、浓度区间以及对金属杂质析出的控制要求。\n- **塔顶与塔釜温差**：同时标注塔釜再沸温度、塔顶冷凝温度及开停车清洗阶段的温度波动。\n- **操作压力与减压精馏**：明确常压、加压或减压操作边界，减压精馏工况的负压条件必须单独交由技术团队核算衬里固定结构。\n\n## 二、塔节结构、内件配合与接口规划\n\n| 核对模块 | 前期需明确的工程信息 | 关注重点 |\n| --- | --- | --- |\n| 分段与端面翻边 | 塔径、分段高度、端面法兰标准与螺栓孔位 | 确保每节 PFA 衬里连续翻边且密封面平整 |\n| 分布器与再分布器 | 液相流量、回流比、进料与回流口标高 | 避免壁流偏流，保证填料层均匀润湿 |\n| 填料与支承件 | 填料材质规格、支承格栅、压板及除雾配置 | 兼顾承载强度、低阻通流与抗腐蚀一致性 |\n| 测温与取样点 | 沿塔高布置的温度计套管、压差口与在线取样口 | 提前定型方位，避免衬里完成后改动 |\n\n## 三、高危工况专项审核与出厂留档\n\n1. 若工艺涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质，须提供完整配方与 SDS，经技术负责人专项审核后再制定工艺路线。\n2. 在技术协议中明确 PFA 板材规格、焊缝检验方法、内腔洁净冲洗要求及端面盲板保护发运方式。\n3. 整塔或分段出厂前按约定完成试装核验、几何尺寸复检与技术资料归档。\n\n> 所有承压计算、衬里厚度、塔内件选材与出厂验收指标均以项目技术协议和技术负责人审核结论为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "towers",
+      "variantSlug": "section",
+      "articleSlug": "article_ptfe-tower-section-flange-alignment",
+      "title": "单独采购或改造衬四氟塔节时，如何确保与原塔法兰精准对中？",
+      "summary": "装置技改或局部更换衬四氟塔节时，最常见的问题是上下法兰螺孔错位、总高偏差或内件标高冲突。本文总结旧塔测绘与单节塔节定制的核心核对清单。",
+      "seoTitle": "单独采购或改造衬四氟塔节时，如何确保与原塔法兰精准对中？",
+      "seoDescription": "梳理单独采购或技改更换衬四氟塔节时必须核对的法兰螺栓中心圆、跨中方位、端面高度公差、内件支承圈标高与翻边密封面质控要点。",
+      "coverImage": "/images/site/products/towers-grid.webp",
+      "coverImageAlt": "衬四氟塔节内部栅板实拍，可见大口径塔节端面翻边、格栅支承结构与侧向接管",
+      "bodyMarkdown": "## 单节更换或增高改造，成败在于“实测接口匹配”\n\n在化工装置运行维护与技改升级中，很多企业并非整塔重建，而是**单独增配或更换其中一节衬四氟塔节**（例如更换喷淋分布段、填料支承段或检修过渡段）。此类项目工期紧、停产窗口短，一旦新塔节到场后出现螺孔对不上、高度差几毫米或人孔朝向偏差，就会直接拖延开车进度。\n\n## 一、上下端面法兰必测的五项尺寸\n\n下单前建议结合原塔竣工图与现场实测，逐项核清以下配合基准：\n\n1. **法兰外径与密封面形式**：确认突面、平面或凹凸面结构，以及原塔翻边密封面外径范围。\n2. **螺栓中心圆直径与孔数孔径**：老旧非标塔器往往存在非标钻孔，切忌仅按公称直径推算。\n3. **螺栓孔跨中方位**：明确 0° 基准线与螺栓孔是“跨中”还是“对中”，确保侧向接管与人孔对准现有管廊与检修平台。\n4. **单节总高（密封面至密封面）**：将上下端面衬氟翻边厚度与垫片压缩余量纳入整段高度核算。\n5. **壳体对接筒径与内径**：确保与相邻塔节过渡平顺，不影响内部气流与液膜流道。\n\n## 二、内部支承栅板、喷淋接口与侧接管校核\n\n| 核对节点 | 现场与图纸需对齐的内容 | 避免的现场隐患 |\n| --- | --- | --- |\n| 填料支承栅板 | 支承圈标高、内径余量及栅板分块装卸尺寸 | 避免栅板无法从人孔进入或与原填料层高不匹配 |\n| 喷淋分布段 | 循环液侧接口标高、方位及内部支管支撑结构 | 避免与现有循环泵管路硬拉强行对接 |\n| 侧向人孔与接管 | 法兰标准、外伸长度及与钢平台栏杆的净距 | 保证现场盖板开合与换填料作业空间 |\n\n## 三、出厂复核与工况审核提醒\n\n- 改造项目若同步改变了处理风量、介质浓度或温度压力，不可直接沿用旧塔衬里方案，应重新提交新工况进行技术评估。\n- 若涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危工况，或存在负压波动，须由技术负责人专项审核。\n- 出厂前按项目技术协议重点复检两端面法兰平行度、螺孔方位标记及翻边密封面平整度。\n\n> 实测尺寸越完整、方位基准越清晰，衬四氟塔节在停产检修窗口内的吊装对中就越稳妥高效。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "piping",
+      "variantSlug": "ptfe",
+      "articleSlug": "article_lined-piping-flange-flaring",
+      "title": "钢衬四氟管道的法兰翻边为什么是关键质控点？",
+      "summary": "钢衬管道在现场通过螺栓法兰逐段紧固，法兰端面的衬里翻边直接决定介质是否与金属接触。本文说明直管段与短节的翻边质控及轴测图定长预制核对要点。",
+      "seoTitle": "钢衬四氟管道的法兰翻边为什么是关键质控点？",
+      "seoDescription": "详解钢衬四氟管道法兰端面翻边密封的工程作用、按轴测图定长预制的核对要点及负压与高危介质工况审核要求。",
+      "coverImage": "/images/site/products/piping-ptfe.webp",
+      "coverImageAlt": "钢衬四氟管道批量实拍，可见定长直管段、短节及端面白色四氟翻边密封面",
+      "bodyMarkdown": "## 管路防腐的薄弱环节往往在连接处\n\n在腐蚀性介质输送管路中，直管内部由连续衬管隔绝流体，而真正考验耐蚀完整性与密封可靠性的位置，集中在**每一段直管、短节与设备衔接的法兰连接端面**。\n\n通过将内衬四氟管延伸并翻边至法兰密封面，两段管路在现场螺栓紧固时由衬里端面直接贴合密封，阻断腐蚀性介质接触外部承压钢管与法兰金属。\n\n## 一、法兰翻边与贴合度的核查要点\n\n- **翻边端面平整度**：端面不平或起皱会导致螺栓紧固后局部受力不均，增加渗漏风险。\n- **转角过渡连续性**：翻边根部需保持合理过渡，避免锐角折痕在温度变化时产生应力集中。\n- **端面保护与紧固规范**：运输和吊装过程须加装端面保护盖，防止磕碰划伤白色四氟密封面；现场紧固宜按对角顺序均匀施力。\n\n## 二、为什么要按装置轴测图定长预制\n\n钢衬防腐管道成型后不宜在施工现场随意切割焊接（现场动火会直接损伤内部防腐衬层）。因此前期下单前应重点核清：\n\n1. 各段直管公称直径 DN、精确单段长度与现场安装累积公差。\n2. 关键闭合段预留调整短节，便于现场管廊最终合拢对接。\n3. 配套法兰标准、压力等级及活套/固定法兰组合方式，便于到场后直接螺栓对中紧固。\n\n## 三、负压与高危介质输送的前置审核\n\n> 输送氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质，或存在负压抽吸与高温波动的管路项目，均须先交由技术负责人专项审核，不可直接按常规常压管路选配。\n\n建议采购与设备工程师整理装置轴测图、公称直径、管段长度清单及介质温压条件，提前核对后再安排预制生产。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "piping",
+      "variantSlug": "po",
+      "articleSlug": "article_po-piping-rotomolded-continuity",
+      "title": "钢衬 PO 管道在输送含杂质腐蚀性介质时应核对哪些工况？",
+      "summary": "钢衬 PO 管道以整体滚塑成型聚烯烃内衬与承压外管紧密结合。本文梳理含杂质、悬浮颗粒或温度波动介质输送管路在选型预制前必须核对的工况条件。",
+      "seoTitle": "钢衬 PO 管道在输送含杂质腐蚀性介质时应核对哪些工况？",
+      "seoDescription": "梳理钢衬 PO 管道在输送含杂质或颗粒腐蚀性介质时需核清的流速冲刷、公称直径、单段管长、温压负压边界与法兰配套要点。",
+      "coverImage": "/images/site/products/piping-po.webp",
+      "coverImageAlt": "钢衬 PO 管道与三通近景实拍，可见连续滚塑内衬与法兰端面翻边",
+      "bodyMarkdown": "## 整体滚塑内衬在输送管路中的适配要点\n\n钢衬 PO 管道通过整体滚塑工艺使聚烯烃（PO）衬里紧贴钢管内壁并连续延伸至两端法兰密封面，内表面平滑连续，适合酸碱废水、腐蚀性料液及装置区主支管路的定长预制。当介质中混杂悬浮固相颗粒、结晶物或存在频繁启停泵工况时，前期把条件核实清楚尤为重要。\n\n## 一、介质杂质、流速与冲刷评估\n\n- **介质组成与浓度**：明确主腐蚀介质、浓度范围以及是否夹带有机溶剂或氧化性副产物。\n- **固相颗粒与结晶**：说明固含量、颗粒粒径及硬度，结合设计流量核算管内流速，避免流速过高造成局部磨蚀或流速过低引起沉降堵管。\n- **清洗与吹扫介质**：定期水洗、碱洗或压缩空气吹扫的温度与压力条件应一并列入工况表。\n\n## 二、管段预制长度与法兰连接配套\n\n| 核对项目 | 下单前需确认的内容 | 工程目的 |\n| --- | --- | --- |\n| 公称直径 DN | 主管与支管口径及与泵、阀门的对接口径 | 确保通流截面匹配与变径顺畅 |\n| 单段管长 | 结合滚塑工艺长度、管架跨距与吊装路线分段 | 保证滚塑衬层均匀且减少现场法兰接口数量 |\n| 法兰组合 | 法兰标准、压力等级及一端活套法兰配置 | 方便现场管廊螺栓孔自由对中，消除扭转应力 |\n| 支架与膨胀 | 管架间距、导向支架及热膨胀补偿规划 | 避免管路自重与热胀冷缩拉伤法兰密封面 |\n\n## 三、温压边界与高危介质审核\n\n1. 区分正常输送温度、最高波动温度与伴热保温状态，避免超温运行。\n2. 泵入口抽吸段、高位排空段容易产生负压，须在轴测图中单独标明并交由技术团队审核。\n3. 输送氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质时，必须统一进入技术负责人专项审核。\n\n> 钢衬 PO 管道的外管牌号、PO 衬里牌号、壁厚及出厂检验方法均以项目技术协议和技术审核结论为准。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    },
+    {
+      "categorySlug": "piping",
+      "variantSlug": "fittings",
+      "articleSlug": "article_lined-fittings-isometric-checklist",
+      "title": "非标衬氟弯头、三通与异径管预制前，轴测图需标注哪些尺寸？",
+      "summary": "管路中的弯头、三通、四通与异径管承受着流向改变和支管分流应力，且成型后不可现场切焊。本文整理轴测图提交与管件预制前必须标清的关键尺寸清单。",
+      "seoTitle": "非标衬氟弯头、三通与异径管预制前，轴测图需标注哪些尺寸？",
+      "seoDescription": "整理预制衬氟弯头、等径/异径三通、四通及同心偏心异径管前，装置轴测图必须标清的结构长度、弯曲半径、法兰跨中与工况核对清单。",
+      "coverImage": "/images/site/product-piping.webp",
+      "coverImageAlt": "钢衬防腐管道、三通与弯头厂区实拍，可见各管件端面白色衬里翻边密封面",
+      "bodyMarkdown": "## 管件预制精度，决定了整条管廊能否一次合拢\n\n相比直管段，衬氟弯头、三通、四通与异径管是管路中流体转向、汇流与变径的集中节点，内部衬氟成型与端面翻边工序更为复杂。由于钢衬管件出厂后严禁在现场切割补焊，前期在轴测图和料单上把尺寸口径写清楚，是保障现场顺利合拢的关键。\n\n## 一、各类衬氟管件必标的几何尺寸\n\n| 管件类别 | 轴测图与料单须标明的尺寸 | 常见遗漏点提醒 |\n| --- | --- | --- |\n| 衬氟弯头 | 公称直径 DN、转弯角度、弯曲半径及端面至中心距 | 非标角度弯头或长半径弯头须单独标注中心距 |\n| 等径 / 异径三通 | 主管与支管 DN、主管总长、支管中心至端面高度 | 异径三通须明确支管口径及是否带偏置要求 |\n| 四通与非标汇管 | 各支口 DN、中心距及相互空间夹角 | 多口空间方位须给出清晰基准面与视角说明 |\n| 同心 / 偏心异径管 | 大端与小端 DN、结构总长及同心/偏心方向 | 水平管泵入口常用偏心异径管，须标注顶平或底平安装方向 |\n\n## 二、法兰标准与活套配置核对\n\n- **统一法兰标准与压力等级**：同一管件连接不同厂家的阀门、泵或设备口时，容易出现法兰标准混用，须逐口核对标注。\n- **合理选用活套法兰**：在弯头或三通至少一端合理配置活套法兰，可在现场安装时灵活微调螺孔方位，减少强行别劲紧固对翻边密封面的损伤。\n- **固定法兰跨中基准**：若采用全固定法兰，须明确螺栓孔跨中方位，避免空间转向后螺孔旋转错位。\n\n## 三、冲刷、负压与高危工况审核边界\n\n1. 弯头外弧与三通支管交汇处受流体冲刷最显著，介质若含固相颗粒或高流速，须提前说明以便工艺评估。\n2. 泵吸入侧变径管、负压抽气管件及温度剧烈波动节点，须单独标注温压边界交由技术审核。\n3. 涉及氢氟酸、高氯酸、氯磺酸、液溴、过氧化氢、混酸等高危介质的管件项目，统一进入技术负责人专项审核。\n\n> 所有衬氟管件的壳体牌号、衬里壁厚与出厂检验标准均以项目技术协议为准，建议在排产前连同整条管路轴测图一并核对确认。",
+      "publishedAt": "2026-11-27",
+      "updatedAt": "2026-11-27",
+      "status": "published"
+    }
+  ]
+}

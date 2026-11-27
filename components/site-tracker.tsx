@@ -12,7 +12,7 @@ function normalizePathname(raw: string): string {
 }
 
 function extractProductCategory(pathname: string): string {
-  const match = pathname.match(/^\/products\/([a-z0-9_-]+)\/$/);
+  const match = pathname.match(/^\/products\/([a-z0-9_-]+)(?:\/|$)/);
   return match ? match[1] : "";
 }
 

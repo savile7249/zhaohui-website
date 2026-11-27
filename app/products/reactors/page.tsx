@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
 import { getCanonicalBase } from "@/lib/managed-content";
+import { getCategoryGalleryPhotos } from "@/lib/product-catalog";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { ReactorAssemblyExplorer } from "./reactor-assembly";
@@ -40,6 +41,8 @@ function SectionLabel({ index, children }: { index: string; children: string }) 
 export default function ReactorsPage() {
   const product = findProduct("reactors");
   if (!product) return null;
+  const catalogPhotos = getCategoryGalleryPhotos("reactors");
+  const galleryPhotos = catalogPhotos.length > 0 ? catalogPhotos : reactorGalleryPhotos;
 
   return (
     <ReactorPageClient>
@@ -92,12 +95,12 @@ export default function ReactorsPage() {
             </h2>
           </div>
           <p className="pt-section-aside" data-rise>
-            以下为钢衬四氟、PO 与 PFA 反应釜成品实拍，搅拌传动、传热夹套与釜盖接口均按工艺条件配套定制。
+            覆盖钢衬四氟、PO、PE、PFA 反应釜以及钢衬四氟搅拌罐与双锥反应釜，搅拌传动、传热夹套与釜盖接口均按工艺条件配套定制。
           </p>
         </div>
 
         <div className="pt-wrap">
-          <ProductPhotoGallery productTitle={product.title} photos={reactorGalleryPhotos} />
+          <ProductPhotoGallery productTitle={product.title} photos={galleryPhotos} />
         </div>
       </section>
 

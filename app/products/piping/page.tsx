@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { findProduct, getProductBriefHref } from "@/app/products/product-data";
 import { getCanonicalBase } from "@/lib/managed-content";
+import { getCategoryGalleryPhotos } from "@/lib/product-catalog";
 import { ProductPhotoGallery } from "../product-gallery";
 import { SiteFooter } from "../../site-footer";
 import { PipingAssemblyExplorer } from "./piping-assembly";
@@ -40,6 +41,8 @@ function SectionLabel({ index, children }: { index: string; children: string }) 
 export default function PipingPage() {
   const product = findProduct("piping");
   if (!product) return null;
+  const catalogPhotos = getCategoryGalleryPhotos("piping");
+  const galleryPhotos = catalogPhotos.length > 0 ? catalogPhotos : pipingGalleryPhotos;
 
   return (
     <PipingPageClient>
@@ -97,7 +100,7 @@ export default function PipingPage() {
         </div>
 
         <div className="pt-wrap">
-          <ProductPhotoGallery productTitle={product.title} photos={pipingGalleryPhotos} />
+          <ProductPhotoGallery productTitle={product.title} photos={galleryPhotos} />
         </div>
       </section>
 

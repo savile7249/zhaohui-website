@@ -1,28 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getProductBriefHref } from "@/app/products/product-data";
-import { detectHeaderSurface, ZhaohuiLogo, type BrandSurfaceTone } from "@/components/zhaohui-logo";
-
-const navigation = [
-  ["管路结构", "#structure"],
-  ["产品实拍", "#gallery"],
-  ["沟通条件", "#inputs"],
-  ["储罐", "/products/tanks"],
-  ["反应釜", "/products/reactors"],
-  ["塔器", "/products/towers"],
-  ["返回首页", "/"],
-] as const;
+import { SiteHeader } from "@/components/site-header";
+import { detectHeaderSurface, type BrandSurfaceTone } from "@/components/zhaohui-logo";
 
 const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export function PipingPageClient({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDetailsElement>(null);
-  const [active, setActive] = useState<string>("structure");
   const [scrolled, setScrolled] = useState(false);
   const [headerSurface, setHeaderSurface] = useState<BrandSurfaceTone>("dark");
 
@@ -35,17 +23,6 @@ export function PipingPageClient({ children }: { children: ReactNode }) {
     const cleanups: Array<() => void> = [];
 
     const context = gsap.context(() => {
-      page.querySelectorAll<HTMLElement>("[data-section]").forEach((section) => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top 40%",
-          end: "bottom 40%",
-          onToggle: (self) => {
-            if (self.isActive) setActive(section.id);
-          },
-        });
-      });
-
       const onScroll = () => {
         setScrolled(window.scrollY > 24);
         setHeaderSurface(detectHeaderSurface(page));
@@ -84,64 +61,18 @@ export function PipingPageClient({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  function closeMenu() {
-    menuRef.current?.removeAttribute("open");
-  }
-
   return (
     <div id="top" ref={rootRef} className="pt-root">
       <a className="pt-skip-link" href="#pt-main">
         跳到主要内容
       </a>
 
-      <header
-        className="pt-header"
-        data-scrolled={scrolled ? "true" : undefined}
-        data-surface={headerSurface}
-      >
-        <div className="pt-header-inner">
-          <Link href="/" aria-label="兆辉智能装备 · 返回首页" className="pt-logo-link">
-            <ZhaohuiLogo surface={headerSurface} className="pt-brand-logo" priority />
-          </Link>
-
-          <nav className="pt-desktop-nav" aria-label="主导航">
-            {navigation.map(([label, href]) =>
-              href.startsWith("#") ? (
-                <a key={href} href={href} aria-current={active === href.slice(1) ? "location" : undefined}>
-                  {label}
-                </a>
-              ) : (
-                <Link key={href} href={href}>
-                  {label}
-                </Link>
-              ),
-            )}
-          </nav>
-
-          <div className="pt-header-actions">
-            <Link href={getProductBriefHref("piping")} className="pt-header-cta">
-              询价准备
-            </Link>
-            <details className="pt-mobile-menu" ref={menuRef}>
-              <summary>菜单</summary>
-              <nav aria-label="移动端导航" onClick={closeMenu}>
-                {navigation.map(([label, href]) =>
-                  href.startsWith("#") ? (
-                    <a key={href} href={href} aria-current={active === href.slice(1) ? "location" : undefined}>
-                      {label}
-                    </a>
-                  ) : (
-                    <Link key={href} href={href}>
-                      {label}
-                    </Link>
-                  ),
-                )}
-                <Link href={getProductBriefHref("piping")}>询价准备</Link>
-              </nav>
-            </details>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        activeSection="equipment"
+        briefHref={getProductBriefHref("piping")}
+        scrolled={scrolled}
+        surface={headerSurface}
+      />
 
       <main id="pt-main">{children}</main>
     </div>

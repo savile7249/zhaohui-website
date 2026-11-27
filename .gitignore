@@ -16,6 +16,7 @@ npm-debug.log*
 
 # Local isolated multisite admin test runtime & Python env
 /.local-test-env/
+/.local-cms/
 /admin-platform/.venv/
 **/__pycache__/
 *.pyc

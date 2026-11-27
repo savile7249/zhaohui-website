@@ -7,13 +7,20 @@ import { contactInfo } from "@/components/contact-data";
 import { trackBriefCopySuccess } from "@/components/site-tracker";
 import { liningProcessOptions, mediumRiskOptions, shellMaterialOptions, volumePresets } from "./home-data";
 
-function BriefQuerySync({ onProductFromUrl }: { onProductFromUrl: (slug: ProductSlug | null) => void }) {
+function BriefQuerySync({
+  onContextFromUrl,
+}: {
+  onContextFromUrl: (slug: ProductSlug | null, variant: string | null) => void;
+}) {
   const searchParams = useSearchParams();
   const productParam = searchParams.get("product");
+  const variantParam = searchParams.get("variant");
 
   useEffect(() => {
-    onProductFromUrl(isProductSlug(productParam) ? productParam : null);
-  }, [productParam, onProductFromUrl]);
+    const validSlug = isProductSlug(productParam) ? productParam : null;
+    const cleanedVariant = variantParam ? variantParam.trim().toLowerCase() : null;
+    onContextFromUrl(validSlug, validSlug ? cleanedVariant : null);
+  }, [productParam, variantParam, onContextFromUrl]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -30,13 +37,14 @@ function BriefQuerySync({ onProductFromUrl }: { onProductFromUrl: (slug: Product
     });
 
     return () => window.cancelAnimationFrame(rafId);
-  }, [productParam]);
+  }, [productParam, variantParam]);
 
   return null;
 }
 
-export function BriefWorkbench() {
+export function BriefWorkbench({ variantNames }: { variantNames?: Record<string, string> }) {
   const [slug, setSlug] = useState<ProductSlug | "">("");
+  const [variantSlug, setVariantSlug] = useState<string>("");
   const [volume, setVolume] = useState("");
   const [size, setSize] = useState("");
   const [shell, setShell] = useState("");
@@ -47,20 +55,28 @@ export function BriefWorkbench() {
   const [pressure, setPressure] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const handleProductFromUrl = useCallback((nextSlug: ProductSlug | null) => {
+  const handleContextFromUrl = useCallback((nextSlug: ProductSlug | null, nextVariant: string | null) => {
     setSlug(nextSlug ?? "");
+    setVariantSlug(nextVariant ?? "");
   }, []);
 
   const product = productFamilies.find((item) => item.slug === slug) ?? null;
+  const variantLabel =
+    slug && variantSlug && variantNames ? variantNames[`${slug}/${variantSlug}`] ?? "" : "";
   const risk = mediumRiskOptions.find((item) => item.id === riskId) ?? null;
   const isTank = slug === "tanks";
 
   const briefText = useMemo(() => {
     const pending = "待补充";
-    return [
+    const lines = [
       "兆辉化工设备 · 询价工况简报",
       "",
       `设备类型　${product ? product.title : pending}`,
+    ];
+    if (variantLabel) {
+      lines.push(`细分机型　${variantLabel}`);
+    }
+    lines.push(
       isTank ? `容积　　　${volume || pending}` : `主要尺寸　${size.trim() || pending}`,
       `壳体材料　${shell || pending}`,
       `防腐工艺　${lining || pending}`,
@@ -77,8 +93,9 @@ export function BriefWorkbench() {
         : `随附资料：${pending}（如有完整组分、浓度、温度及 SDS 可一并附送）`,
       "",
       "本简报仅用于前期沟通，不构成选材或报价结论，最终方案以技术审核为准。",
-    ].join("\n");
-  }, [isTank, lining, medium, pressure, product, risk, shell, size, temperature, volume]);
+    );
+    return lines.join("\n");
+  }, [isTank, lining, medium, pressure, product, risk, shell, size, temperature, variantLabel, volume]);
 
   async function handleCopy() {
     try {
@@ -94,7 +111,7 @@ export function BriefWorkbench() {
   return (
     <div className="pt-brief">
       <Suspense fallback={null}>
-        <BriefQuerySync onProductFromUrl={handleProductFromUrl} />
+        <BriefQuerySync onContextFromUrl={handleContextFromUrl} />
       </Suspense>
 
       <form className="pt-brief-form" onSubmit={(event) => event.preventDefault()}>
@@ -107,12 +124,29 @@ export function BriefWorkbench() {
                 type="button"
                 aria-pressed={slug === item.slug}
                 className="pt-chip"
-                onClick={() => setSlug(item.slug)}
+                onClick={() => {
+                  if (slug !== item.slug) {
+                    setVariantSlug("");
+                  }
+                  setSlug(item.slug);
+                }}
               >
                 {item.title}
               </button>
             ))}
           </div>
+          {variantLabel ? (
+            <p className="pt-field-context">
+              已带入细分机型：<strong>{variantLabel}</strong>
+              <button
+                type="button"
+                className="pt-field-context-clear"
+                onClick={() => setVariantSlug("")}
+              >
+                清除机型
+              </button>
+            </p>
+          ) : null}
         </fieldset>
 
         {isTank ? (

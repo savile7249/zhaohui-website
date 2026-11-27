@@ -292,3 +292,94 @@ final result: passed
 - 未验证项：真实手机设备与 Safari 实机复测
 
 final result: passed
+
+
+---
+
+# 产品子详情页、关联文章页与管理后台上传编辑验收（2026-11-27）
+
+## 验收范围
+
+- 四类设备 `#gallery` 实拍区跳转改造：`/products/tanks/#gallery`、`/products/reactors/#gallery`、`/products/towers/#gallery`、`/products/piping/#gallery`（图片与标题均直达子产品页，按确认需求移除 `<dialog>` 大图放大灯箱）
+- 四类设备共 13 款子产品详情页：`/products/tanks/{ptfe,po,pe,pfa,pvdf}/`、`/products/reactors/{ptfe,po,pfa}/`、`/products/towers/{exterior,spray,grid}/`、`/products/piping/{ptfe,po}/`（预置标准化规格种类，具体数值默认留空，前台呈现「按项目工况核定」并支持后台填报）
+- 关联技术文章页：`/products/[category]/[variant]/article_*/`（内置 4 篇合规种子文章，零依赖受控 Markdown 渲染，桌面 12 栏双栏配粘性所属设备卡，移动端单栏）
+- 全站 SEO 与询价联动：可编程 `app/sitemap.ts`（`force-static`）、子产品 `BreadcrumbList + Product` 与文章 `BreadcrumbList + TechArticle` JSON-LD、`/?product=<cat>&variant=<var>#brief` 子机型预填与 `SiteTracker` 子路径归因
+- 管理后台扩展（合并 `savile7249/multisite-monitor-admin-v1` 后扩展 `/publishing/zhaohui/`）：图片素材库与上传校验、子产品可视化规格编辑器与 CSV/JSON 批量导入、关联文章 `.md` 导入/在线编辑/配图插图/官网纸色实时预览、内容红线自动拦截与审核门禁、本地 SQLite 启动与一键 Dev Sync
+
+## 验证结果
+
+- `git diff --check`：通过
+- `npm run typecheck`、`npm run build`、`bash ops/prod-pilot/build_and_stage.sh --local-only`：通过；静态导出 29 页（含 4 大类、13 款子产品、4 篇关联文章与 22 条 URL 的 `sitemap.xml`），106 项静态资源零缺失
+- Django 迁移零漂移校验（`makemigrations --check --dry-run`）与 `manage.py test core publishing`：18/18 通过（覆盖上传魔数/尺寸校验、CSV 参数导入、Markdown 导入与 `article_` 前缀规范化、红线硬拦截与发布者审核门禁、跨站 RBAC 隔离与本地 Dev Sync）
+- 本机静态构建（`http://127.0.0.1:4173`）与本地后台（`http://127.0.0.1:18099`）Chromium 浏览器验收（1440×900 与 390×844）：
+  - 全量已检页面横向溢出 `overflowX = 0`、可见正文最小字号 `14px`、0 圆角、无 `box-shadow`、无 `<dialog>` 放大灯箱、JSON-LD 解析零错误
+  - 子产品页与文章页滚动至浅色纸底区块后，固定页头自动切换为 `data-surface="light"` 浅底深字高对比状态；无文章的子产品（如 `/products/tanks/po/`）自动省略文章区并将同系设备切换区切为墨底以保持深浅交替
+  - `/?product=tanks&variant=ptfe#brief` 正确带入设备类型「储罐」与细分机型「钢衬四氟储罐」
+  - 复查修复 3 项细节：文章 H1 与后台预览标题增加 `text-wrap: balance` 优化中文断行；390px 移动端文章正文表格取消最小宽度限制使 3 列完整入屏；后台文章内联配图上传栏改为双行布局
+- 截图证据（仓库外）：`/home/savil/.gemini/antigravity-cli/brain/dc7e47d0-f442-4703-912e-0df031fc7da3/scratch/qa-shots/`
+- 未验证项：真实手机与 Safari 实机复测；生产 MariaDB 远程迁移与 `admin.wuxifangfu.cn` / `jszhff.cn` 线上部署（本次按任务书先在本地完成开发与验收）
+
+final result: passed
+
+
+---
+
+# 子产品详情页收紧改版复核（2026-11-27）
+
+- **改动点**：按反馈在 [app/products/[category]/[variant]/page.tsx](file:///home/savil/Workspace/zhaohui/app/products/[category]/[variant]/page.tsx) 与 [app/products/product-page.css](file:///home/savil/Workspace/zhaohui/app/products/product-page.css) 中移除首屏「准备该设备询价简报」与「返回总览」按钮、删除「选型沟通需确认的条件」区块、`01 规格与结构参数` 表格仅保留「规格种类」「规格参数」两列，并将关联「选型与工艺文章」并入同一浅色纸底板块右侧（无文章时仅展示规格表不留空位），下方统一衔接墨底 `02 同系设备`。
+- **验证结果**：`git diff --check`、`npm run typecheck`、`npm run build`、`bash ops/prod-pilot/build_and_stage.sh --local-only` 全部通过（106 项资产、13 款子产品页、4 篇关联文章与 `sitemap.xml` 0 缺失）；Chromium 复测 `/products/tanks/ptfe/` 与 `/products/tanks/po/` 在 `1440×900` 与 `390×844` 下均为 `overflowX = 0`、最小字号 `14px`、首屏按钮数 `0`、表头仅含 `["规格种类", "规格参数"]`、无「选型沟通需确认的条件」区块。
+
+final result: passed
+
+
+---
+
+# 子产品详情页 01/02 板块副标题清理与同系产品配图复核（2026-11-27）
+
+- **改动点**：
+  - [app/products/[category]/[variant]/page.tsx](file:///home/savil/Workspace/zhaohui/app/products/[category]/[variant]/page.tsx)：删除 `01 规格与结构参数` 与 `02 同系设备` 板块标题右侧副标题；为 `02 同系设备` 每项添加对应核准产品实拍图；当前查看机型改为指向 `#top`（标注「当前查看 · 返回顶部 ↑」）。
+  - [app/products/product-subpage-shell.tsx](file:///home/savil/Workspace/zhaohui/app/products/product-subpage-shell.tsx)：增加 `a[href="#top"]` 委托点击滚动至顶部处理（适配 `prefers-reduced-motion`，确保重复点击均返回顶部）。
+  - [app/products/product-page.css](file:///home/savil/Workspace/zhaohui/app/products/product-page.css)：补充 `.pt-sibling-media` 0 圆角纸底实拍容器样式与 5 列桌面 / 2 列移动端同系网格响应规则。
+- **验证结果**：`git diff --check`、`npm run typecheck`、`npm run build`、`bash ops/prod-pilot/build_and_stage.sh --local-only` 全部通过；Chromium 复测 `/products/tanks/ptfe/` 与 `/products/piping/ptfe/` 在 `1440×900` 与 `390×844` 下均为 `overflowX = 0`、副标题数 `0`、同系图片全部正常加载，连续两次点击当前机型卡片均由 `scrollY = 2073` 平滑返回 `scrollY = 0`。
+
+final result: passed
+
+
+---
+
+# 全站顶部导航栏重设计验收（2026-11-27）
+
+- **改动点**：
+  - 新增共享页头组件 [components/site-header.tsx](file:///home/savil/Workspace/zhaohui/components/site-header.tsx)，全站统一接入首页 [app/home-client.tsx](file:///home/savil/Workspace/zhaohui/app/home-client.tsx)、四类产品大类页（`tanks`/`reactors`/`towers`/`piping` `*-page-client.tsx`）、子产品与文章页壳 [app/products/product-subpage-shell.tsx](file:///home/savil/Workspace/zhaohui/app/products/product-subpage-shell.tsx) 以及 404 页面 [app/not-found.tsx](file:///home/savil/Workspace/zhaohui/app/not-found.tsx)。
+  - 左侧采用「品牌标识 + 1px 竖向细线 + 主导航（关于、设备、应用与资质、制造）」排布；首页随滚动高亮当前分区，产品相关页面统一高亮「设备」。
+  - 右侧仅保留「联系电话 + 询价准备」：两个公开联系电话（`133-0617-0776`、`139-6173-8292`）采用双行紧凑叠放并配 `phone-calling-linear.svg` 线性电话图标；「询价准备」按钮内置 `dialog-linear.svg` 线性对话图标并保留各产品页/子机型预选询价上下文。
+  - 在 [app/site.css](file:///home/savil/Workspace/zhaohui/app/site.css) 中同步完成深浅区块（`data-surface="dark" | "light"`）切换、`prefers-reduced-motion` 适配与 900px 以下移动端 `<details>` 抽屉菜单（含导航、电话直拨与询价入口，全项触控高度 ≥ 42px）；同步更新 [DESIGN.md](file:///home/savil/Workspace/zhaohui/DESIGN.md)。
+- **验证结果**：
+  - `git diff --check`、`npm run typecheck`、`npm run build`、`bash ops/prod-pilot/build_and_stage.sh --local-only` 全部通过（29 页静态导出、106 项静态资源零缺失）。
+  - 本机静态导出 Chromium 浏览器多尺寸验收（`1440×900`、`900×800`、`390×844`），覆盖 `/`、`/products/{tanks,reactors,towers,piping}/`、`/products/tanks/ptfe/`、`/products/tanks/ptfe/article_ptfe-tank-selection-conditions/` 与 `/404.html` 共 20 组视图：零控制台错误、零静态资源失败请求、全量 `overflowX = 0`、可见最小字号 `14px`、0 圆角、0 阴影；明暗区块滚动切换准确。
+  - 首轮移动端抽屉复核发现下拉面板顶边与 68px 页头底线存在 2px 轻叠及电话图标间距偏散，已收紧至 `y = 68px` 贴齐与逐行左对齐并复测通过。
+- **截图证据（仓库外）**：`/home/savil/.gemini/antigravity-cli/brain/5c6e92e7-6389-420d-af47-bff281ded743/scratch/qa-shots/`
+- **未验证项**：真实手机设备与 Safari 实机复测；尚未执行提交、推送或线上部署。
+
+final result: passed
+
+
+
+---
+
+# 全系 18 款子产品页与 18 篇技术文章补全验收（2026-11-27）
+
+- **改动点**：
+  - [content/managed-catalog.json](file:///home/savil/Workspace/zhaohui/content/managed-catalog.json)：将子产品目录从 13 款扩展至与全站设备大类严格 1:1 对应的 **18 款子产品**（储罐 5 款：`ptfe`/`po`/`pe`/`pfa`/`pvdf`；反应釜 6 款：`ptfe`/`po`/`pe`/`pfa`/`stirred-tank`/`double-cone`；塔器 4 款：`ptfe`/`pe`/`pfa`/`section`，替代原视角拆分项并将三张塔器实拍收敛至 `towers/ptfe` 与 `towers/section` 多图切换；管道与管件 3 款：`ptfe`/`po`/`fittings`）；全部规格参数项维持 `value: ""`（前端显示「按项目工况核定」），并为**全部 18 款子产品各补全 1 篇合规「选型与工艺文章」（共 18 篇）**，全量通过内容红线门禁（0 errors、0 warnings）。
+  - [lib/product-media.ts](file:///home/savil/Workspace/zhaohui/lib/product-media.ts)、[app/products/product-gallery.tsx](file:///home/savil/Workspace/zhaohui/app/products/product-gallery.tsx)、[app/products/variant-media-showcase.tsx](file:///home/savil/Workspace/zhaohui/app/products/variant-media-showcase.tsx)、[app/products/[category]/[variant]/page.tsx](file:///home/savil/Workspace/zhaohui/app/products/[category]/[variant]/page.tsx)、[app/products/[category]/[variant]/[article]/page.tsx](file:///home/savil/Workspace/zhaohui/app/products/[category]/[variant]/[article]/page.tsx) 与 [app/products/product-page.css](file:///home/savil/Workspace/zhaohui/app/products/product-page.css)：
+    - 新增 `.is-full-bleed` 满幅暗底适配规则，使复用已核准大类车间主图（`product-reactors.webp`、`product-towers.webp`、`product-piping.webp`）的新增机型在图集、详情首屏、同系卡片及文章封面/侧栏中边缘裁切自然，无浅底白边；白底精修图保留 `contain + multiply`。
+    - 为图集新增 4 项 `is-count-4`（2×2）规则，为 `02 同系设备` 新增 `is-count-3`/`4`/`5`/`6` 桌面均衡列数（反应釜 6 款 3×2、塔器 4 款 4×1、储罐 5 款 5×1、管道 3 款 3×1），消除单卡孤立行；同步更新 [app/products/reactors/page.tsx](file:///home/savil/Workspace/zhaohui/app/products/reactors/page.tsx) 与 [app/products/towers/page.tsx](file:///home/savil/Workspace/zhaohui/app/products/towers/page.tsx) 的 `#gallery` 侧注覆盖范围。
+  - [admin-platform/publishing/catalog_seed.py](file:///home/savil/Workspace/zhaohui/admin-platform/publishing/catalog_seed.py)、[admin-platform/templates/publishing/studio.html](file:///home/savil/Workspace/zhaohui/admin-platform/templates/publishing/studio.html) 与 [admin-platform/publishing/tests.py](file:///home/savil/Workspace/zhaohui/admin-platform/publishing/tests.py)：改用 `get_or_create` 避免共享大类核准主图时覆写 `ApprovedAsset.code`，自动清理旧 `towers/{exterior,spray,grid}` 种子残留，并补齐 18 款子产品 + 18 篇文章零红线零告警断言测试。
+- **验证结果**：
+  - `git diff --check`、`npm run typecheck`、`npm run build`、`bash ops/prod-pilot/build_and_stage.sh --local-only` 全部通过（静态导出 48 页，校验 106 项资产、18 款子产品页、18 篇技术文章页及 `sitemap.xml` 全部条目 0 缺失）。
+  - Django `makemigrations --check --dry-run` 无变更、`manage.py test core publishing --verbosity=2` 18/18 项通过（含全量 18 款子产品与 18 篇文章红线门禁 0 errors / 0 warnings 与 `verify_static_artifact` 静态包校验），`init_local_cms` 干净库初始化通过（18 款子产品、18 篇关联文章、17 项核准图片）。
+  - Chromium 静态导出验收：桌面 `1440×900` 全量巡检 40 页（4 大类 + 18 子产品 + 18 文章）、移动端 `390×844` 巡检 10 个代表页均实现 HTTP 200、`overflowX = 0`、`brokenImgs = 0`、可见最小字号 `>= 14px`、有效 JSON-LD；验证 `/products/towers/ptfe/` 三图缩略图切换正常、`/products/reactors/double-cone/` 同系当前机型点击由 `scrollY = 2388` 平滑返回 `scrollY = 0`；并逐张目视复核 16 张桌面与移动端截图（含全页完全显现态与 4 大类图集）。
+- **截图证据（仓库外）**：`/home/savil/.gemini/antigravity-cli/brain/dc7e47d0-f442-4703-912e-0df031fc7da3/scratch/qa-shots-18/` 与 `qa-shots-18-sections/`
+- **未验证项**：新增 6 款复用大类主图机型的独立白底棚拍替换（待后续在内容工作台上传替换）；真实手机与 Safari 实机复测；尚未执行 Git 提交、推送或远程部署。
+
+final result: passed

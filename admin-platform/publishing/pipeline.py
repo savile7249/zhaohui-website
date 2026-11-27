@@ -11,7 +11,16 @@ from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from core.models import Domain, Site, SiteMembership
 from core.permissions import record_audit, require_site_role
-from .models import ApprovedAsset, ContentSnapshot, ManagedContact, ManagedProduct, ReleaseRecord
+from .models import (
+    ApprovedAsset,
+    ContentSnapshot,
+    ManagedContact,
+    ManagedProduct,
+    ManagedProductArticle,
+    ManagedProductVariant,
+    ReleaseRecord,
+)
+from .redline_validator import validate_payload_catalog_redlines
 
 
 class BuildPipelineError(RuntimeError):
@@ -25,6 +34,70 @@ def _atomic_symlink(link_path: Path, target_path: Path):
         tmp_link.unlink()
     os.symlink(str(target_path), str(tmp_link))
     os.replace(str(tmp_link), str(link_path))
+
+
+def _serialize_site_catalog(site: Site) -> tuple[list[dict], list[dict]]:
+    category_order = {"tanks": 1, "reactors": 2, "towers": 3, "piping": 4}
+    raw_variants = list(
+        site.managed_variants.select_related("hero_asset")
+        .prefetch_related("gallery_assets")
+        .all()
+    )
+    raw_variants.sort(key=lambda v: (category_order.get(v.category_slug, 99), v.display_order, v.id))
+
+    per_category_counter: dict[str, int] = {}
+    variants_out: list[dict] = []
+    for var in raw_variants:
+        per_category_counter[var.category_slug] = per_category_counter.get(var.category_slug, 0) + 1
+        idx_num = per_category_counter[var.category_slug]
+        variants_out.append(
+            {
+                "categorySlug": var.category_slug,
+                "variantSlug": var.variant_slug,
+                "index": f"{idx_num:02d}",
+                "craftTag": var.craft_tag,
+                "title": var.title,
+                "seoTitle": var.seo_title or var.title,
+                "seoDescription": var.seo_description or var.summary,
+                "summary": var.summary,
+                "heroImage": var.hero_asset.image_path,
+                "heroImageAlt": var.hero_asset.image_alt,
+                "galleryImages": var.get_gallery_media_list(),
+                "standardSpecs": var.specs_json or [],
+                "confirmChecklist": var.confirm_inputs_json or [],
+                "isPublished": bool(var.is_published),
+                "updatedAt": timezone.localtime(var.updated_at).strftime("%Y-%m-%d")
+                if var.updated_at
+                else timezone.localdate().isoformat(),
+            }
+        )
+
+    articles_out: list[dict] = []
+    for art in (
+        site.managed_articles.select_related("variant", "cover_asset")
+        .order_by("-published_at", "article_slug")
+    ):
+        entry = {
+            "categorySlug": art.variant.category_slug,
+            "variantSlug": art.variant.variant_slug,
+            "articleSlug": art.article_slug,
+            "title": art.title,
+            "summary": art.summary,
+            "seoTitle": art.seo_title or art.title,
+            "seoDescription": art.seo_description or art.summary,
+            "bodyMarkdown": art.body_markdown,
+            "publishedAt": art.published_at.isoformat() if art.published_at else timezone.localdate().isoformat(),
+            "updatedAt": timezone.localtime(art.updated_at).strftime("%Y-%m-%d")
+            if art.updated_at
+            else timezone.localdate().isoformat(),
+            "status": art.status,
+        }
+        if art.cover_asset_id and art.cover_asset.is_approved:
+            entry["coverImage"] = art.cover_asset.image_path
+            entry["coverImageAlt"] = art.cover_asset.image_alt
+        articles_out.append(entry)
+
+    return variants_out, articles_out
 
 
 def build_snapshot_payload(site: Site) -> dict:
@@ -54,8 +127,10 @@ def build_snapshot_payload(site: Site) -> dict:
         if contact_obj
         else {"phones": [], "email": {"display": "", "href": ""}, "addresses": []}
     )
+    variants, articles = _serialize_site_catalog(site)
     return {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
+        "updatedAt": timezone.localdate().isoformat(),
         "site": {
             "slug": site.slug,
             "name": site.name,
@@ -63,13 +138,70 @@ def build_snapshot_payload(site: Site) -> dict:
             "adapterType": site.adapter_type,
         },
         "products": products,
+        "variants": variants,
+        "articles": articles,
         "contact": contact,
+    }
+
+
+def sync_site_catalog_to_workspace(site: Site, user, request=None) -> dict:
+    """Local dev convenience: export current site's managed variants & articles to content/managed-catalog.json."""
+    if not getattr(settings, "LOCAL_DEV_SYNC_ENABLED", False):
+        raise BuildPipelineError("当前环境未开启本地工作区同步（生产环境禁止直接写仓库文件）。")
+    require_site_role(user, site, SiteMembership.ROLE_EDITOR)
+    if site.adapter_type != Site.ADAPTER_NEXTJS_ZHAOHUI:
+        raise BuildPipelineError("仅 Next.js 兆辉站点支持同步至本地前端工作区。")
+
+    payload = build_snapshot_payload(site)
+    redline = validate_payload_catalog_redlines(payload)
+    if not redline["passed"]:
+        first_err = redline["errors"][0]["message"]
+        raise BuildPipelineError(f"内容红线校验未通过，已阻止同步：{first_err}")
+
+    catalog_doc = {
+        "schemaVersion": "1.1",
+        "updatedAt": timezone.localdate().isoformat(),
+        "variants": payload["variants"],
+        "articles": payload["articles"],
+    }
+    target_path = Path(settings.MANAGED_CATALOG_PATH)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = target_path.parent / f".{target_path.name}.tmp.{os.getpid()}"
+    tmp_path.write_text(json.dumps(catalog_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    os.replace(tmp_path, target_path)
+
+    published_variants = sum(1 for v in payload["variants"] if v.get("isPublished"))
+    published_articles = sum(1 for a in payload["articles"] if a.get("status") == "published")
+    record_audit(
+        actor=user,
+        action="catalog.dev_sync",
+        target_type="site",
+        target_id=site.slug,
+        summary=f"同步受管目录至本地工作区（{published_variants} 款子产品，{published_articles} 篇已发布文章）",
+        site=site,
+        metadata={
+            "target_path": str(target_path),
+            "published_variants": published_variants,
+            "published_articles": published_articles,
+            "redline_warning_count": len(redline["warnings"]),
+        },
+        request=request,
+    )
+    return {
+        "target_path": str(target_path),
+        "published_variants": published_variants,
+        "published_articles": published_articles,
+        "warnings": redline["warnings"],
     }
 
 
 def create_snapshot(site: Site, user, note: str = "", request=None) -> ContentSnapshot:
     require_site_role(user, site, SiteMembership.ROLE_EDITOR)
     payload = build_snapshot_payload(site)
+    redline = validate_payload_catalog_redlines(payload)
+    if not redline["passed"]:
+        raise BuildPipelineError("内容红线校验未通过，禁止生成快照：" + "；".join(e["message"] for e in redline["errors"][:3]))
+
     checksum = ContentSnapshot.compute_checksum(payload)
     now = timezone.now()
     seq = site.snapshots.count() + 1
@@ -94,14 +226,35 @@ def create_snapshot(site: Site, user, note: str = "", request=None) -> ContentSn
         target_id=str(snap.id),
         summary=f"创建内容快照 {site.slug}@{version}（checksum {checksum[:12]}）",
         site=site,
-        metadata={"version": version, "checksum": checksum, "note": snap.note},
+        metadata={
+            "version": version,
+            "checksum": checksum,
+            "note": snap.note,
+            "variant_count": len(payload.get("variants") or []),
+            "article_count": len(payload.get("articles") or []),
+            "redline_warning_count": len(redline["warnings"]),
+        },
         request=request,
     )
     return snap
 
 
-def approve_snapshot(snapshot: ContentSnapshot, user, request=None) -> ContentSnapshot:
+def approve_snapshot(
+    snapshot: ContentSnapshot,
+    user,
+    request=None,
+    *,
+    redline_confirmed: bool = False,
+) -> ContentSnapshot:
     require_site_role(user, snapshot.site, SiteMembership.ROLE_PUBLISHER)
+    redline = validate_payload_catalog_redlines(snapshot.payload)
+    if not redline["passed"]:
+        raise BuildPipelineError("快照命中内容红线硬性错误，无法审核通过：" + "；".join(e["message"] for e in redline["errors"][:3]))
+    if redline["requires_confirmation"] and not redline_confirmed:
+        raise BuildPipelineError(
+            f"快照包含 {len(redline['warnings'])} 项待技术审核提示（如具体数值或待确认牌号），请勾选「已经技术负责人审核确认」后再审核通过。"
+        )
+
     snapshot.status = ContentSnapshot.STATUS_APPROVED
     snapshot.approved_by = user
     snapshot.approved_at = timezone.now()
@@ -113,7 +266,12 @@ def approve_snapshot(snapshot: ContentSnapshot, user, request=None) -> ContentSn
         target_id=str(snapshot.id),
         summary=f"审核通过内容快照 {snapshot.site.slug}@{snapshot.version}",
         site=snapshot.site,
-        metadata={"version": snapshot.version, "checksum": snapshot.checksum},
+        metadata={
+            "version": snapshot.version,
+            "checksum": snapshot.checksum,
+            "redline_confirmed": bool(redline_confirmed),
+            "redline_warning_count": len(redline["warnings"]),
+        },
         request=request,
     )
     return snapshot
@@ -240,7 +398,7 @@ footer a { color: #fff; }
     } catch (e) {}
   }
   function getCategory(p) {
-    var m = p.match(/^\\/products\\/([a-z0-9_-]+)\\/?$/);
+    var m = p.match(/^\\/products\\/([a-z0-9_-]+)(?:\\/|$)/);
     return m ? m[1] : '';
   }
   var path = window.location.pathname || '/';
@@ -400,7 +558,7 @@ def verify_static_artifact(artifact_dir: Path, domain_doc: dict, simulate_failur
     if not canonical_ok:
         errors.append(f"首页规范网址 canonical 未匹配预期：{canonical_base}/")
 
-    # Verify all products exist & display_name present
+    # Verify all top-level products exist & display_name present
     for prod in domain_doc["products"]:
         p_file = artifact_dir / "products" / prod["slug"] / "index.html"
         exists = p_file.is_file()
@@ -422,6 +580,57 @@ def verify_static_artifact(artifact_dir: Path, domain_doc: dict, simulate_failur
         )
         if not (exists and title_ok and p_canonical_ok):
             errors.append(f"产品页 {prod['slug']} 冒烟校验未通过（exists={exists}, title_ok={title_ok}, canonical_ok={p_canonical_ok}）")
+
+    # Verify sub-product variant pages, published article pages, and sitemap.xml for Next.js sites
+    is_nextjs = domain_doc.get("site", {}).get("adapterType") == Site.ADAPTER_NEXTJS_ZHAOHUI
+    if is_nextjs:
+        sitemap_file = artifact_dir / "sitemap.xml"
+        sitemap_xml = sitemap_file.read_text(encoding="utf-8", errors="ignore") if sitemap_file.is_file() else ""
+        published_variants = [v for v in (domain_doc.get("variants") or []) if v.get("isPublished", True)]
+        published_variant_keys = {(v["categorySlug"], v["variantSlug"]) for v in published_variants}
+
+        for var in published_variants:
+            v_file = artifact_dir / "products" / var["categorySlug"] / var["variantSlug"] / "index.html"
+            v_url = f'{canonical_base}/products/{var["categorySlug"]}/{var["variantSlug"]}/'
+            v_exists = v_file.is_file()
+            v_title_ok = False
+            v_can_ok = False
+            if v_exists:
+                v_html = v_file.read_text(encoding="utf-8", errors="ignore")
+                v_title_ok = var["title"] in v_html
+                v_can_ok = f'rel="canonical" href="{v_url}"' in v_html
+            v_in_sitemap = (not sitemap_xml) or (v_url in sitemap_xml)
+            v_ok = v_exists and v_title_ok and v_can_ok and v_in_sitemap
+            checks.append({"name": f"variant_{var['categorySlug']}_{var['variantSlug']}", "ok": v_ok})
+            if not v_ok:
+                errors.append(f"子产品页 {var['categorySlug']}/{var['variantSlug']} 冒烟校验未通过")
+
+        for art in domain_doc.get("articles") or []:
+            if art.get("status") != "published":
+                continue
+            if (art.get("categorySlug"), art.get("variantSlug")) not in published_variant_keys:
+                continue
+            a_file = (
+                artifact_dir
+                / "products"
+                / art["categorySlug"]
+                / art["variantSlug"]
+                / art["articleSlug"]
+                / "index.html"
+            )
+            a_url = f'{canonical_base}/products/{art["categorySlug"]}/{art["variantSlug"]}/{art["articleSlug"]}/'
+            a_exists = a_file.is_file()
+            a_title_ok = False
+            a_can_ok = False
+            if a_exists:
+                a_html = a_file.read_text(encoding="utf-8", errors="ignore")
+                a_title_ok = art["title"] in a_html
+                a_can_ok = f'rel="canonical" href="{a_url}"' in a_html
+            a_in_sitemap = (not sitemap_xml) or (a_url in sitemap_xml)
+            a_ok = a_exists and a_title_ok and a_can_ok and a_in_sitemap
+            checks.append({"name": f"article_{art['articleSlug']}", "ok": a_ok})
+            if not a_ok:
+                errors.append(f"关联文章页 {art['articleSlug']} 冒烟校验未通过")
 
     # Verify referenced local static assets exist on disk (JS/CSS/images)
     asset_refs = set(
@@ -458,7 +667,6 @@ def build_and_deploy_domain(
     else:
         raise BuildPipelineError(f"不支持的构建类型：{build_type}")
 
-    now = timezone.now()
     seq = ReleaseRecord.objects.filter(domain=domain).count() + 1
     rel_ver = f"{build_type}-{snapshot.version}-{seq:03d}"
 
